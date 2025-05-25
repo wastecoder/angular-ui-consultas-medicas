@@ -19,14 +19,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { CustomPaginator } from './custom-paginator'; // Use o mesmo do cliente
+import { CustomPaginator } from './custom-paginator';
+import { MedicoTable } from '../../medico.models';
 
-export interface MedicoModel {
-  id: number;
-  nome: string;
-  crm: string;
-  especialidade: string;
-}
+export type MedicoModel = MedicoTable;
 
 @Component({
   selector: 'app-medico-tabela',

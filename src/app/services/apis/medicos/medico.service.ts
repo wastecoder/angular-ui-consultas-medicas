@@ -6,41 +6,41 @@ import {
   MedicoEdit,
   MedicoTable,
 } from '../../../../app/medicos/medico.models';
-import { environment } from '../../../../environments/environments';
+// import { environment } from '../../../../environments/environments'; // Usar depois
 
 @Injectable({
   providedIn: 'root',
 })
 export class MedicoService {
-  private readonly API = environment.apiUrl;
+  private readonly medicoUrl = 'http://localhost:8080/medicos';
 
   constructor(private http: HttpClient) {}
 
   listar(): Observable<MedicoTable[]> {
-    return this.http.get<MedicoTable[]>(this.API);
+    return this.http.get<MedicoTable[]>(this.medicoUrl);
   }
 
   buscarPorId(id: number): Observable<MedicoTable> {
-    return this.http.get<MedicoTable>(`${this.API}/${id}`);
+    return this.http.get<MedicoTable>(`${this.medicoUrl}/${id}`);
   }
 
   cadastrar(medico: MedicoCreate): Observable<MedicoTable> {
-    return this.http.post<MedicoTable>(this.API, medico);
+    return this.http.post<MedicoTable>(this.medicoUrl, medico);
   }
 
   atualizar(id: number, medico: MedicoEdit): Observable<MedicoTable> {
-    return this.http.put<MedicoTable>(`${this.API}/${id}`, medico);
+    return this.http.put<MedicoTable>(`${this.medicoUrl}/${id}`, medico);
   }
 
   excluir(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API}/${id}`);
+    return this.http.delete<void>(`${this.medicoUrl}/${id}`);
   }
 
   ativar(id: number): Observable<void> {
-    return this.http.patch<void>(`${this.API}/ativar/${id}`, {});
+    return this.http.patch<void>(`${this.medicoUrl}/ativar/${id}`, {});
   }
 
   inativar(id: number): Observable<void> {
-    return this.http.patch<void>(`${this.API}/inativar/${id}`, {});
+    return this.http.patch<void>(`${this.medicoUrl}/inativar/${id}`, {});
   }
 }
