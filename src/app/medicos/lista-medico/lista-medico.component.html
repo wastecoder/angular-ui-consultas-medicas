@@ -1,1 +1,9 @@
-<p>lista-medico works!</p>
+<div class="container mt-4">
+  <h2>Médicos Cadastrados</h2>
+  <app-medico-tabela
+    [medicos]="medicos"
+    (onConfirmDelete)="delete($event)"
+    (onRequestUpdate)="update($event)"
+  >
+  </app-medico-tabela>
+</div>
