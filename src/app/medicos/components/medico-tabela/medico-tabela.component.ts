@@ -48,7 +48,15 @@ export class MedicoTabelaComponent
 
   dataSource!: MatTableDataSource<MedicoModel>;
 
-  displayedColumns: string[] = ['nome', 'crm', 'especialidade', 'acoes'];
+  displayedColumns: string[] = [
+    'id',
+    'nome',
+    'crm',
+    'especialidade',
+    'email',
+    'telefone',
+    'acoes',
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
