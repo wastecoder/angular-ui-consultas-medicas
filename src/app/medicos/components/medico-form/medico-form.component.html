@@ -36,17 +36,23 @@
 
         <div class="col-6">
             <mat-form-field appearance="outline" class="w-100">
-            <mat-label>CRM Sigla</mat-label>
-            <input
-                matInput
-                name="crmSigla"
-                #siglaModel="ngModel"
-                [(ngModel)]="medico.crmSigla"
-                required
-            />
-            @if (siglaModel.errors?.['required']) {
-                <mat-error>Sigla do CRM é obrigatória</mat-error>
-            }
+                <mat-label>CRM Sigla</mat-label>
+                <mat-select
+                    name="crmSigla"
+                    [(ngModel)]="medico.crmSigla"
+                    #siglaModel="ngModel"
+                    required
+                >
+                    <mat-option
+                        *ngFor="let sigla of siglasCrm"
+                        [value]="sigla"
+                    >
+                        {{ sigla }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="siglaModel.errors?.['required']">
+                    Sigla do CRM é obrigatória
+                </mat-error>
             </mat-form-field>
         </div>
 
