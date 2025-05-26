@@ -1,7 +1,8 @@
 // Interface para criação de médico (sem o id)
 export interface MedicoCreate {
   nome: string;
-  crm: string;
+  crmSigla: string;
+  crmDigitos: string;
   especialidade: string;
   email: string;
   telefone: string;
