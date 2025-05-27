@@ -6,14 +6,31 @@ import { ListaMedicoComponent } from './medicos/lista-medico/lista-medico.compon
 import { EditaMedicoComponent } from './medicos/edita-medico/edita-medico.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, data: { title: 'Página Inicial' } },
   {
     path: 'medicos',
+    data: { title: 'Médicos' },
     children: [
-      { path: '', component: MedicoHomeComponent },
-      { path: 'novo', component: NovoMedicoComponent },
-      { path: 'lista', component: ListaMedicoComponent },
-      { path: 'editar/:id', component: EditaMedicoComponent },
+      {
+        path: '',
+        component: MedicoHomeComponent,
+        data: { title: 'Página Inicial de Médicos' },
+      },
+      {
+        path: 'novo',
+        component: NovoMedicoComponent,
+        data: { title: 'Novo Médico' },
+      },
+      {
+        path: 'lista',
+        component: ListaMedicoComponent,
+        data: { title: 'Lista de Médicos' },
+      },
+      {
+        path: 'editar/:id',
+        component: EditaMedicoComponent,
+        data: { title: 'Editar Médico' },
+      },
     ],
   },
 ];
