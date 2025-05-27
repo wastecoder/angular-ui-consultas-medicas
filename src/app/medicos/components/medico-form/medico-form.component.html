@@ -1,8 +1,10 @@
 <form #form="ngForm" (ngSubmit)="onSubmit()" class="container">
 
-    <div *ngIf="mensagemErro" class="alert alert-danger mb-3">
-        {{ mensagemErro }}
-    </div>
+    @if (mensagemErro) {
+        <div class="alert alert-danger mb-3">
+            {{ mensagemErro }}
+        </div>
+    }
 
     <div class="row">
 
@@ -62,12 +64,11 @@
                     #siglaModel="ngModel"
                     required
                 >
-                    <mat-option
-                        *ngFor="let sigla of siglasCrm"
-                        [value]="sigla"
-                    >
-                        {{ sigla }}
-                    </mat-option>
+                    @for (sigla of siglasCrm; track sigla) {
+                        <mat-option [value]="sigla">
+                            {{ sigla }}
+                        </mat-option>
+                    }
                 </mat-select>
 
                 @if (shouldShowError(siglaModel)) {
