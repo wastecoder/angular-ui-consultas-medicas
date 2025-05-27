@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +22,7 @@ import { MedicoCreate } from '../../medico.models';
 })
 export class MedicoFormComponent {
   @Output() salvar = new EventEmitter<MedicoCreate>();
+  @Input() mensagemErro: string | null = null;
 
   medico: MedicoCreate = {
     nome: '',
