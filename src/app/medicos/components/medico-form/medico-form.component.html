@@ -19,14 +19,11 @@
                     minlength="3"
                     maxlength="100"
                 />
-                @if (nomeModel.errors?.['required']) {
-                    <mat-error>Nome é obrigatório</mat-error>
-                }
-                @if (nomeModel.errors?.['minlength']) {
-                    <mat-error>Nome deve ter no mínimo 3 caracteres</mat-error>
-                }
-                @if (nomeModel.errors?.['maxlength']) {
-                    <mat-error>Nome pode ter no máximo 100 caracteres</mat-error>
+
+                @if (shouldShowError(nomeModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(nomeModel.errors, 'Nome') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -46,18 +43,11 @@
                     maxlength="50"
                     pattern="^[\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,}$"
                 />
-                
-                @if (emailModel.errors?.['required']) {
-                    <mat-error>E-mail é obrigatório</mat-error>
-                }
-                @if (emailModel.errors?.['pattern']) {
-                    <mat-error>Formato de e-mail inválido</mat-error>
-                }
-                @if (emailModel.errors?.['minlength']) {
-                    <mat-error>E-mail deve ter no mínimo 5 caracteres</mat-error>
-                }
-                @if (emailModel.errors?.['maxlength']) {
-                    <mat-error>E-mail pode ter no máximo 50 caracteres</mat-error>
+
+                @if (shouldShowError(emailModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(emailModel.errors, 'E-mail', 'Formato de e-mail inválido (ex válido: exemplo@dominio.com)') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -79,8 +69,11 @@
                         {{ sigla }}
                     </mat-option>
                 </mat-select>
-                @if (siglaModel.errors?.['required']) {
-                    <mat-error>Sigla do CRM é obrigatória</mat-error>
+
+                @if (shouldShowError(siglaModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(siglaModel.errors, 'Sigla do CRM') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -97,11 +90,11 @@
                     required
                     pattern="\d{6}"
                 />
-                @if (digitosModel.errors?.['required']) {
-                    <mat-error>Dígitos do CRM são obrigatórios</mat-error>
-                }
-                @if (digitosModel.errors?.['pattern']) {
-                    <mat-error>CRM deve ter exatamente 6 dígitos numéricos</mat-error>
+
+                @if (shouldShowError(digitosModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(digitosModel.errors, 'Dígitos do CRM', 'CRM deve ter exatamente 6 dígitos numéricos') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -116,18 +109,14 @@
                     #especialidadeModel="ngModel"
                     [(ngModel)]="medico.especialidade"
                     required
-                    required
                     minlength="5"
                     maxlength="50"
                 />
-                @if (especialidadeModel.errors?.['required']) {
-                    <mat-error>Especialidade é obrigatória</mat-error>
-                }
-                @if (especialidadeModel.errors?.['minlength']) {
-                    <mat-error>Especialidade deve ter no mínimo 5 caracteres</mat-error>
-                }
-                @if (especialidadeModel.errors?.['maxlength']) {
-                    <mat-error>Especialidade pode ter no máximo 50 caracteres</mat-error>
+
+                @if (shouldShowError(especialidadeModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(especialidadeModel.errors, 'Especialidade') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
@@ -138,6 +127,7 @@
                 <mat-label>Telefone</mat-label>
                 <input
                     matInput
+                    type="tel"
                     name="telefone"
                     #telefoneModel="ngModel"
                     [(ngModel)]="medico.telefone"
@@ -146,17 +136,11 @@
                     maxlength="11"
                     pattern="\d{10,11}"
                 />
-                @if (telefoneModel.errors?.['required']) {
-                    <mat-error>Telefone é obrigatório</mat-error>
-                }
-                @if (telefoneModel.errors?.['pattern']) {
-                    <mat-error>Telefone deve conter apenas números com 10 ou 11 dígitos numéricos</mat-error>
-                }
-                @if (telefoneModel.errors?.['minlength']) {
-                    <mat-error>Telefone deve ter no mínimo 10 dígitos</mat-error>
-                }
-                @if (telefoneModel.errors?.['maxlength']) {
-                    <mat-error>Telefone deve ter no máximo 11 dígitos</mat-error>
+
+                @if (shouldShowError(telefoneModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(telefoneModel.errors, 'Telefone', 'Telefone deve conter apenas números com 10 ou 11 dígitos numéricos') }}
+                    </mat-error>
                 }
             </mat-form-field>
         </div>
