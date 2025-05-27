@@ -4,7 +4,8 @@ import {
   MedicoTabelaComponent,
   MedicoModel,
 } from '../components/medico-tabela/medico-tabela.component';
-import { MedicoService } from '../../services/apis/medicos/medico.service'; // ajuste o caminho se necessário
+import { MedicoService } from '../../services/apis/medicos/medico.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-medico',
@@ -15,6 +16,7 @@ import { MedicoService } from '../../services/apis/medicos/medico.service'; // a
 export class ListaMedicoComponent implements OnInit {
   private readonly medicoService = inject(MedicoService);
   medicos: MedicoModel[] = [];
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     this.carregarMedicos();
@@ -37,7 +39,6 @@ export class ListaMedicoComponent implements OnInit {
   }
 
   update(medico: MedicoModel) {
-    console.log('Atualizar médico:', medico);
-    // Aqui você pode redirecionar para uma rota de edição ou abrir um formulário
+    this.router.navigate(['/medicos/editar', medico.id]);
   }
 }
