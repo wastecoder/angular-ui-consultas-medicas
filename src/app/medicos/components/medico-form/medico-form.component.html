@@ -43,7 +43,7 @@
                     required
                     minlength="5"
                     maxlength="50"
-                    pattern="^[\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,}$"
+                    pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-zA-Z]{2,}$"
                 />
 
                 @if (shouldShowError(emailModel)) {
