@@ -20,8 +20,8 @@ export class MedicoService {
     return this.http.get<MedicoTable[]>(this.medicoUrl);
   }
 
-  buscarPorId(id: number): Observable<MedicoTable> {
-    return this.http.get<MedicoTable>(`${this.medicoUrl}/${id}`);
+  buscarPorId(id: number): Observable<MedicoEdit> {
+    return this.http.get<MedicoEdit>(`${this.medicoUrl}/${id}`);
   }
 
   cadastrar(medico: MedicoCreate): Observable<MedicoTable> {

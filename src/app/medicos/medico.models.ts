@@ -10,9 +10,9 @@ export interface MedicoCreate {
 
 // Interface para edição de médico (com o id)
 export interface MedicoEdit {
-  id: number;
   nome: string;
-  crm: string;
+  crmSigla: string;
+  crmDigitos: string;
   especialidade: string;
   email: string;
   telefone: string;

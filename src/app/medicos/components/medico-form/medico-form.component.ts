@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MedicoCreate } from '../../medico.models';
+import { MedicoEdit } from '../../medico.models';
 
 @Component({
   selector: 'app-medico-form',
@@ -21,10 +21,9 @@ import { MedicoCreate } from '../../medico.models';
   ],
 })
 export class MedicoFormComponent {
-  @Output() salvar = new EventEmitter<MedicoCreate>();
+  @Output() salvar = new EventEmitter<MedicoEdit>();
   @Input() mensagemErro: string | null = null;
-
-  medico: MedicoCreate = {
+  @Input() medico: MedicoEdit = {
     nome: '',
     email: '',
     crmSigla: '',
