@@ -6,13 +6,13 @@ import {
   MedicoEdit,
   MedicoTable,
 } from '../../../../app/medicos/medico.models';
-// import { environment } from '../../../../environments/environments'; // Usar depois
+import { environment } from '../../../../environments/environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MedicoService {
-  private readonly medicoUrl = 'http://localhost:8080/medicos';
+  private readonly medicoUrl = environment.apiUrl + 'medicos';
 
   constructor(private http: HttpClient) {}
 
