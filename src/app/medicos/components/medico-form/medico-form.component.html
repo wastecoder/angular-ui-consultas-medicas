@@ -89,12 +89,12 @@
                     #digitosModel="ngModel"
                     [(ngModel)]="medico.crmDigitos"
                     required
-                    pattern="\d{6}"
+                    [mask]="'000000'"
                 />
 
                 @if (shouldShowError(digitosModel)) {
                     <mat-error>
-                        {{ getErrorMessage(digitosModel.errors, 'Dígitos do CRM', 'CRM deve ter exatamente 6 dígitos numéricos') }}
+                        {{ getErrorMessage(digitosModel.errors, 'Dígitos do CRM') }}
                     </mat-error>
                 }
             </mat-form-field>
@@ -133,14 +133,12 @@
                     #telefoneModel="ngModel"
                     [(ngModel)]="medico.telefone"
                     required
-                    minlength="10"
-                    maxlength="11"
-                    pattern="\d{10,11}"
+                    [mask]="'(00) 00000-0000'"
                 />
 
                 @if (shouldShowError(telefoneModel)) {
                     <mat-error>
-                        {{ getErrorMessage(telefoneModel.errors, 'Telefone', 'Telefone deve conter apenas números com 10 ou 11 dígitos numéricos') }}
+                        {{ getErrorMessage(telefoneModel.errors, 'Telefone') }}
                     </mat-error>
                 }
             </mat-form-field>

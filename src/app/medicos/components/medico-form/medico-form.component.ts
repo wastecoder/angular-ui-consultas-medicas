@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MedicoEdit } from '../../medico.models';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-medico-form',
@@ -18,6 +19,7 @@ import { MedicoEdit } from '../../medico.models';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    NgxMaskDirective
   ],
 })
 export class MedicoFormComponent {
