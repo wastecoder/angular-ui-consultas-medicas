@@ -4,8 +4,10 @@ import { MedicoHomeComponent } from './medicos/medico-home/medico-home.component
 import { NovoMedicoComponent } from './medicos/novo-medico/novo-medico.component';
 import { ListaMedicoComponent } from './medicos/lista-medico/lista-medico.component';
 import { EditaMedicoComponent } from './medicos/edita-medico/edita-medico.component';
+import { LoginHomeComponent } from './login/login-home/login-home.component';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginHomeComponent, data: { title: 'Login' } },
   { path: '', component: HomeComponent, data: { title: 'Página Inicial' } },
   {
     path: 'medicos',
@@ -33,4 +35,6 @@ export const routes: Routes = [
       },
     ],
   },
+
+  { path: '**', redirectTo: 'login' },
 ];
