@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../../environments/environments';
 import { LoginRequest, LoginResponse } from './auth.models';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,10 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.currentUserSubject.next(null);
+
+    // Diferente do logout do interceptor, aqui e para logout manual - ex: botao sair
+    const router = inject(Router);
+    router.navigate(['/login']);
   }
 
   saveToken(token: string): void {
