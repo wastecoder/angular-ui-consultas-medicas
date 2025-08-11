@@ -6,4 +6,5 @@ export const environment = {
   apiHost,
   apiPort,
   apiUrl: `${apiHost}:${apiPort}/`,
+  tokenKey: 'jwt_token' // Nome fixo da chave no localStorage
 };
