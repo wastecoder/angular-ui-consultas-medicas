@@ -1,0 +1,118 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <!-- Brand -->
+    <a class="navbar-brand fs-4 mx-2" routerLink="/">
+        Administrador
+    </a>
+
+    <!-- Toggler/collapse button -->
+    <button class="navbar-toggler mx-2" type="button" data-bs-toggle="collapse" data-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+        <!-- Centered Links -->
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/">
+                    <i class="fa-solid fa-house"></i>
+                    Página inicial
+                </a>
+            </li>
+
+            <!-- Botão de MÉDICO -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdown1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa-solid fa-comments"></span>
+                    Médico
+                </a>
+                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown1">
+                    <a class="dropdown-item text-light" routerLink="/medicos/lista">
+                        Listar todos
+                    </a>
+                    <a class="dropdown-item text-light" routerLink="/medicos/novo">
+                        Cadastrar
+                    </a>
+                </div>
+            </li>
+
+            <!-- Botão de PACIENTE -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa-solid fa-building-circle-check"></span>
+                    Paciente
+                </a>
+                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown2">
+                    <a class="dropdown-item text-light" href="#">
+                        Listar todos
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Cadastrar
+                    </a>
+                </div>
+            </li>
+
+            <!-- Botão de CONSULTA -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdown3" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa-solid fa-building-circle-check"></span>
+                    Consulta
+                </a>
+                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown3">
+                    <a class="dropdown-item text-light" href="#">
+                        Listar todas
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Cadastrar
+                    </a>
+                </div>
+            </li>
+
+            <!-- Botão de RELATÓRIO -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdown4" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa-solid fa-building-circle-check"></span>
+                    Relatório
+                </a>
+                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown4">
+                    <a class="dropdown-item text-light" href="#">
+                        Médico
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Paciente
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Consulta
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Operacional
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Financeiro
+                    </a>
+                    <a class="dropdown-item text-light" href="#">
+                        Produtividade
+                    </a>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Right aligned links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="modal" data-target="#signupModal" routerLink="/profile">
+                    <span class="fa fa-user"></span>
+                    Perfil
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="modal" data-target="#loginModal" routerLink="/logout">
+                    <span class="fa-solid fa-right-from-bracket"></span>
+                    Sair
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
