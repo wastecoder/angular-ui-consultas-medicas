@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MedicoFormComponent } from '../components/medico-form/medico-form.component';
-import { MedicoService } from '../../services/apis/medicos/medico.service';
-import { MedicoEdit } from '../medico.models';
+import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
+import { DoctorService } from '@services/apis/doctor/doctor.service';
+import { EditDoctor } from '../doctor.models';
 
 @Component({
-  selector: 'app-edita-medico',
+  selector: 'app-doctor-edit',
   standalone: true,
-  imports: [MedicoFormComponent],
-  templateUrl: './edita-medico.component.html',
+  imports: [DoctorFormComponent],
+  templateUrl: './doctor-edit.component.html',
 })
-export class EditaMedicoComponent implements OnInit {
+export class DoctorEditComponent implements OnInit {
   medicoId!: number;
-  medico: MedicoEdit = {
+  medico: EditDoctor = {
     nome: '',
     email: '',
     crmSigla: '',
@@ -24,7 +24,7 @@ export class EditaMedicoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private medicoService: MedicoService,
+    private medicoService: DoctorService,
     private router: Router
   ) {}
 
@@ -38,7 +38,7 @@ export class EditaMedicoComponent implements OnInit {
     }
 
     this.medicoService.buscarPorId(this.medicoId).subscribe({
-      next: (dados: MedicoEdit) => {
+      next: (dados: EditDoctor) => {
         this.medico = {
           nome: dados.nome,
           email: dados.email,
@@ -55,7 +55,7 @@ export class EditaMedicoComponent implements OnInit {
     });
   }
 
-  onSalvar(medicoAtualizado: MedicoEdit) {
+  onSalvar(medicoAtualizado: EditDoctor) {
     this.mensagemErro = null;
 
     this.medicoService.atualizar(this.medicoId, medicoAtualizado).subscribe({

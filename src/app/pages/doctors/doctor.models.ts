@@ -1,5 +1,5 @@
 // Interface para criação de médico (sem o id)
-export interface MedicoCreate {
+export interface CreateDoctor {
   nome: string;
   crmSigla: string;
   crmDigitos: string;
@@ -9,7 +9,7 @@ export interface MedicoCreate {
 }
 
 // Interface para edição de médico (com o id)
-export interface MedicoEdit {
+export interface EditDoctor {
   nome: string;
   crmSigla: string;
   crmDigitos: string;
@@ -19,7 +19,7 @@ export interface MedicoEdit {
 }
 
 // Interface para a tabela (dados com id obrigatórios e outros campos)
-export interface MedicoTable {
+export interface DoctorTable {
   id: number;
   nome: string;
   crm: string;

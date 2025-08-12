@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MedicoFormComponent } from '../components/medico-form/medico-form.component';
-import { MedicoService } from '../../services/apis/medicos/medico.service';
-import { MedicoCreate } from '../medico.models';
+import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
+import { DoctorService } from '@services/apis/doctor/doctor.service';
+import { CreateDoctor } from '../doctor.models';
 
 @Component({
-  selector: 'app-novo-medico',
+  selector: 'app-doctor-create',
   standalone: true,
-  imports: [MedicoFormComponent],
-  templateUrl: './novo-medico.component.html',
+  imports: [DoctorFormComponent],
+  templateUrl: './doctor-create.component.html',
 })
-export class NovoMedicoComponent {
+export class DoctorCreateComponent {
   mensagemErro: string | null = null;
 
-  constructor(private medicoService: MedicoService, private router: Router) {}
+  constructor(private medicoService: DoctorService, private router: Router) {}
 
-  cadastrar(medico: MedicoCreate) {
+  cadastrar(medico: CreateDoctor) {
     this.mensagemErro = null; // limpa erro anterior
 
     this.medicoService.cadastrar(medico).subscribe({

@@ -5,13 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MedicoEdit } from '../../medico.models';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { EditDoctor } from '../../doctor.models';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
-  selector: 'app-medico-form',
+  selector: 'app-doctor-form',
   standalone: true,
-  templateUrl: './medico-form.component.html',
+  templateUrl: './doctor-form.component.html',
   imports: [
     CommonModule,
     FormsModule,
@@ -19,13 +19,13 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    NgxMaskDirective
+    NgxMaskDirective,
   ],
 })
-export class MedicoFormComponent {
-  @Output() salvar = new EventEmitter<MedicoEdit>();
+export class DoctorFormComponent {
+  @Output() salvar = new EventEmitter<EditDoctor>();
   @Input() mensagemErro: string | null = null;
-  @Input() medico: MedicoEdit = {
+  @Input() medico: EditDoctor = {
     nome: '',
     email: '',
     crmSigla: '',
@@ -36,9 +36,33 @@ export class MedicoFormComponent {
 
   // Lista das siglas CRM (mesmo enum do back-end)
   siglasCrm: string[] = [
-    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO',
-    'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
-    'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
+    'AC',
+    'AL',
+    'AP',
+    'AM',
+    'BA',
+    'CE',
+    'DF',
+    'ES',
+    'GO',
+    'MA',
+    'MT',
+    'MS',
+    'MG',
+    'PA',
+    'PB',
+    'PR',
+    'PE',
+    'PI',
+    'RJ',
+    'RN',
+    'RS',
+    'RO',
+    'RR',
+    'SC',
+    'SP',
+    'SE',
+    'TO',
   ];
 
   onSubmit() {

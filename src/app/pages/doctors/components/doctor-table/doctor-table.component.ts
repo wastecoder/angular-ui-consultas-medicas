@@ -8,7 +8,6 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
@@ -20,12 +19,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { CustomPaginator } from './custom-paginator';
-import { MedicoTable } from '../../medico.models';
+import { DoctorTable } from '../../doctor.models';
 
-export type MedicoModel = MedicoTable;
+export type MedicoModel = DoctorTable;
 
 @Component({
-  selector: 'app-medico-tabela',
+  selector: 'app-doctor-table',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,10 +34,10 @@ export type MedicoModel = MedicoTable;
     MatTooltipModule,
     MatPaginatorModule,
   ],
-  templateUrl: './medico-tabela.component.html',
+  templateUrl: './doctor-table.component.html',
   providers: [{ provide: MatPaginatorIntl, useClass: CustomPaginator }],
 })
-export class MedicoTabelaComponent
+export class DoctorTableComponent
   implements AfterViewInit, OnChanges, OnDestroy
 {
   @Input() medicos: MedicoModel[] = [];

@@ -1,20 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MedicoTabelaComponent,
+  DoctorTableComponent,
   MedicoModel,
-} from '../components/medico-tabela/medico-tabela.component';
-import { MedicoService } from '../../services/apis/medicos/medico.service';
+} from '../components/doctor-table/doctor-table.component';
+import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-lista-medico',
+  selector: 'app-doctor-list',
   standalone: true,
-  imports: [CommonModule, MedicoTabelaComponent],
-  templateUrl: './lista-medico.component.html',
+  imports: [CommonModule, DoctorTableComponent],
+  templateUrl: './doctor-list.component.html',
 })
-export class ListaMedicoComponent implements OnInit {
-  private readonly medicoService = inject(MedicoService);
+export class DoctorListComponent implements OnInit {
+  private readonly medicoService = inject(DoctorService);
   medicos: MedicoModel[] = [];
   private readonly router = inject(Router);
 

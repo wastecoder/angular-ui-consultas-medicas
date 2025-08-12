@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '../../../../environments/environments';
+import { environment } from '@env/environments';
 import { LoginRequest, LoginResponse } from './auth.models';
 import { Router } from '@angular/router';
 
