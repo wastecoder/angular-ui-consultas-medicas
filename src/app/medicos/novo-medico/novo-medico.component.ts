@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { MedicoFormComponent } from '../components/medico-form/medico-form.component';
 import { MedicoService } from '../../services/apis/medicos/medico.service';
 import { MedicoCreate } from '../medico.models';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-novo-medico',
   standalone: true,
-  imports: [MedicoFormComponent],
+  imports: [MedicoFormComponent, NavbarComponent],
   templateUrl: './novo-medico.component.html',
 })
 export class NovoMedicoComponent {
@@ -26,7 +27,8 @@ export class NovoMedicoComponent {
       error: (err) => {
         console.error('Erro ao cadastrar médico', err);
         if (err.status === 409) {
-          this.mensagemErro = err.error?.message || 'Erro de conflito ao cadastrar.';
+          this.mensagemErro =
+            err.error?.message || 'Erro de conflito ao cadastrar.';
         } else {
           this.mensagemErro = 'Erro inesperado ao cadastrar médico.';
         }
