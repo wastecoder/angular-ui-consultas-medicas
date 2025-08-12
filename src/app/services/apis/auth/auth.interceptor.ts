@@ -2,23 +2,30 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const token = auth.getToken();
 
-  // Se nao esta logado ou token expirou >>> faz logout e redireciona
+  // Se nao esta logado, apenas deixa a requisição falhar
   if (!auth.isLoggedIn()) {
-    auth.logout();
-    router.navigate(['/login']);
-    return next(req);
+    auth.clearSession();
+
+    return next(req).pipe(
+      catchError((error) => {
+        if (error.status === 401 || error.status === 403) {
+          router.navigate(['/login']);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
-  // Se token valido, adiciona no header
-  const authReq = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const authReq = req.clone({
+    setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 
   return next(authReq);
 };

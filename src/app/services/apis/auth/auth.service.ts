@@ -33,16 +33,18 @@ export class AuthService {
   }
 
   logout(): void {
-    this.removeToken();
-    this.currentUserSubject.next(null);
-
-    // Diferente do logout do interceptor, aqui e para logout manual - ex: botao sair
+    this.clearSession();
     const router = inject(Router);
     router.navigate(['/login']);
   }
 
   saveToken(token: string): void {
     localStorage.setItem(environment.tokenKey, token);
+  }
+
+  clearSession(): void {
+    this.removeToken();
+    this.currentUserSubject.next(null);
   }
 
   removeToken(): void {
