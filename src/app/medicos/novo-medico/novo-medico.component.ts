@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { MedicoFormComponent } from '../components/medico-form/medico-form.component';
 import { MedicoService } from '../../services/apis/medicos/medico.service';
 import { MedicoCreate } from '../medico.models';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-novo-medico',
   standalone: true,
-  imports: [MedicoFormComponent, NavbarComponent],
+  imports: [MedicoFormComponent],
   templateUrl: './novo-medico.component.html',
 })
 export class NovoMedicoComponent {
