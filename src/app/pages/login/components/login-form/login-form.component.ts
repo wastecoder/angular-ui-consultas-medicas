@@ -39,9 +39,9 @@ export class LoginFormComponent {
   getErrorMessage(errors: ValidationErrors | null, fieldLabel: string): string {
     if (!errors) return '';
     if (errors['required']) {
-      return `${fieldLabel} is required.`;
+      return `${fieldLabel} é obrigatório.`;
     } else if (errors['minlength']) {
-      return `${fieldLabel} must be at least ${errors['minlength'].requiredLength} characters.`;
+      return `${fieldLabel} deve ter pelo menos ${errors['minlength'].requiredLength} caracteres.`;
     }
     return '';
   }

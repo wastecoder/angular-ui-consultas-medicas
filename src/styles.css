@@ -5,6 +5,7 @@ html, body {
 
   height: 100%;
   margin: 0;
+  box-sizing: border-box;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -28,4 +29,51 @@ a {
 .btn-transparent:hover {
   color: white !important;
   background-color: #333 !important;
+}
+
+
+    /* Formulários */
+.form-field {
+    margin-bottom: 10px;
+}
+
+.btn-form {
+  width: 200px;
+  border-radius: 10px;
+  background-color: #242424;
+  padding: 25px;
+  font-size: 16px;
+}
+
+.div-button {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+    /* Formulários - Angular Material */
+/* Texto digitado */
+.mat-mdc-input-element {
+  color: #FFF !important;
+}
+
+/* Mensagem de erro */
+mat-error {
+  color: #FF2F45 !important;
+}
+
+/* Mantém fundo preto e texto branco com autocomplete */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #121212 inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+/* Deixa a borda e label do campo brancas ao passar o mouse ou focar */
+:root {
+  --mdc-outlined-text-field-hover-outline-color: #FFF;
+  --mdc-outlined-text-field-focus-outline-color: #FFF;
+  --mdc-outlined-text-field-hover-label-text-color: #FFF;
+  --mdc-outlined-text-field-focus-label-text-color: #FFF;
 }
