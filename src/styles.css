@@ -41,6 +41,22 @@ a {
 
 
     /* Formulários */
+.central-form {
+  max-width: var(--form-max-width, 500px);
+  padding: 60px;
+  background-color: #202020;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+}
+
+.form-title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 55px;
+  color: white;
+}
+
 .form-field {
   margin-bottom: 20px;
 }
@@ -71,7 +87,7 @@ mat-error {
 
 /* Mantém fundo preto e texto branco com autocomplete */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #121212 inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #202020 inset !important;
   -webkit-text-fill-color: white !important;
 }
 
