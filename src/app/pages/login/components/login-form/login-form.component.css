@@ -2,3 +2,13 @@
   max-width: 400px;
   margin: auto;
 }
+
+.forgot-password-link {
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #1976d2;
+}
+
+.forgot-password-link:hover {
+  color: #1976d2;
+}

@@ -77,3 +77,18 @@ input:-webkit-autofill {
   --mdc-outlined-text-field-hover-label-text-color: #FFF;
   --mdc-outlined-text-field-focus-label-text-color: #FFF;
 }
+
+/* Deixa o label do checkbox branco */
+.mdc-label {
+  color: #FFF;
+}
+
+/* Deixa a cor da borda da caixa do checkbox cinza */
+.mat-mdc-checkbox:hover .mdc-checkbox__background {
+  border-color: #7C7C7C !important;
+}
+
+/* Remove espaçamento à esquerda do mat-checkbox */
+.checkbox-container {
+  margin-left: -8px;
+}
