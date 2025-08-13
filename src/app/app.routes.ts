@@ -6,6 +6,7 @@ import { DoctorEditComponent } from '@pages/doctors/doctor-edit/doctor-edit.comp
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
+import { LogoutComponent } from '@pages/logout/logout.component';
 
 export const routes: Routes = [
   // Rotas com layout completo (navbar + footer)
@@ -51,6 +52,11 @@ export const routes: Routes = [
         path: 'login',
         component: LoginHomeComponent,
         data: { title: 'Login' },
+      },
+      {
+        path: 'logout',
+        component: LogoutComponent,
+        data: { title: 'Logout' },
       },
     ],
   },

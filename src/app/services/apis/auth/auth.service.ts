@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 export class AuthService {
   private http = inject(HttpClient);
 
+  constructor(private router: Router) {}
+
   private currentUserSubject = new BehaviorSubject<any | null>(
     this.getUserData()
   );
@@ -25,7 +27,7 @@ export class AuthService {
         tap((response) => {
           if (response?.token) {
             this.saveToken(response.token);
-            this.saveUserData(response.token); // opcional
+            this.saveUserData(response.token);
             this.currentUserSubject.next(this.getUserData());
           }
         })
@@ -34,8 +36,7 @@ export class AuthService {
 
   logout(): void {
     this.clearSession();
-    const router = inject(Router);
-    router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   saveToken(token: string): void {

@@ -1,0 +1,28 @@
+<main class="d-flex justify-content-center align-items-center vh-100">
+  <div class="text-white p-4 rounded-4 logout-container">
+
+    <div class="logout-inner">
+      <h3 class="mb-3">
+        Deseja sair?
+      </h3>
+      <p class="text-center mb-4 logout-text">
+        Você poderá entrar novamente a qualquer momento.
+      </p>
+
+      <div class="d-grid gap-2 w-100">
+        <button
+          class="btn btn-light fw-bold rounded-pill w-100"
+          (click)="onLogout()">
+          Sair
+        </button>
+
+        <button
+          class="btn btn-outline-light fw-bold rounded-pill custom-cancel"
+          (click)="onCancel()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
