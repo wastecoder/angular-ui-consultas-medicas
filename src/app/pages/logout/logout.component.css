@@ -1,14 +1,6 @@
-main {
-  background-color: #121212;
-}
-
 .logout-container {
   width: 380px;
   height: 380px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-color: #1A1A1A;
 }
 
@@ -19,13 +11,4 @@ main {
 
 .logout-text {
   font-size: 0.9rem;
-}
-
-.custom-cancel {
-  background-color: transparent;
-}
-
-.custom-cancel:hover {
-  color: white !important;
-  background-color: #333 !important;
 }

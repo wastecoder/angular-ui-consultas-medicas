@@ -1,5 +1,8 @@
     /* Estilização geral*/
 html, body {
+  background-color: #121212;
+  color: white;
+
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -7,4 +10,22 @@ html, body {
 
 a {
   text-decoration: none;
+}
+
+
+    /* Classes utilitárias */
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-transparent {
+  background-color: transparent;
+}
+
+.btn-transparent:hover {
+  color: white !important;
+  background-color: #333 !important;
 }
