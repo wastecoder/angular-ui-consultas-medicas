@@ -49,6 +49,25 @@
       </mat-form-field>
     </div>
 
+    <div class="col-12 d-flex align-items-center justify-content-between mb-3">
+
+      <div class="checkbox-container">
+        <!-- Remember Me -->
+        <mat-checkbox
+          name="rememberMe"
+          [(ngModel)]="credentials.rememberMe"
+        >
+          Manter-me conectado
+        </mat-checkbox>
+      </div>
+
+      <!-- Esqueceu a senha -->
+      <a href="#" (click)="$event.preventDefault()" class="forgot-password-link">
+        Esqueceu a senha?
+      </a>
+
+    </div>
+
     <div class="col div-button">
       <button
         type="submit"

@@ -4,6 +4,7 @@ import { FormsModule, NgModel, ValidationErrors } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginCredentials } from '../../login.models';
 
 @Component({
@@ -17,6 +18,7 @@ import { LoginCredentials } from '../../login.models';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatCheckboxModule,
   ],
 })
 export class LoginFormComponent {
@@ -26,6 +28,7 @@ export class LoginFormComponent {
   credentials: LoginCredentials = {
     username: '',
     password: '',
+    rememberMe: false,
   };
 
   onSubmit() {

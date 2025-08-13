@@ -20,14 +20,17 @@ export class AuthService {
   );
   currentUser$ = this.currentUserSubject.asObservable();
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
+  login(
+    credentials: LoginRequest,
+    rememberMe: boolean = false
+  ): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${environment.apiUrl}auth/login`, credentials)
       .pipe(
         tap((response) => {
           if (response?.token) {
-            this.saveToken(response.token);
-            this.saveUserData(response.token);
+            this.saveToken(response.token, rememberMe);
+            this.saveUserData(response.token, rememberMe);
             this.currentUserSubject.next(this.getUserData());
           }
         })
@@ -39,8 +42,9 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem(environment.tokenKey, token);
+  saveToken(token: string, rememberMe: boolean): void {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem(environment.tokenKey, token);
   }
 
   clearSession(): void {
@@ -51,10 +55,15 @@ export class AuthService {
   removeToken(): void {
     localStorage.removeItem(environment.tokenKey);
     localStorage.removeItem('user_data');
+    sessionStorage.removeItem(environment.tokenKey);
+    sessionStorage.removeItem('user_data');
   }
 
   getToken(): string | null {
-    return localStorage.getItem(environment.tokenKey);
+    return (
+      localStorage.getItem(environment.tokenKey) ||
+      sessionStorage.getItem(environment.tokenKey)
+    );
   }
 
   isLoggedIn(): boolean {
@@ -75,17 +84,17 @@ export class AuthService {
     }
   }
 
-  saveUserData(token: string): void {
+  saveUserData(token: string, rememberMe: boolean): void {
     try {
       const decoded: any = jwtDecode(token);
-      localStorage.setItem('user_data', JSON.stringify(decoded));
-    } catch (e) {
-      // ignore
-    }
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem('user_data', JSON.stringify(decoded));
+    } catch {}
   }
 
   getUserData(): any | null {
-    const raw = localStorage.getItem('user_data');
+    const raw =
+      localStorage.getItem('user_data') || sessionStorage.getItem('user_data');
     return raw ? JSON.parse(raw) : null;
   }
 }
