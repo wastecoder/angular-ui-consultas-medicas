@@ -7,6 +7,7 @@ import { LoginHomeComponent } from '@pages/login/login-home/login-home.component
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
 import { LogoutComponent } from '@pages/logout/logout.component';
+import { authGuard } from '@guards/auth.guard';
 
 export const routes: Routes = [
   // Rotas com layout completo (navbar + footer)
@@ -56,6 +57,7 @@ export const routes: Routes = [
       {
         path: 'logout',
         component: LogoutComponent,
+        canActivate: [authGuard],
         data: { title: 'Logout' },
       },
     ],
