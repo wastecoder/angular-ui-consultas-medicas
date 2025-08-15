@@ -119,3 +119,28 @@ input:-webkit-autofill {
   margin-top: -12px;
   margin-bottom: 25px;
 }
+
+/* Select: fundo das opções */
+.mat-mdc-select-panel {
+  background-color: #7C7C7C !important;
+}
+
+/* Select: cor do texto das opções */
+.mat-mdc-option {
+  color: #FFF !important;
+}
+
+/* Select: texto do valor selecionado */
+.mat-mdc-select-value-text {
+  color: #FFF !important;
+}
+
+/* Select: fundo da opção selecionada quando reabre o menu */
+.mat-mdc-option.mdc-list-item--selected {
+  background-color: #656565 !important;
+}
+
+/* Select: fundo e cor do texto da opção selecionada quando reabre o menu */
+.mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+  color: #FFF !important;
+}
