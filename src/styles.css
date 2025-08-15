@@ -111,7 +111,7 @@ input:-webkit-autofill {
 
 /* Remove espaçamento à esquerda do mat-checkbox */
 .checkbox-container {
-  margin-left: -8px;
+  margin-left: -12px;
 }
 
 /* Deixa o espaçamento da linha do checkbox igual aos outros campos */
