@@ -1,158 +1,171 @@
-<form #form="ngForm" (ngSubmit)="onSubmit()" class="container">
+<main class="d-flex align-items-center vh-100 justify-content-center">
+    <div class="central-form" style="--form-max-width: 1000px;">
 
-    @if (mensagemErro) {
-        <div class="alert alert-danger mb-3">
-            {{ mensagemErro }}
-        </div>
-    }
+        <h2 class="form-title">
+            Cadastro de Médico
+        </h2>
 
-    <div class="row">
+        <form #form="ngForm" (ngSubmit)="onSubmit()" class="container-fluid">
 
-        <!-- Nome -->
-        <div class="col-12">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Nome</mat-label>
-                <input
-                    matInput
-                    name="nome"
-                    #nomeModel="ngModel"
-                    [(ngModel)]="medico.nome"
-                    required
-                    minlength="3"
-                    maxlength="100"
-                />
+            @if (mensagemErro) {
+                <div class="alert alert-danger mb-3">
+                    {{ mensagemErro }}
+                </div>
+            }
 
-                @if (shouldShowError(nomeModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(nomeModel.errors, 'Nome') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+            <div class="row">
 
-        <!-- Email -->
-        <div class="col-12">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Email</mat-label>
-                <input
-                    matInput
-                    type="email"
-                    name="email"
-                    #emailModel="ngModel"
-                    [(ngModel)]="medico.email"
-                    required
-                    minlength="5"
-                    maxlength="50"
-                    pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-zA-Z]{2,}$"
-                />
+                <!-- Nome -->
+                <div class="col-12">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>Nome</mat-label>
+                        <input
+                            matInput
+                            name="nome"
+                            #nomeModel="ngModel"
+                            [(ngModel)]="medico.nome"
+                            required
+                            minlength="3"
+                            maxlength="100"
+                        />
 
-                @if (shouldShowError(emailModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(emailModel.errors, 'E-mail', 'Formato de e-mail inválido (ex válido: exemplo@dominio.com)') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+                        @if (shouldShowError(nomeModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(nomeModel.errors, 'Nome') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
-        <!-- CRM Sigla -->
-        <div class="col-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>CRM Sigla</mat-label>
-                <mat-select
-                    name="crmSigla"
-                    [(ngModel)]="medico.crmSigla"
-                    #siglaModel="ngModel"
-                    required
-                >
-                    @for (sigla of siglasCrm; track sigla) {
-                        <mat-option [value]="sigla">
-                            {{ sigla }}
-                        </mat-option>
-                    }
-                </mat-select>
+                <!-- Email -->
+                <div class="col-12">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>Email</mat-label>
+                        <input
+                            matInput
+                            type="email"
+                            name="email"
+                            #emailModel="ngModel"
+                            [(ngModel)]="medico.email"
+                            required
+                            minlength="5"
+                            maxlength="50"
+                            pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-zA-Z]{2,}$"
+                        />
 
-                @if (shouldShowError(siglaModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(siglaModel.errors, 'Sigla do CRM') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+                        @if (shouldShowError(emailModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(emailModel.errors, 'E-mail', 'Formato de e-mail inválido (ex válido: exemplo@dominio.com)') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
-        <!-- CRM Dígitos -->
-        <div class="col-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>CRM Dígitos</mat-label>
-                <input
-                    matInput
-                    name="crmDigitos"
-                    #digitosModel="ngModel"
-                    [(ngModel)]="medico.crmDigitos"
-                    required
-                    [mask]="'000000'"
-                />
+                <!-- CRM Sigla -->
+                <div class="col-6">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>CRM Sigla</mat-label>
+                        <mat-select
+                            name="crmSigla"
+                            [(ngModel)]="medico.crmSigla"
+                            #siglaModel="ngModel"
+                            required
+                        >
+                            @for (sigla of siglasCrm; track sigla) {
+                                <mat-option [value]="sigla">
+                                    {{ sigla }}
+                                </mat-option>
+                            }
+                        </mat-select>
 
-                @if (shouldShowError(digitosModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(digitosModel.errors, 'Dígitos do CRM') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+                        @if (shouldShowError(siglaModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(siglaModel.errors, 'Sigla do CRM') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
-        <!-- Especialidade -->
-        <div class="col-12">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Especialidade</mat-label>
-                <input
-                    matInput
-                    name="especialidade"
-                    #especialidadeModel="ngModel"
-                    [(ngModel)]="medico.especialidade"
-                    required
-                    minlength="5"
-                    maxlength="50"
-                />
+                <!-- CRM Dígitos -->
+                <div class="col-6">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>CRM Dígitos</mat-label>
+                        <input
+                            matInput
+                            name="crmDigitos"
+                            #digitosModel="ngModel"
+                            [(ngModel)]="medico.crmDigitos"
+                            required
+                            [mask]="'000000'"
+                        />
 
-                @if (shouldShowError(especialidadeModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(especialidadeModel.errors, 'Especialidade') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+                        @if (shouldShowError(digitosModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(digitosModel.errors, 'Dígitos do CRM') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
-        <!-- Telefone -->
-        <div class="col-12">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Telefone</mat-label>
-                <input
-                    matInput
-                    type="tel"
-                    name="telefone"
-                    #telefoneModel="ngModel"
-                    [(ngModel)]="medico.telefone"
-                    required
-                    [mask]="'(00) 00000-0000'"
-                />
+                <!-- Especialidade -->
+                <div class="col-12">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>Especialidade</mat-label>
+                        <input
+                            matInput
+                            name="especialidade"
+                            #especialidadeModel="ngModel"
+                            [(ngModel)]="medico.especialidade"
+                            required
+                            minlength="5"
+                            maxlength="50"
+                        />
 
-                @if (shouldShowError(telefoneModel)) {
-                    <mat-error>
-                        {{ getErrorMessage(telefoneModel.errors, 'Telefone') }}
-                    </mat-error>
-                }
-            </mat-form-field>
-        </div>
+                        @if (shouldShowError(especialidadeModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(especialidadeModel.errors, 'Especialidade') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
-        <div class="col div-button">
-            <button
-                type="submit"
-                mat-flat-button
-                [disabled]="form.invalid"
-                class="btn btn-form"
-            >
-                Salvar
-            </button>
-        </div>
+                <!-- Telefone -->
+                <div class="col-12">
+                    <mat-form-field appearance="outline" class="w-100 form-field">
+                        <mat-label>Telefone</mat-label>
+                        <input
+                            matInput
+                            type="tel"
+                            name="telefone"
+                            #telefoneModel="ngModel"
+                            [(ngModel)]="medico.telefone"
+                            required
+                            [mask]="'(00) 00000-0000'"
+                        />
+
+                        @if (shouldShowError(telefoneModel)) {
+                            <mat-error>
+                                {{ getErrorMessage(telefoneModel.errors, 'Telefone') }}
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- Botão -->
+                <div class="col div-button">
+                    <button
+                        type="submit"
+                        mat-flat-button
+                        [disabled]="form.invalid"
+                        class="btn btn-form"
+                    >
+                        Salvar
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
     </div>
-</form>
+</main>
