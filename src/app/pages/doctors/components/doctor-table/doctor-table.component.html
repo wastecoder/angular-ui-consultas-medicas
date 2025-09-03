@@ -1,67 +1,69 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!-- ID -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.id }} </td>
-  </ng-container>
+<div class="table-responsive">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+    <!-- ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="colw-5"> ID </th>
+      <td mat-cell *matCellDef="let medico" class="colw-5"> {{ medico.id }} </td>
+    </ng-container>
 
-  <!-- Nome -->
-  <ng-container matColumnDef="nome">
-    <th mat-header-cell *matHeaderCellDef> Nome </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.nome }} </td>
-  </ng-container>
+    <!-- Nome -->
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef class="colw-20"> Nome </th>
+      <td mat-cell *matCellDef="let medico" class="colw-20"> {{ medico.nome }} </td>
+    </ng-container>
 
-  <!-- CRM -->
-  <ng-container matColumnDef="crm">
-    <th mat-header-cell *matHeaderCellDef> CRM </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.crm }} </td>
-  </ng-container>
+    <!-- CRM -->
+    <ng-container matColumnDef="crm">
+      <th mat-header-cell *matHeaderCellDef class="colw-10"> CRM </th>
+      <td mat-cell *matCellDef="let medico" class="colw-10"> {{ medico.crm }} </td>
+    </ng-container>
 
-  <!-- Especialidade -->
-  <ng-container matColumnDef="especialidade">
-    <th mat-header-cell *matHeaderCellDef> Especialidade </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.especialidade }} </td>
-  </ng-container>
+    <!-- Especialidade -->
+    <ng-container matColumnDef="especialidade">
+      <th mat-header-cell *matHeaderCellDef class="colw-15"> Especialidade </th>
+      <td mat-cell *matCellDef="let medico" class="colw-15"> {{ medico.especialidade }} </td>
+    </ng-container>
 
-  <!-- Email -->
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef> E-mail </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.email }} </td>
-  </ng-container>
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef class="colw-20"> E-mail </th>
+      <td mat-cell *matCellDef="let medico" class="colw-20"> {{ medico.email }} </td>
+    </ng-container>
 
-  <!-- Telefone -->
-  <ng-container matColumnDef="telefone">
-    <th mat-header-cell *matHeaderCellDef> Telefone </th>
-    <td mat-cell *matCellDef="let medico"> {{ medico.telefone }} </td>
-  </ng-container>
+    <!-- Telefone -->
+    <ng-container matColumnDef="telefone">
+      <th mat-header-cell *matHeaderCellDef class="colw-10"> Telefone </th>
+      <td mat-cell *matCellDef="let medico" class="colw-10"> {{ medico.telefone }} </td>
+    </ng-container>
 
-  <!-- Ações -->
-  <ng-container matColumnDef="acoes">
-    <th mat-header-cell *matHeaderCellDef> Ações </th>
-    <td mat-cell *matCellDef="let medico">
-      <button
-        mat-mini-fab
-        matTooltip="Excluir"
-        class="delete-button"
-        (click)="delete(medico)"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
+    <!-- Ações -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef class="colw-10"> Ações </th>
+      <td mat-cell *matCellDef="let medico">
+        <button
+          mat-mini-fab
+          matTooltip="Excluir"
+          class="delete-button"
+          (click)="delete(medico)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
 
-      <button
-        mat-mini-fab
-        matTooltip="Editar"
-        class="update-button"
-        (click)="update(medico)"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+        <button
+          mat-mini-fab
+          matTooltip="Editar"
+          class="update-button"
+          (click)="update(medico)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
 
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
