@@ -91,12 +91,16 @@ input:-webkit-autofill {
   -webkit-text-fill-color: white !important;
 }
 
-/* Deixa a borda e label do campo brancas ao passar o mouse ou focar */
 :root {
+  /* Deixa a borda e label do campo brancas ao passar o mouse ou focar */
   --mdc-outlined-text-field-hover-outline-color: #FFF;
   --mdc-outlined-text-field-focus-outline-color: #FFF;
   --mdc-outlined-text-field-hover-label-text-color: #FFF;
   --mdc-outlined-text-field-focus-label-text-color: #FFF;
+
+  /* Deixa a borda e label dos campos um branco claro */
+  --mdc-outlined-text-field-outline-color: #D2D2D2;
+  --mdc-outlined-text-field-label-text-color: #D2D2D2;
 }
 
 /* Deixa o label do checkbox branco */
@@ -122,7 +126,18 @@ input:-webkit-autofill {
 
 /* Select: fundo das opções */
 .mat-mdc-select-panel {
-  background-color: #7C7C7C !important;
+  background-color: #353535 !important;
+}
+
+/* Select: cor  */
+.mat-mdc-option:hover,
+.mat-mdc-option.mdc-list-item:hover {
+  background-color: #454545 !important;
+}
+
+/* Select: cor do "check" quando selecionado */
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after {
+  color: #D2D2D2 !important;
 }
 
 /* Select: cor do texto das opções */
@@ -143,4 +158,58 @@ input:-webkit-autofill {
 /* Select: fundo e cor do texto da opção selecionada quando reabre o menu */
 .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
   color: #FFF !important;
+}
+
+
+    /* Tabelas - Angular Material */
+/* Cor de fundo */
+table.mat-mdc-table {
+  background-color: #242424 !important;
+}
+
+/* Fonte branca nas células */
+table.mat-mdc-table .mat-mdc-header-cell,
+table.mat-mdc-table .mat-mdc-cell {
+  color: white !important;
+}
+
+/* Fundo mais escuro no cabeçalho */
+table.mat-mdc-table .mat-mdc-header-row {
+  background-color: #1A1A1A !important;
+}
+
+/* Botões de ação - atualizar e excluir */
+.delete-button {
+  margin-right: 0.15rem;
+}
+
+.update-button {
+  margin-left: 0.15rem;
+}
+
+.delete-button,
+.update-button {
+  background-color: #303030 !important;
+  color: white !important;
+}
+
+/* Paginator: cor de fundo e fonte */
+.mat-mdc-paginator {
+  background-color: #1A1A1A !important;
+  color: white !important;
+}
+
+/* Paginator: cor do fundo dos ícones com hover */
+.mat-mdc-paginator .mat-mdc-icon-button:hover {
+  background-color: #303030 !important;
+}
+
+/* Paginator: cor dos ícones (primeiro, anterior, próximo, último) */
+.mat-mdc-paginator .mat-mdc-paginator-icon {
+  fill: white !important;
+}
+
+/* Paginator: opacidade da cor dos ícones desativados */
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-button-disabled .mat-mdc-paginator-icon {
+  opacity: 0.3;
 }
