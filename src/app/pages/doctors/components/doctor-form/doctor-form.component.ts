@@ -26,7 +26,6 @@ export class DoctorFormComponent {
   @Output() salvar = new EventEmitter<EditDoctor>();
 
   @Input() titulo: string = '';
-  @Input() mensagemErro: string | null = null;
   @Input() medico: EditDoctor = {
     nome: '',
     email: '',

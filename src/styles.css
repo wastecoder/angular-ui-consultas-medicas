@@ -222,3 +222,32 @@ table.mat-mdc-table .mat-mdc-header-row {
 .mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-button-disabled .mat-mdc-paginator-icon {
   opacity: 0.3;
 }
+
+
+    /* Snackbar - Angular Material */
+/* Cor do texto */
+.snackbar-success .mat-mdc-snackbar-surface,
+.snackbar-warning .mat-mdc-snackbar-surface,
+.snackbar-error .mat-mdc-snackbar-surface {
+  color: #FFF !important;
+}
+
+/* Cor do botão de fechar */
+.snackbar-success .mat-mdc-snack-bar-action .mdc-button__label,
+.snackbar-warning .mat-mdc-snack-bar-action .mdc-button__label,
+.snackbar-error .mat-mdc-snack-bar-action .mdc-button__label {
+  color: #FFF !important;
+}
+
+/* Cor de fundo */
+.snackbar-success .mat-mdc-snackbar-surface {
+  background-color: #4CAF50 !important;
+}
+
+.snackbar-warning .mat-mdc-snackbar-surface {
+  background-color: #FF9800 !important;
+}
+
+.snackbar-error .mat-mdc-snackbar-surface {
+  background-color: #F44336 !important;
+}
