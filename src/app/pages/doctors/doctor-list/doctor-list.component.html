@@ -1,9 +1,13 @@
-<div class="container mt-4">
+<div class="container my-4">
   <h2>Médicos Cadastrados</h2>
   <app-doctor-table
     [medicos]="medicos"
+    [totalElements]="totalElements"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
     (onConfirmDelete)="delete($event)"
     (onRequestUpdate)="update($event)"
+    (pageChange)="onPageChange($event)"
   >
   </app-doctor-table>
 </div>

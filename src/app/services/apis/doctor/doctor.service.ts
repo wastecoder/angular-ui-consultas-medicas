@@ -5,6 +5,7 @@ import {
   CreateDoctor,
   EditDoctor,
   DoctorTable,
+  PageResponse
 } from '@pages/doctors/doctor.models';
 import { environment } from '@env/environments';
 
@@ -16,8 +17,10 @@ export class DoctorService {
 
   constructor(private http: HttpClient) {}
 
-  listar(): Observable<DoctorTable[]> {
-    return this.http.get<DoctorTable[]>(this.medicoUrl);
+  listar(page: number, size: number): Observable<PageResponse<DoctorTable>> {
+    return this.http.get<PageResponse<DoctorTable>>(
+      `${this.medicoUrl}?pagina=${page}&tamanho=${size}`
+    );
   }
 
   buscarPorId(id: number): Observable<EditDoctor> {

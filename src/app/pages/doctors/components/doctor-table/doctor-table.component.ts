@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { CustomPaginator } from './custom-paginator';
 import { DoctorTable } from '../../doctor.models';
+import { PageEvent } from '@angular/material/paginator';
 
 export type MedicoModel = DoctorTable;
 
@@ -42,6 +43,11 @@ export class DoctorTableComponent
 {
   @Input() medicos: MedicoModel[] = [];
 
+  @Input() totalElements: number = 0;
+  @Input() pageIndex: number = 0;
+  @Input() pageSize: number = 5;
+
+  @Output() pageChange = new EventEmitter<PageEvent>();
   @Output() onConfirmDelete = new EventEmitter<MedicoModel>();
   @Output() onRequestUpdate = new EventEmitter<MedicoModel>();
 
@@ -68,9 +74,6 @@ export class DoctorTableComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['medicos'] && this.medicos) {
       this.dataSource = new MatTableDataSource(this.medicos);
-      if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
     }
   }
 
@@ -84,5 +87,29 @@ export class DoctorTableComponent
 
   update(medico: MedicoModel) {
     this.onRequestUpdate.emit(medico);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageChange.emit(event);
+  }
+
+  formatCrm(medico: MedicoModel): string {
+    return `CRM/${medico.crmSigla} ${medico.crmDigitos}`;
+  }
+
+  formatTelephone(telefone: string): string {
+    if (telefone.length === 11) {
+      return `(${telefone.substring(0, 2)}) ${telefone.substring(
+        2,
+        7
+      )}-${telefone.substring(7)}`;
+    } else if (telefone.length === 10) {
+      return `(${telefone.substring(0, 2)}) ${telefone.substring(
+        2,
+        6
+      )}-${telefone.substring(6)}`;
+    } else {
+      return telefone;
+    }
   }
 }

@@ -22,8 +22,18 @@ export interface EditDoctor {
 export interface DoctorTable {
   id: number;
   nome: string;
-  crm: string;
+  crmSigla: string;
+  crmDigitos: string;
   especialidade: string;
   email: string;
   telefone: string;
+}
+
+// Estrutura de resposta paginada vinda do Spring (Page<T>)
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
 }

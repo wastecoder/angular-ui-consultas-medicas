@@ -6,6 +6,7 @@ import {
 } from '../components/doctor-table/doctor-table.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-doctor-list',
@@ -18,19 +19,30 @@ export class DoctorListComponent implements OnInit {
   medicos: MedicoModel[] = [];
   private readonly router = inject(Router);
 
+  totalElements: number = 0;
+  pageIndex: number = 0;
+  pageSize: number = 5;
+
   ngOnInit(): void {
-    this.carregarMedicos();
+    this.carregarMedicos(0, 5);
   }
 
-  carregarMedicos(): void {
-    this.medicoService.listar().subscribe({
+  carregarMedicos(page: number, size: number): void {
+    this.medicoService.listar(page, size).subscribe({
       next: (dados) => {
-        this.medicos = dados;
+        this.medicos = dados.content;
+        this.totalElements = dados.totalElements;
       },
       error: (erro) => {
         console.error('Erro ao carregar médicos:', erro);
       },
     });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.carregarMedicos(this.pageIndex, this.pageSize);
   }
 
   delete(medico: MedicoModel) {
