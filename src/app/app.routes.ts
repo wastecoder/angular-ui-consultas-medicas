@@ -3,6 +3,7 @@ import { HomeComponent } from '@pages/home/home.component';
 import { DoctorCreateComponent } from '@pages/doctors/doctor-create/doctor-create.component';
 import { DoctorListComponent } from '@pages/doctors/doctor-list/doctor-list.component';
 import { DoctorEditComponent } from '@pages/doctors/doctor-edit/doctor-edit.component';
+import { DoctorProfileComponent } from '@pages/doctors/doctor-profile/doctor-profile.component';
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
@@ -38,6 +39,11 @@ export const routes: Routes = [
             path: ':id/edit',
             component: DoctorEditComponent,
             data: { title: 'Editar Médico' },
+          },
+          {
+            path: ':id/profile',
+            component: DoctorProfileComponent,
+            data: { title: 'Perfil do Médico' },
           },
         ],
       },
