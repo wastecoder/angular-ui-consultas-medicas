@@ -42,20 +42,20 @@
       <td mat-cell *matCellDef="let medico">
         <button
           mat-mini-fab
-          matTooltip="Excluir"
-          class="delete-button"
-          (click)="delete(medico)"
+          matTooltip="Editar"
+          class="action-button me-2"
+          (click)="update(medico)"
         >
-          <mat-icon>delete</mat-icon>
+          <mat-icon>edit</mat-icon>
         </button>
 
         <button
           mat-mini-fab
-          matTooltip="Editar"
-          class="update-button"
-          (click)="update(medico)"
+          matTooltip="Visualizar perfil"
+          class="action-button"
+          (click)="viewProfile(medico)"
         >
-          <mat-icon>edit</mat-icon>
+          <mat-icon>person</mat-icon>
         </button>
       </td>
     </ng-container>

@@ -187,17 +187,8 @@ table.mat-mdc-table .mat-mdc-header-row {
   background-color: #1A1A1A !important;
 }
 
-/* Botões de ação - atualizar e excluir */
-.delete-button {
-  margin-right: 0.15rem;
-}
-
-.update-button {
-  margin-left: 0.15rem;
-}
-
-.delete-button,
-.update-button {
+/* Botões de ação */
+.action-button {
   background-color: #303030 !important;
   color: white !important;
 }

@@ -29,10 +29,10 @@ export class DoctorTableComponent {
   @Input() totalElements: number = 0;
   @Input() pageIndex: number = 0;
   @Input() pageSize: number = 5;
-
   @Output() pageChange = new EventEmitter<PageEvent>();
-  @Output() onConfirmDelete = new EventEmitter<MedicoModel>();
+
   @Output() onRequestUpdate = new EventEmitter<MedicoModel>();
+  @Output() onRequestViewProfile = new EventEmitter<MedicoModel>();
 
   displayedColumns: string[] = [
     'id',
@@ -44,12 +44,12 @@ export class DoctorTableComponent {
     'acoes',
   ];
 
-  delete(medico: MedicoModel) {
-    this.onConfirmDelete.emit(medico);
-  }
-
   update(medico: MedicoModel) {
     this.onRequestUpdate.emit(medico);
+  }
+
+  viewProfile(medico: MedicoModel) {
+    this.onRequestViewProfile.emit(medico);
   }
 
   onPageChange(event: PageEvent) {

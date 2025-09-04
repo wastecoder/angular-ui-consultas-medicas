@@ -45,12 +45,11 @@ export class DoctorListComponent implements OnInit {
     this.carregarMedicos(this.pageIndex, this.pageSize);
   }
 
-  delete(medico: MedicoModel) {
-    console.log('Deletar médico:', medico);
-    // Aqui você poderia chamar this.medicoService.excluir(medico.id).subscribe(...)
+  update(medico: MedicoModel) {
+    this.router.navigate(['/doctors', medico.id, 'edit']);
   }
 
-  update(medico: MedicoModel) {
-    this.router.navigate(['/medicos/editar', medico.id]);
+  viewProfile(medico: MedicoModel) {
+    this.router.navigate(['/doctors', medico.id, 'profile']);
   }
 }
