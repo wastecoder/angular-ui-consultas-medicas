@@ -109,24 +109,27 @@
 
                 <!-- Especialidade -->
                 <div class="col-12">
-                    <mat-form-field appearance="outline" class="w-100 form-field">
-                        <mat-label>Especialidade</mat-label>
-                        <input
-                            matInput
-                            name="especialidade"
-                            #especialidadeModel="ngModel"
-                            [(ngModel)]="medico.especialidade"
-                            required
-                            minlength="5"
-                            maxlength="50"
-                        />
-
-                        @if (shouldShowError(especialidadeModel)) {
-                            <mat-error>
-                                {{ getErrorMessage(especialidadeModel.errors, 'Especialidade') }}
-                            </mat-error>
+                <mat-form-field appearance="outline" class="w-100 form-field">
+                    <mat-label>Especialidade</mat-label>
+                    <mat-select
+                        name="especialidade"
+                        [(ngModel)]="medico.especialidade"
+                        #especialidadeModel="ngModel"
+                        required
+                    >
+                        @for (esp of especialidades; track esp) {
+                            <mat-option [value]="esp">
+                            {{ esp | titlecase }}
+                            </mat-option>
                         }
-                    </mat-form-field>
+                    </mat-select>
+
+                    @if (shouldShowError(especialidadeModel)) {
+                    <mat-error>
+                        {{ getErrorMessage(especialidadeModel.errors, 'Especialidade') }}
+                    </mat-error>
+                    }
+                </mat-form-field>
                 </div>
 
                 <!-- Telefone -->

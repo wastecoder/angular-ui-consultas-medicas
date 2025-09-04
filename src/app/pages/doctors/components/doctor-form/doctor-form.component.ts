@@ -67,6 +67,20 @@ export class DoctorFormComponent {
     'TO',
   ];
 
+  // Lista de especialidades (mesmo enum do back-end)
+  especialidades: string[] = [
+    'CARDIOLOGIA',
+    'DERMATOLOGIA',
+    'HEMATOLOGIA',
+    'INFECTOLOGIA',
+    'NEUROLOGIA',
+    'OFTALMOLOGIA',
+    'ORTOPEDIA',
+    'PEDIATRIA',
+    'PSIQUIATRIA',
+    'RADIOLOGIA',
+  ];
+
   onSubmit() {
     console.log(JSON.stringify(this.medico, null, 2));
     this.salvar.emit(this.medico);
