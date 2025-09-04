@@ -1,0 +1,22 @@
+/* Cor de fundo */
+::ng-deep .mat-mdc-dialog-surface {
+    background-color: #121212 !important;
+    border: 1px solid #333;
+}
+
+/* Cor do título e conteúdo */
+::ng-deep .mat-mdc-dialog-title,
+::ng-deep .mat-mdc-dialog-content {
+    color: white !important;
+}
+
+/* Cor do botão */
+::ng-deep .mat-mdc-dialog-actions button {
+    background-color: #242424 !important;
+    color: white !important;
+}
+
+/* Cor ao passar o mouse em cima do botão */
+::ng-deep .mat-mdc-dialog-actions button:hover {
+    background-color: #393939 !important;
+}
