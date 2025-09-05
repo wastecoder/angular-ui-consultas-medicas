@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { EditDoctor } from '../doctor.models';
+import { SnackbarService } from '@shared/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-doctor-edit',
@@ -20,12 +21,12 @@ export class DoctorEditComponent implements OnInit {
     especialidade: '',
     telefone: '',
   };
-  mensagemErro: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private medicoService: DoctorService,
-    private router: Router
+    private router: Router,
+    private snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class DoctorEditComponent implements OnInit {
     this.medicoId = Number(idParam);
 
     if (!this.medicoId) {
-      this.mensagemErro = 'ID de médico inválido.';
+      this.snackbar.show('ID de médico inválido.', 'error');
       return;
     }
 
@@ -50,26 +51,24 @@ export class DoctorEditComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao carregar médico:', err);
-        this.mensagemErro = 'Erro ao carregar dados do médico.';
+        this.snackbar.show('Erro ao carregar dados do médico.', 'error');
       },
     });
   }
 
   onSalvar(medicoAtualizado: EditDoctor) {
-    this.mensagemErro = null;
-
     this.medicoService.atualizar(this.medicoId, medicoAtualizado).subscribe({
       next: () => {
-        alert('Médico atualizado com sucesso!');
+        this.snackbar.show('Médico atualizado com sucesso!', 'success');
         this.router.navigate(['/medicos/lista']);
       },
       error: (err) => {
         console.error('Erro ao atualizar médico:', err);
+
         if (err.status === 409) {
-          this.mensagemErro =
-            err.error?.message || 'Conflito ao atualizar médico.';
+          this.snackbar.show('Conflito: algum dado duplicado.', 'warning');
         } else {
-          this.mensagemErro = 'Erro inesperado ao atualizar médico.';
+          this.snackbar.show('Erro inesperado ao atualizar médico.', 'error');
         }
       },
     });
