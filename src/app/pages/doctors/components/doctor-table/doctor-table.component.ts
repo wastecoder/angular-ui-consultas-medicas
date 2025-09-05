@@ -7,6 +7,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { DoctorTable } from '../../doctor.models';
 import { PageEvent } from '@angular/material/paginator';
+import { FormattingService } from '../../../../shared/formatting/formatting.service';
 
 export type MedicoModel = DoctorTable;
 
@@ -34,6 +35,8 @@ export class DoctorTableComponent {
   @Output() onRequestUpdate = new EventEmitter<MedicoModel>();
   @Output() onRequestViewProfile = new EventEmitter<MedicoModel>();
 
+  constructor(private readonly formatting: FormattingService) {}
+
   displayedColumns: string[] = [
     'id',
     'nome',
@@ -57,22 +60,10 @@ export class DoctorTableComponent {
   }
 
   formatCrm(medico: MedicoModel): string {
-    return `CRM/${medico.crmSigla} ${medico.crmDigitos}`;
+    return this.formatting.formatCrm(medico);
   }
 
   formatTelephone(telefone: string): string {
-    if (telefone.length === 11) {
-      return `(${telefone.substring(0, 2)}) ${telefone.substring(
-        2,
-        7
-      )}-${telefone.substring(7)}`;
-    } else if (telefone.length === 10) {
-      return `(${telefone.substring(0, 2)}) ${telefone.substring(
-        2,
-        6
-      )}-${telefone.substring(6)}`;
-    } else {
-      return telefone;
-    }
+    return this.formatting.formatTelephone(telefone);
   }
 }
