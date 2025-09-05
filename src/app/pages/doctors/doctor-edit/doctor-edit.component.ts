@@ -60,7 +60,7 @@ export class DoctorEditComponent implements OnInit {
     this.medicoService.atualizar(this.medicoId, medicoAtualizado).subscribe({
       next: () => {
         this.snackbar.show('Médico atualizado com sucesso!', 'success');
-        this.router.navigate(['/medicos/lista']);
+        this.router.navigate([`/doctors/${this.medicoId}/profile`]);
       },
       error: (err) => {
         console.error('Erro ao atualizar médico:', err);
