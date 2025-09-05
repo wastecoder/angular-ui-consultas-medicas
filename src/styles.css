@@ -9,6 +9,13 @@ html, body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.main-content {
+  min-height: calc(100vh - 115px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 a {
   text-decoration: none;
 }
