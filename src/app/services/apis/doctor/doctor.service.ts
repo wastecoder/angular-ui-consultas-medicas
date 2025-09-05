@@ -5,7 +5,8 @@ import {
   CreateDoctor,
   EditDoctor,
   DoctorTable,
-  PageResponse
+  PageResponse,
+  DoctorProfile,
 } from '@pages/doctors/doctor.models';
 import { environment } from '@env/environments';
 
@@ -23,8 +24,8 @@ export class DoctorService {
     );
   }
 
-  buscarPorId(id: number): Observable<EditDoctor> {
-    return this.http.get<EditDoctor>(`${this.medicoUrl}/${id}`);
+  buscarPorId(id: number): Observable<DoctorProfile> {
+    return this.http.get<DoctorProfile>(`${this.medicoUrl}/${id}`);
   }
 
   cadastrar(medico: CreateDoctor): Observable<DoctorTable> {

@@ -29,6 +29,18 @@ export interface DoctorTable {
   telefone: string;
 }
 
+// Interface para perfil detalhado do médico
+export interface DoctorProfile {
+  id: number;
+  nome: string;
+  crmSigla: string;
+  crmDigitos: string;
+  especialidade: string;
+  email: string;
+  telefone: string;
+  ativo: boolean;
+}
+
 // Estrutura de resposta paginada vinda do Spring (Page<T>)
 export interface PageResponse<T> {
   content: T[];

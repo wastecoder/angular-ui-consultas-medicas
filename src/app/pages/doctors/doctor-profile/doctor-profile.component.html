@@ -1,1 +1,74 @@
-<p>doctor-profile works!</p>
+<main class="d-flex align-items-center vh-100 justify-content-center">
+  <div *ngIf="doctor" class="profile-container">
+    <h2 class="profile-title">
+      Perfil de Médico
+    </h2>
+
+    <!-- Primeira linha: Nome -->
+    <div class="profile-field">
+      <strong>Nome:</strong>
+      <span>{{ doctor.nome }}</span>
+    </div>
+
+    <!-- Segunda linha: E-mail -->
+    <div class="profile-field">
+      <strong>Email:</strong>
+      <span>{{ doctor.email }}</span>
+    </div>
+
+    <!-- Terceira linha: CRM + Especialidade -->
+    <div class="profile-field profile-field-spaced">
+      <div>
+        <strong>CRM:</strong>
+        <span>CRM/{{ doctor.crmSigla }} {{ doctor.crmDigitos }}</span>
+      </div>
+
+      <div>
+        <strong>Especialidade:</strong>
+        <span>{{ doctor.especialidade | titlecase }}</span>
+      </div>
+    </div>
+
+    <!-- Quarta linha: Telefone + Status -->
+    <div class="profile-field profile-field-spaced">
+      <div>
+        <strong>Telefone:</strong>
+        <span>{{ doctor.telefone }}</span>
+      </div>
+
+      <div>
+        <strong>Status:</strong>
+        <span>{{ doctor.ativo ? 'Ativo' : 'Inativo' }}</span>
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="profile-buttons">
+      <!-- Editar sempre aparece -->
+      <button class="btn btn-primary" (click)="update(doctor)">
+        Editar
+      </button>
+
+      <!-- Ativar (aparece apenas se inativo) -->
+      @if (!doctor.ativo) {
+        <button class="btn btn-success" (click)="activate()">
+          Ativar
+        </button>
+      }
+
+      <!-- Inativar (aparece apenas se ativo) -->
+      @if (doctor.ativo) {
+        <button class="btn btn-warning" (click)="deactivate()">
+          Inativar
+        </button>
+      }
+
+      <!-- Excluir (aparece apenas se inativo) -->
+      @if (!doctor.ativo) {
+        <button class="btn btn-danger" (click)="delete()">
+          Excluir
+        </button>
+      }
+    </div>
+  </div>
+</main>

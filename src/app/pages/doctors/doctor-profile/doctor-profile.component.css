@@ -1,0 +1,42 @@
+.profile-container {
+  width: 700px;
+  background-color: #202020;
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border: 1px solid #CCC;
+}
+
+.profile-title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 55px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 25px;
+  font-size: 1.2rem;
+}
+
+.profile-field strong {
+  margin-right: 10px;
+}
+
+.profile-field-spaced {
+  justify-content: space-between;
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.profile-buttons .btn {
+  flex: 1;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #FFF;
+}
