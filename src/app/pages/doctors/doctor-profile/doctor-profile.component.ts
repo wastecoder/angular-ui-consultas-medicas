@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { DoctorProfile } from '@pages/doctors/doctor.models';
-import { FormattingService } from '../../../shared/formatting/formatting.service';
+import { FormattingService } from '@shared/formatting/formatting.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '@shared/yes-no-dialog/dialog.service';
 
 @Component({
   selector: 'app-doctor-profile',
@@ -16,6 +18,7 @@ export class DoctorProfileComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly doctorService = inject(DoctorService);
+  private readonly dialogService = inject(DialogService);
 
   doctor!: DoctorProfile;
 
@@ -37,22 +40,43 @@ export class DoctorProfileComponent implements OnInit {
     this.router.navigate(['/doctors', medico.id, 'edit']);
   }
 
-  activate(): void {
-    this.doctorService.ativar(this.doctor.id).subscribe(() => {
-      this.doctor.ativo = true;
+  async activate(): Promise<void> {
+    const confirmed = await this.dialogService.confirm({
+      title: 'Ativar médico',
+      content: `Tem certeza que deseja ativar o médico ${this.doctor.nome}?`,
     });
+
+    if (confirmed) {
+      this.doctorService.ativar(this.doctor.id).subscribe(() => {
+        this.doctor.ativo = true;
+      });
+    }
   }
 
-  deactivate(): void {
-    this.doctorService.inativar(this.doctor.id).subscribe(() => {
-      this.doctor.ativo = false;
+  async deactivate(): Promise<void> {
+    const confirmed = await this.dialogService.confirm({
+      title: 'Inativar médico',
+      content: `Tem certeza que deseja inativar o médico ${this.doctor.nome}?`,
     });
+
+    if (confirmed) {
+      this.doctorService.inativar(this.doctor.id).subscribe(() => {
+        this.doctor.ativo = false;
+      });
+    }
   }
 
-  delete(): void {
-    this.doctorService.excluir(this.doctor.id).subscribe(() => {
-      this.router.navigate(['/doctors']);
+  async delete(): Promise<void> {
+    const confirmed = await this.dialogService.confirm({
+      title: 'Excluir médico',
+      content: `Tem certeza que deseja excluir o médico ${this.doctor.nome}?`,
     });
+
+    if (confirmed) {
+      this.doctorService.excluir(this.doctor.id).subscribe(() => {
+        this.router.navigate(['/doctors']);
+      });
+    }
   }
 
   get crmFormatted(): string {
