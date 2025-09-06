@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { EditDoctor } from '../doctor.models';
-import { SnackbarService } from '@shared/snackbar/snackbar.service';
+import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
   selector: 'app-doctor-edit',

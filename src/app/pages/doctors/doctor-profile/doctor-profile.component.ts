@@ -3,9 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { DoctorProfile } from '@pages/doctors/doctor.models';
-import { FormattingService } from '@shared/formatting/formatting.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '@shared/yes-no-dialog/dialog.service';
+import { FormattingService } from '@shared/services/formatting.service';
+import { DialogService } from '@shared/components/yes-no-dialog/dialog.service';
 
 @Component({
   selector: 'app-doctor-profile',

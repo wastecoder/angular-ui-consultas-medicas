@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { YesNoDialogComponent } from '@shared/yes-no-dialog/yes-no-dialog.component';
+import { YesNoDialogComponent } from '@shared/components/yes-no-dialog/yes-no-dialog.component';
 
 @Injectable({
   providedIn: 'root',

@@ -7,7 +7,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { DoctorTable } from '../../doctor.models';
 import { PageEvent } from '@angular/material/paginator';
-import { FormattingService } from '../../../../shared/formatting/formatting.service';
+import { FormattingService } from '@shared/services/formatting.service';
 
 export type MedicoModel = DoctorTable;
 
