@@ -249,3 +249,9 @@ table.mat-mdc-table .mat-mdc-header-row {
 .snackbar-error .mat-mdc-snackbar-surface {
   background-color: #F44336 !important;
 }
+
+
+    /* Dialog - Angular Material */
+.no-bottom-gap-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

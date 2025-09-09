@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -9,6 +9,7 @@ import {
   DoctorProfile,
 } from '@pages/doctors/doctor.models';
 import { environment } from '@env/environments';
+import { DoctorFiltro } from '@pages/doctors/doctor-filter/doctor-filter-home/doctor-filter-home.component';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,31 @@ export class DoctorService {
     return this.http.get<PageResponse<DoctorTable>>(
       `${this.medicoUrl}?pagina=${page}&tamanho=${size}`
     );
+  }
+
+  listarComFiltros(
+    page: number,
+    size: number,
+    filtros: DoctorFiltro
+  ): Observable<PageResponse<DoctorTable>> {
+    let params = new HttpParams().set('pagina', page).set('tamanho', size);
+
+    // aplica prioridade do back
+    if (filtros?.nome && filtros.nome.trim()) {
+      params = params.set('nome', filtros.nome.trim());
+    }
+
+    if (filtros?.crmSigla && filtros?.crmDigitos && filtros.crmDigitos.trim()) {
+      params = params
+        .set('crmSigla', filtros.crmSigla)
+        .set('crmDigitos', filtros.crmDigitos.trim());
+    }
+
+    if (filtros?.ativo !== undefined) {
+      params = params.set('ativo', String(filtros.ativo));
+    }
+
+    return this.http.get<PageResponse<DoctorTable>>(this.medicoUrl, { params });
   }
 
   buscarPorId(id: number): Observable<DoctorProfile> {

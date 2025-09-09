@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Filtros de Médicos</h2>
+
+<mat-dialog-content>
+  <div class="filter-section">
+    <p>Status* (aplicável sozinho ou com nome):</p>
+    <mat-button-toggle-group [(ngModel)]="ativo">
+      <mat-button-toggle [value]="true">Ativo</mat-button-toggle>
+      <mat-button-toggle [value]="false">Inativo</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="nome" />
+  </mat-form-field>
+
+  <hr />
+
+  <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
+    <mat-label>CRM Sigla</mat-label>
+    <mat-select [(ngModel)]="crmSigla">
+      <mat-option value="SP">SP</mat-option>
+      <mat-option value="RJ">RJ</mat-option>
+      <mat-option value="MG">MG</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
+    <mat-label>CRM Dígitos</mat-label>
+    <input matInput [(ngModel)]="crmDigitos" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="aplicarFiltros()">Aplicar</button>
+</mat-dialog-actions>
