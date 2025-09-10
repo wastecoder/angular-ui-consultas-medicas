@@ -9,7 +9,7 @@ import {
   DoctorProfile,
 } from '@pages/doctors/doctor.models';
 import { environment } from '@env/environments';
-import { DoctorFiltro } from '@pages/doctors/doctor-filter/doctor-filter-home/doctor-filter-home.component';
+import { DoctorFilter } from '@pages/doctors/doctor.models';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,7 @@ export class DoctorService {
   listarComFiltros(
     page: number,
     size: number,
-    filtros: DoctorFiltro
+    filtros: DoctorFilter
   ): Observable<PageResponse<DoctorTable>> {
     let params = new HttpParams().set('pagina', page).set('tamanho', size);
 

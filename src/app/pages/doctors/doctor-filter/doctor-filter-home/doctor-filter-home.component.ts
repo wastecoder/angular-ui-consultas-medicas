@@ -1,25 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-
 import { DoctorFilterDialogComponent } from '../components/doctor-filter-dialog/doctor-filter-dialog.component';
 import {
   DoctorTableComponent,
   MedicoModel,
 } from '../../components/doctor-table/doctor-table.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
-
-// Tipagem dos filtros (opcional, mas recomendado)
-export interface DoctorFiltro {
-  nome?: string;
-  crmSigla?: string;
-  crmDigitos?: string;
-  ativo?: boolean; // true/false/undefined
-}
+import { DoctorFilter, PageResponse } from '@pages/doctors/doctor.models';
+import { FormattingService } from '@shared/services/formatting.service';
 
 @Component({
   selector: 'app-doctor-filter-home',
@@ -35,83 +28,82 @@ export interface DoctorFiltro {
 })
 export class DoctorFilterHomeComponent implements OnInit {
   private readonly medicoService = inject(DoctorService);
+  private formattingService = inject(FormattingService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
 
-  medicos: MedicoModel[] = [];
-  totalElements = 0;
-  pageIndex = 0;
-  pageSize = 5;
+  pageResponse: PageResponse<MedicoModel> = {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    size: 5,
+    number: 0,
+  };
 
-  // Filtros atuais (default: ativo = true)
-  filtrosAtivos: DoctorFiltro = { ativo: true };
+  activeFilters = signal<DoctorFilter>({ ativo: true });
 
-  // Getters para os chips
-  get statusLabel(): string {
-    const s = this.filtrosAtivos?.ativo;
-    return s === true ? 'Ativo' : s === false ? 'Inativo' : 'Todos';
+  private getStatusLabel(
+    ativo?: boolean,
+    crmFilled?: boolean
+  ): string | undefined {
+    if (crmFilled) return undefined;
+    if (ativo === true) return 'Ativo';
+    if (ativo === false) return 'Inativo';
+    return undefined;
   }
-  get nomeLabel(): string {
-    return this.filtrosAtivos?.nome?.trim() || '';
-  }
-  get crmLabel(): string {
-    const sigla = this.filtrosAtivos?.crmSigla;
-    const digitos = this.filtrosAtivos?.crmDigitos?.trim();
-    return sigla && digitos ? `${sigla} ${digitos}` : '';
-  }
+
+  filterLabels = computed(() => {
+    const filters = this.activeFilters();
+
+    const crmFilled: boolean = Boolean(
+      filters.crmSigla && filters.crmDigitos?.trim()
+    );
+
+    return {
+      status: this.getStatusLabel(filters.ativo, crmFilled),
+      nome: filters.nome?.trim() || undefined,
+      crm: crmFilled
+        ? this.formattingService.formatCrm({
+            crmSigla: filters.crmSigla!,
+            crmDigitos: filters.crmDigitos!,
+          })
+        : undefined,
+    };
+  });
 
   ngOnInit(): void {
-    this.carregarMedicosComFiltros(
-      this.pageIndex,
-      this.pageSize,
-      this.filtrosAtivos
-    );
+    this.carregarMedicosComFiltros();
   }
 
   carregarMedicosComFiltros(
-    page: number,
-    size: number,
-    filtros: DoctorFiltro
+    page: number = this.pageResponse.number,
+    size: number = this.pageResponse.size
   ): void {
-    console.log(
-      '[DEBUG] carregarMedicosComFiltros -> page, size, filtros:',
-      page,
-      size,
-      filtros
-    );
-
-    this.medicoService.listarComFiltros(page, size, filtros).subscribe({
-      next: (dados) => {
-        this.medicos = dados.content;
-        this.totalElements = dados.totalElements;
-      },
-      error: (erro) => {
-        console.error('Erro ao carregar médicos:', erro);
-      },
-    });
+    this.medicoService
+      .listarComFiltros(page, size, this.activeFilters())
+      .subscribe({
+        next: (data) => {
+          this.pageResponse = data;
+        },
+        error: (erro) => {
+          console.error('Erro ao carregar médicos:', erro);
+        },
+      });
   }
 
   onPageChange(event: PageEvent) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.carregarMedicosComFiltros(
-      this.pageIndex,
-      this.pageSize,
-      this.filtrosAtivos
-    );
+    this.carregarMedicosComFiltros(event.pageIndex, event.pageSize);
   }
 
-  abrirDialog() {
+  openDialog() {
     const dialogRef = this.dialog.open(DoctorFilterDialogComponent, {
       width: '400px',
-      data: { filtros: this.filtrosAtivos }, // pré-popula o dialog
     });
 
-    dialogRef.afterClosed().subscribe((filtros: DoctorFiltro | undefined) => {
+    dialogRef.afterClosed().subscribe((filtros: DoctorFilter | undefined) => {
       if (filtros) {
-        this.filtrosAtivos = filtros;
-        this.pageIndex = 0;
-        this.carregarMedicosComFiltros(0, this.pageSize, filtros);
+        this.activeFilters.set(filtros);
+        this.carregarMedicosComFiltros(0, this.pageResponse.size);
       }
     });
   }

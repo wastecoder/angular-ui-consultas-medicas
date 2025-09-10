@@ -41,6 +41,14 @@ export interface DoctorProfile {
   ativo: boolean;
 }
 
+// Interface para filtros de pesquisa de médicos
+export interface DoctorFilter {
+  nome?: string;
+  crmSigla?: string;
+  crmDigitos?: string;
+  ativo?: boolean;
+}
+
 // Estrutura de resposta paginada vinda do Spring (Page<T>)
 export interface PageResponse<T> {
   content: T[];

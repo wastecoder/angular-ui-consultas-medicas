@@ -2,29 +2,39 @@
   <h2>Filtrar Médicos</h2>
 
   <!-- Barra de ações -->
-  <div class="d-flex align-items-center gap-3 mb-3">
-    <button mat-raised-button color="primary" (click)="abrirDialog()">
+  <div class="d-flex align-items-center gap-3 my-4">
+    <button mat-raised-button color="primary" (click)="openDialog()">
       Filtros
     </button>
 
+
     <!-- Chips simulando filtros aplicados -->
-    <mat-chip color="primary" selected>
-      Status: {{ statusLabel }}
-    </mat-chip>
-    <mat-chip color="accent" selected *ngIf="nomeLabel">
-      Nome: {{ nomeLabel }}
-    </mat-chip>
-    <mat-chip color="warn" selected *ngIf="crmLabel">
-      CRM: {{ crmLabel }}
-    </mat-chip>
+    @if (filterLabels().status) {
+      <mat-chip color="primary" selected>
+        Status: {{ filterLabels().status }}
+      </mat-chip>
+    }
+
+    @if (filterLabels().nome) {
+      <mat-chip color="accent" selected>
+        Nome: {{ filterLabels().nome }}
+      </mat-chip>
+    }
+
+    @if (filterLabels().crm) {
+      <mat-chip color="warn" selected>
+        CRM: {{ filterLabels().crm }}
+      </mat-chip>
+    }
   </div>
+
 
   <!-- Tabela de resultados -->
   <app-doctor-table
-    [medicos]="medicos"
-    [totalElements]="totalElements"
-    [pageIndex]="pageIndex"
-    [pageSize]="pageSize"
+    [medicos]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
     (onRequestUpdate)="update($event)"
     (onRequestViewProfile)="viewProfile($event)"
     (pageChange)="onPageChange($event)"

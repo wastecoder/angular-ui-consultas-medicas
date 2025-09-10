@@ -3,7 +3,9 @@
 <mat-dialog-content>
   <div class="filter-section">
     <p>Status* (aplicável sozinho ou com nome):</p>
-    <mat-button-toggle-group [(ngModel)]="ativo">
+    <mat-button-toggle-group
+      [(ngModel)]="filters.ativo"
+    >
       <mat-button-toggle [value]="true">Ativo</mat-button-toggle>
       <mat-button-toggle [value]="false">Inativo</mat-button-toggle>
     </mat-button-toggle-group>
@@ -11,23 +13,34 @@
 
   <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
     <mat-label>Nome</mat-label>
-    <input matInput [(ngModel)]="nome" />
+    <input
+      matInput
+      [(ngModel)]="filters.nome"
+    />
   </mat-form-field>
 
   <hr />
 
   <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
     <mat-label>CRM Sigla</mat-label>
-    <mat-select [(ngModel)]="crmSigla">
-      <mat-option value="SP">SP</mat-option>
-      <mat-option value="RJ">RJ</mat-option>
-      <mat-option value="MG">MG</mat-option>
+    <mat-select
+      [(ngModel)]="filters.crmSigla"
+    >
+      @for (sigla of siglasCrm; track sigla) {
+        <mat-option [value]="sigla">
+          {{ sigla }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="w-100 my-3 no-bottom-gap-form-field">
     <mat-label>CRM Dígitos</mat-label>
-    <input matInput [(ngModel)]="crmDigitos" />
+    <input
+      matInput
+      [(ngModel)]="filters.crmDigitos"
+      [mask]="'000000'"
+    />
   </mat-form-field>
 </mat-dialog-content>
 

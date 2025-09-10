@@ -11,13 +11,9 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
-export interface DoctorFiltro {
-  nome?: string;
-  crmSigla?: string;
-  crmDigitos?: string;
-  ativo?: boolean;
-}
+import { NgxMaskDirective } from 'ngx-mask';
+import { SIGLAS_CRM } from '@pages/doctors/doctor.constants';
+import { DoctorFilter } from '@pages/doctors/doctor.models';
 
 @Component({
   selector: 'app-doctor-filter-dialog',
@@ -31,35 +27,36 @@ export interface DoctorFiltro {
     MatButtonModule,
     MatDialogModule,
     MatButtonToggleModule,
+    NgxMaskDirective,
   ],
   templateUrl: './doctor-filter-dialog.component.html',
   styleUrls: ['./doctor-filter-dialog.component.css'],
 })
 export class DoctorFilterDialogComponent {
-  ativo: boolean | undefined = true;
-  nome = '';
-  crmSigla = '';
-  crmDigitos = '';
+  filters: DoctorFilter = {
+    ativo: true,
+    nome: '',
+    crmSigla: '',
+    crmDigitos: '',
+  };
 
-  constructor(
-    public dialogRef: MatDialogRef<DoctorFilterDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { filtros?: DoctorFiltro } | null
-  ) {
-    const f = data?.filtros;
-    if (f) {
-      this.ativo = f.ativo ?? this.ativo;
-      this.nome = f.nome ?? '';
-      this.crmSigla = f.crmSigla ?? '';
-      this.crmDigitos = f.crmDigitos ?? '';
-    }
+  siglasCrm = SIGLAS_CRM;
+
+  constructor(public dialogRef: MatDialogRef<DoctorFilterDialogComponent>) {
+    this.filters = {
+      ativo: true,
+      nome: '',
+      crmSigla: '',
+      crmDigitos: '',
+    };
   }
 
   aplicarFiltros() {
     this.dialogRef.close({
-      ativo: this.ativo,
-      nome: this.nome?.trim() || undefined,
-      crmSigla: this.crmSigla || undefined,
-      crmDigitos: this.crmDigitos?.trim() || undefined,
-    } as DoctorFiltro);
+      ativo: this.filters.ativo,
+      nome: this.filters.nome?.trim() || undefined,
+      crmSigla: this.filters.crmSigla || undefined,
+      crmDigitos: this.filters.crmDigitos?.trim() || undefined,
+    } as DoctorFilter);
   }
 }
