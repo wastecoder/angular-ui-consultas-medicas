@@ -7,6 +7,7 @@ import {
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
   selector: 'app-doctor-list',
@@ -16,8 +17,10 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class DoctorListComponent implements OnInit {
   private readonly medicoService = inject(DoctorService);
-  medicos: MedicoModel[] = [];
+  private snackbar = inject(SnackbarService);
   private readonly router = inject(Router);
+
+  medicos: MedicoModel[] = [];
 
   totalElements: number = 0;
   pageIndex: number = 0;
@@ -35,6 +38,9 @@ export class DoctorListComponent implements OnInit {
       },
       error: (erro) => {
         console.error('Erro ao carregar médicos:', erro);
+        const mensagemErro = erro.error?.message ?? 'Erro ao carregar médicos.';
+        this.snackbar.show(mensagemErro, 'error');
+        this.router.navigate(['/doctors']);
       },
     });
   }

@@ -51,7 +51,10 @@ export class DoctorEditComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao carregar médico:', err);
-        this.snackbar.show('Erro ao carregar dados do médico.', 'error');
+        const errorMessage =
+          err.error?.message ?? 'Erro ao carregar dados do médico.';
+        this.snackbar.show(errorMessage, 'error');
+        this.router.navigate(['/doctors']);
       },
     });
   }

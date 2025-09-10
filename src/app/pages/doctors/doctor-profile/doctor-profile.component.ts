@@ -5,6 +5,7 @@ import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { DoctorProfile } from '@pages/doctors/doctor.models';
 import { FormattingService } from '@shared/services/formatting.service';
 import { DialogService } from '@shared/components/yes-no-dialog/dialog.service';
+import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
   selector: 'app-doctor-profile',
@@ -18,6 +19,7 @@ export class DoctorProfileComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly doctorService = inject(DoctorService);
   private readonly dialogService = inject(DialogService);
+  private snackbar = inject(SnackbarService);
 
   doctor!: DoctorProfile;
 
@@ -31,6 +33,9 @@ export class DoctorProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao carregar médico:', err);
+        const mensagemErro = err.error?.message ?? 'Erro ao carregar médico.';
+        this.snackbar.show(mensagemErro, 'error');
+        this.router.navigate(['/doctors']);
       },
     });
   }

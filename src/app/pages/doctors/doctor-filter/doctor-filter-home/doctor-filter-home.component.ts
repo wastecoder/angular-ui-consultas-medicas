@@ -13,6 +13,7 @@ import {
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { DoctorFilter, PageResponse } from '@pages/doctors/doctor.models';
 import { FormattingService } from '@shared/services/formatting.service';
+import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
   selector: 'app-doctor-filter-home',
@@ -29,6 +30,7 @@ import { FormattingService } from '@shared/services/formatting.service';
 export class DoctorFilterHomeComponent implements OnInit {
   private readonly medicoService = inject(DoctorService);
   private formattingService = inject(FormattingService);
+  private snackbar = inject(SnackbarService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
 
@@ -75,10 +77,10 @@ export class DoctorFilterHomeComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.carregarMedicosComFiltros();
+    this.loadDoctorsWithFilters();
   }
 
-  carregarMedicosComFiltros(
+  loadDoctorsWithFilters(
     page: number = this.pageResponse.number,
     size: number = this.pageResponse.size
   ): void {
@@ -88,14 +90,18 @@ export class DoctorFilterHomeComponent implements OnInit {
         next: (data) => {
           this.pageResponse = data;
         },
-        error: (erro) => {
-          console.error('Erro ao carregar médicos:', erro);
+        error: (error) => {
+          console.error('Erro ao carregar médicos:', error);
+          const errorMessage =
+            error.error?.message ?? 'Erro ao carregar médicos.';
+          this.snackbar.show(errorMessage, 'error');
+          this.router.navigate(['/doctors']);
         },
       });
   }
 
   onPageChange(event: PageEvent) {
-    this.carregarMedicosComFiltros(event.pageIndex, event.pageSize);
+    this.loadDoctorsWithFilters(event.pageIndex, event.pageSize);
   }
 
   openDialog() {
@@ -106,7 +112,7 @@ export class DoctorFilterHomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe((filtros: DoctorFilter | undefined) => {
       if (filtros) {
         this.activeFilters.set(filtros);
-        this.carregarMedicosComFiltros(0, this.pageResponse.size);
+        this.loadDoctorsWithFilters(0, this.pageResponse.size);
       }
     });
   }
