@@ -2,10 +2,10 @@
   <h2>Médicos Ativos</h2>
 
   <app-doctor-table
-    [medicos]="medicos"
-    [totalElements]="totalElements"
-    [pageIndex]="pageIndex"
-    [pageSize]="pageSize"
+    [medicos]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
     (onRequestUpdate)="update($event)"
     (onRequestViewProfile)="viewProfile($event)"
     (pageChange)="onPageChange($event)"

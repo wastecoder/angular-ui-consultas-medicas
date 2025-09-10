@@ -4,6 +4,7 @@ import {
   DoctorTableComponent,
   MedicoModel,
 } from '../components/doctor-table/doctor-table.component';
+import { PageResponse } from '@pages/doctors/doctor.models';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
@@ -20,42 +21,42 @@ export class DoctorListComponent implements OnInit {
   private snackbar = inject(SnackbarService);
   private readonly router = inject(Router);
 
-  medicos: MedicoModel[] = [];
-
-  totalElements: number = 0;
-  pageIndex: number = 0;
-  pageSize: number = 5;
+  pageResponse: PageResponse<MedicoModel> = {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    size: 5,
+    number: 0,
+  };
 
   ngOnInit(): void {
-    this.carregarMedicos(0, 5);
+    this.loadDoctors(0, 5);
   }
 
-  carregarMedicos(page: number, size: number): void {
+  loadDoctors(page: number, size: number): void {
     this.medicoService.listar(page, size).subscribe({
-      next: (dados) => {
-        this.medicos = dados.content;
-        this.totalElements = dados.totalElements;
+      next: (data) => {
+        this.pageResponse = data;
       },
-      error: (erro) => {
-        console.error('Erro ao carregar médicos:', erro);
-        const mensagemErro = erro.error?.message ?? 'Erro ao carregar médicos.';
-        this.snackbar.show(mensagemErro, 'error');
+      error: (error) => {
+        console.error('Erro ao carregar médicos:', error);
+        const errorMessage =
+          error.error?.message ?? 'Erro ao carregar médicos.';
+        this.snackbar.show(errorMessage, 'error');
         this.router.navigate(['/doctors']);
       },
     });
   }
 
   onPageChange(event: PageEvent) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.carregarMedicos(this.pageIndex, this.pageSize);
+    this.loadDoctors(event.pageIndex, event.pageSize);
   }
 
-  update(medico: MedicoModel) {
-    this.router.navigate(['/doctors', medico.id, 'edit']);
+  update(doctor: MedicoModel) {
+    this.router.navigate(['/doctors', doctor.id, 'edit']);
   }
 
-  viewProfile(medico: MedicoModel) {
-    this.router.navigate(['/doctors', medico.id, 'profile']);
+  viewProfile(doctor: MedicoModel) {
+    this.router.navigate(['/doctors', doctor.id, 'profile']);
   }
 }
