@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+hr {
+  border-color: #FFF;
+}
+
 
     /* Classes utilitárias */
 .flex-center {
@@ -251,7 +255,100 @@ table.mat-mdc-table .mat-mdc-header-row {
 }
 
 
+    /* Filtros */
+/* Botão: abrir dialog de filtros */
+.btn-open-filter {
+  padding: 5px 40px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Chips: espaçamento interno */
+.custom-chip {
+  padding: 11px 10px !important;
+  height: auto !important;
+}
+
+/* Chips: fonte */
+.custom-chip .mdc-evolution-chip__text-label {
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: #D2D2D2 !important;
+}
+
+
     /* Dialog - Angular Material */
+/* Campos: remove a margim-bottom */
 .no-bottom-gap-form-field .mat-mdc-form-field-subscript-wrapper {
   display: none;
+}
+
+.mat-mdc-dialog-surface {
+  background-color: transparent !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+}
+
+.mat-mdc-dialog-title {
+  background-color: #151515 !important;
+  color: #FFF !important;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 0 !important;
+}
+
+mat-dialog-content,
+mat-dialog-actions {
+  background-color: #202020;
+  color: red;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+mat-dialog-actions {
+  padding-bottom: 35px !important;
+}
+
+/* Status: opções ocupam 100% de largura */
+.status-toggle-group {
+  display: flex;
+  width: 100%;
+}
+
+/* Status: cada opção ocupa 50% do espaço disponível */
+.status-toggle-group .mat-button-toggle {
+  flex: 1;
+}
+
+/* Status: cor da opção selecionada */
+.status-toggle-group .mat-button-toggle-checked {
+  background-color: #7C7C7C !important;
+  color: white !important;
+}
+
+/* Status: cor da opção não selecionada */
+.status-toggle-group .mat-button-toggle {
+  color: #D2D2D2 !important;
+}
+
+/* Status: cor da opção não selecionada ao passar o mouse em cima */
+.status-toggle-group .mat-button-toggle:hover {
+  background-color: #1a1a1a;
+}
+
+/* Botões: espaço entre os botões */
+.dialog-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+/* Botões: cada opção ocupa 50% do espaço disponível */
+.dialog-buttons .btn {
+  flex: 1;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #FFF;
 }

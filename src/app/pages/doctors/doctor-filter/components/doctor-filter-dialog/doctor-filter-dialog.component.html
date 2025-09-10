@@ -1,10 +1,11 @@
-<h2 mat-dialog-title>Filtros de Médicos</h2>
+<h2 mat-dialog-title>Filtros Médicos</h2>
 
 <mat-dialog-content>
-  <div class="filter-section">
-    <p>Status* (aplicável sozinho ou com nome):</p>
+  <div class="my-3 text-light text-center">
+    <p>Status (aplicável sozinho ou com nome):</p>
     <mat-button-toggle-group
       [(ngModel)]="filters.ativo"
+      class="status-toggle-group"
     >
       <mat-button-toggle [value]="true">Ativo</mat-button-toggle>
       <mat-button-toggle [value]="false">Inativo</mat-button-toggle>
@@ -44,7 +45,11 @@
   </mat-form-field>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close color="warn">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="aplicarFiltros()">Aplicar</button>
+<mat-dialog-actions class="dialog-buttons">
+  <button class="btn btn-outline-danger" mat-dialog-close>
+    Cancelar
+  </button>
+  <button class="btn btn-primary" (click)="applyFilters()">
+    Aplicar
+  </button>
 </mat-dialog-actions>

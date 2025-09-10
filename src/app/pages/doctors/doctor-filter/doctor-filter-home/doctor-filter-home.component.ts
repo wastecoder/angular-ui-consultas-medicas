@@ -97,7 +97,7 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(DoctorFilterDialogComponent, {
-      width: '400px',
+      width: '450px',
     });
 
     dialogRef.afterClosed().subscribe((filtros: DoctorFilter | undefined) => {

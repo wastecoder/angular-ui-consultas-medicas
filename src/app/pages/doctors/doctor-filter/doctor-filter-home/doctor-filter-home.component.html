@@ -3,27 +3,27 @@
 
   <!-- Barra de ações -->
   <div class="d-flex align-items-center gap-3 my-4">
-    <button mat-raised-button color="primary" (click)="openDialog()">
+    <button class="btn btn-primary btn-open-filter" (click)="openDialog()">
       Filtros
     </button>
 
 
     <!-- Chips simulando filtros aplicados -->
     @if (filterLabels().status) {
-      <mat-chip color="primary" selected>
+      <mat-chip color="primary" selected class="custom-chip">
         Status: {{ filterLabels().status }}
       </mat-chip>
     }
 
     @if (filterLabels().nome) {
-      <mat-chip color="accent" selected>
+      <mat-chip color="accent" selected class="custom-chip">
         Nome: {{ filterLabels().nome }}
       </mat-chip>
     }
 
     @if (filterLabels().crm) {
-      <mat-chip color="warn" selected>
-        CRM: {{ filterLabels().crm }}
+      <mat-chip color="warn" selected class="custom-chip">
+        {{ filterLabels().crm }}
       </mat-chip>
     }
   </div>

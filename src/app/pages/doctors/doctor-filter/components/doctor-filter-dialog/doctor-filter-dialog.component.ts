@@ -5,11 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NgxMaskDirective } from 'ngx-mask';
 import { SIGLAS_CRM } from '@pages/doctors/doctor.constants';
@@ -51,7 +47,7 @@ export class DoctorFilterDialogComponent {
     };
   }
 
-  aplicarFiltros() {
+  applyFilters() {
     this.dialogRef.close({
       ativo: this.filters.ativo,
       nome: this.filters.nome?.trim() || undefined,
