@@ -42,32 +42,35 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   activeFilters = signal<DoctorFilter>({ ativo: true });
 
-  private getStatusLabel(
-    ativo?: boolean,
-    crmFilled?: boolean
-  ): string | undefined {
-    if (crmFilled) return undefined;
-    if (ativo === true) return 'Ativo';
-    if (ativo === false) return 'Inativo';
-    return undefined;
-  }
-
   filterLabels = computed(() => {
     const filters = this.activeFilters();
 
-    const crmFilled: boolean = Boolean(
+    const nome = filters.nome?.trim();
+    const crmPreenchido = Boolean(
       filters.crmSigla && filters.crmDigitos?.trim()
     );
 
+    // Prioridade 1: ativo + nome
+    if (nome) {
+      return {
+        status: filters.ativo ? 'Ativo' : 'Inativo',
+        nome,
+      };
+    }
+
+    // Prioridade 2: CRM completo
+    if (crmPreenchido) {
+      return {
+        crm: this.formattingService.formatCrm({
+          crmSigla: filters.crmSigla!,
+          crmDigitos: filters.crmDigitos!.trim(),
+        }),
+      };
+    }
+
+    // Prioridade 3: apenas ativo
     return {
-      status: this.getStatusLabel(filters.ativo, crmFilled),
-      nome: filters.nome?.trim() || undefined,
-      crm: crmFilled
-        ? this.formattingService.formatCrm({
-            crmSigla: filters.crmSigla!,
-            crmDigitos: filters.crmDigitos!,
-          })
-        : undefined,
+      status: filters.ativo ? 'Ativo' : 'Inativo',
     };
   });
 
