@@ -40,7 +40,6 @@ export class DoctorFormComponent {
   especialidades = ESPECIALIDADES;
 
   onSubmit() {
-    console.log(JSON.stringify(this.medico, null, 2));
     this.salvar.emit(this.medico);
   }
 

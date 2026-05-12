@@ -29,8 +29,7 @@ export class LoginHomeComponent {
         credentials.rememberMe
       )
       .subscribe({
-        next: (res) => {
-          // console.log('Login successful', res);
+        next: () => {
           this.router.navigate(['/']);
         },
         error: (err) => {
