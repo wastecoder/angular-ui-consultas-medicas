@@ -51,8 +51,15 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.ativar(this.doctor.id).subscribe(() => {
-        this.doctor.ativo = true;
+      this.doctorService.ativar(this.doctor.id).subscribe({
+        next: () => {
+          this.doctor.ativo = true;
+          this.snackbar.show('Médico ativado com sucesso!', 'success');
+        },
+        error: (err) => {
+          console.error('Erro ao ativar médico:', err);
+          this.snackbar.show('Erro inesperado ao ativar médico.', 'error');
+        },
       });
     }
   }
@@ -64,8 +71,15 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.inativar(this.doctor.id).subscribe(() => {
-        this.doctor.ativo = false;
+      this.doctorService.inativar(this.doctor.id).subscribe({
+        next: () => {
+          this.doctor.ativo = false;
+          this.snackbar.show('Médico inativado com sucesso!', 'success');
+        },
+        error: (err) => {
+          console.error('Erro ao inativar médico:', err);
+          this.snackbar.show('Erro inesperado ao inativar médico.', 'error');
+        },
       });
     }
   }
@@ -77,8 +91,15 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.excluir(this.doctor.id).subscribe(() => {
-        this.router.navigate(['/doctors']);
+      this.doctorService.excluir(this.doctor.id).subscribe({
+        next: () => {
+          this.snackbar.show('Médico excluído com sucesso!', 'success');
+          this.router.navigate(['/doctors']);
+        },
+        error: (err) => {
+          console.error('Erro ao excluir médico:', err);
+          this.snackbar.show('Erro inesperado ao excluir médico.', 'error');
+        },
       });
     }
   }
