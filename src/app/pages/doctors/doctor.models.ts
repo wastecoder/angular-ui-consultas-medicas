@@ -47,3 +47,12 @@ export interface PageResponse<T> {
   size: number;
   number: number;
 }
+
+// Ordenação enviada para o back
+export type DoctorSortField = 'nome' | 'crm' | 'especialidade';
+export type SortDirection = 'asc' | 'desc';
+
+export interface DoctorSort {
+  ordenarPor: DoctorSortField;
+  direcao: SortDirection;
+}

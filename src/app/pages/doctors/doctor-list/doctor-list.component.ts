@@ -4,10 +4,16 @@ import {
   DoctorTableComponent,
   MedicoModel,
 } from '../components/doctor-table/doctor-table.component';
-import { PageResponse } from '@pages/doctors/doctor.models';
+import {
+  DoctorSort,
+  DoctorSortField,
+  PageResponse,
+  SortDirection,
+} from '@pages/doctors/doctor.models';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
@@ -29,12 +35,14 @@ export class DoctorListComponent implements OnInit {
     number: 0,
   };
 
+  sort: DoctorSort = { ordenarPor: 'nome', direcao: 'asc' };
+
   ngOnInit(): void {
     this.loadDoctors(0, 5);
   }
 
   loadDoctors(page: number, size: number): void {
-    this.medicoService.listar(page, size).subscribe({
+    this.medicoService.listar(page, size, this.sort).subscribe({
       next: (data) => {
         this.pageResponse = data;
       },
@@ -50,6 +58,14 @@ export class DoctorListComponent implements OnInit {
 
   onPageChange(event: PageEvent) {
     this.loadDoctors(event.pageIndex, event.pageSize);
+  }
+
+  onSortChange(event: Sort) {
+    this.sort = {
+      ordenarPor: event.active as DoctorSortField,
+      direcao: event.direction as SortDirection,
+    };
+    this.loadDoctors(0, this.pageResponse.size);
   }
 
   update(doctor: MedicoModel) {

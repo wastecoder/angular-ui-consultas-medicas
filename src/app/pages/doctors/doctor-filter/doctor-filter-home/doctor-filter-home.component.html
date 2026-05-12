@@ -35,9 +35,12 @@
     [totalElements]="pageResponse.totalElements"
     [pageIndex]="pageResponse.number"
     [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
     (onRequestUpdate)="update($event)"
     (onRequestViewProfile)="viewProfile($event)"
     (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
   >
   </app-doctor-table>
 </div>

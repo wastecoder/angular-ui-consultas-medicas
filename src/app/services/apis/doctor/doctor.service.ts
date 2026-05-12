@@ -8,7 +8,7 @@ import {
   DoctorProfile,
 } from '@pages/doctors/doctor.models';
 import { environment } from '@env/environments';
-import { DoctorFilter } from '@pages/doctors/doctor.models';
+import { DoctorFilter, DoctorSort } from '@pages/doctors/doctor.models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,16 +18,27 @@ export class DoctorService {
 
   constructor(private http: HttpClient) {}
 
-  listar(page: number, size: number): Observable<PageResponse<DoctorTable>> {
-    return this.http.get<PageResponse<DoctorTable>>(
-      `${this.medicoUrl}?pagina=${page}&tamanho=${size}`
-    );
+  listar(
+    page: number,
+    size: number,
+    sort?: DoctorSort
+  ): Observable<PageResponse<DoctorTable>> {
+    let params = new HttpParams().set('pagina', page).set('tamanho', size);
+
+    if (sort) {
+      params = params
+        .set('ordenarPor', sort.ordenarPor)
+        .set('direcao', sort.direcao);
+    }
+
+    return this.http.get<PageResponse<DoctorTable>>(this.medicoUrl, { params });
   }
 
   listarComFiltros(
     page: number,
     size: number,
-    filtros: DoctorFilter
+    filtros: DoctorFilter,
+    sort?: DoctorSort
   ): Observable<PageResponse<DoctorTable>> {
     let params = new HttpParams().set('pagina', page).set('tamanho', size);
 
@@ -44,6 +55,12 @@ export class DoctorService {
 
     if (filtros?.ativo !== undefined) {
       params = params.set('ativo', String(filtros.ativo));
+    }
+
+    if (sort) {
+      params = params
+        .set('ordenarPor', sort.ordenarPor)
+        .set('direcao', sort.direcao);
     }
 
     return this.http.get<PageResponse<DoctorTable>>(this.medicoUrl, { params });

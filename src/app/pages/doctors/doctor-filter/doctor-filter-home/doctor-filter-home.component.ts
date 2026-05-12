@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { DoctorFilterDialogComponent } from '../components/doctor-filter-dialog/doctor-filter-dialog.component';
 import {
@@ -11,7 +12,13 @@ import {
   MedicoModel,
 } from '../../components/doctor-table/doctor-table.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
-import { DoctorFilter, PageResponse } from '@pages/doctors/doctor.models';
+import {
+  DoctorFilter,
+  DoctorSort,
+  DoctorSortField,
+  PageResponse,
+  SortDirection,
+} from '@pages/doctors/doctor.models';
 import { FormattingService } from '@shared/services/formatting.service';
 import { SnackbarService } from '@shared/services/snackbar.service';
 
@@ -43,6 +50,8 @@ export class DoctorFilterHomeComponent implements OnInit {
   };
 
   activeFilters = signal<DoctorFilter>({ ativo: true });
+
+  sort: DoctorSort = { ordenarPor: 'nome', direcao: 'asc' };
 
   filterLabels = computed(() => {
     const filters = this.activeFilters();
@@ -85,7 +94,7 @@ export class DoctorFilterHomeComponent implements OnInit {
     size: number = this.pageResponse.size
   ): void {
     this.medicoService
-      .listarComFiltros(page, size, this.activeFilters())
+      .listarComFiltros(page, size, this.activeFilters(), this.sort)
       .subscribe({
         next: (data) => {
           this.pageResponse = data;
@@ -102,6 +111,14 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   onPageChange(event: PageEvent) {
     this.loadDoctorsWithFilters(event.pageIndex, event.pageSize);
+  }
+
+  onSortChange(event: Sort) {
+    this.sort = {
+      ordenarPor: event.active as DoctorSortField,
+      direcao: event.direction as SortDirection,
+    };
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
   }
 
   openDialog() {

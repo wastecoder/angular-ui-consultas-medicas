@@ -4,8 +4,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule, Sort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
-import { DoctorTable } from '../../doctor.models';
+import { DoctorTable, DoctorSortField, SortDirection } from '../../doctor.models';
 import { PageEvent } from '@angular/material/paginator';
 import { FormattingService } from '@shared/services/formatting.service';
 
@@ -21,6 +22,7 @@ export type MedicoModel = DoctorTable;
     MatIconModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatSortModule,
   ],
   templateUrl: './doctor-table.component.html',
 })
@@ -31,6 +33,10 @@ export class DoctorTableComponent {
   @Input() pageIndex: number = 0;
   @Input() pageSize: number = 5;
   @Output() pageChange = new EventEmitter<PageEvent>();
+
+  @Input() sortActive: DoctorSortField = 'nome';
+  @Input() sortDirection: SortDirection = 'asc';
+  @Output() sortChange = new EventEmitter<Sort>();
 
   @Output() onRequestUpdate = new EventEmitter<MedicoModel>();
   @Output() onRequestViewProfile = new EventEmitter<MedicoModel>();
@@ -57,6 +63,10 @@ export class DoctorTableComponent {
 
   onPageChange(event: PageEvent) {
     this.pageChange.emit(event);
+  }
+
+  onSortChange(event: Sort) {
+    this.sortChange.emit(event);
   }
 
   formatCrm(medico: MedicoModel): string {
