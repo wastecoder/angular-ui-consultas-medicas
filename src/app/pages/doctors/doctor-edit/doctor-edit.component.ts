@@ -13,14 +13,7 @@ import { SnackbarService } from '@shared/services/snackbar.service';
 })
 export class DoctorEditComponent implements OnInit {
   medicoId!: number;
-  medico: DoctorPayload = {
-    nome: '',
-    email: '',
-    crmSigla: '',
-    crmDigitos: '',
-    especialidade: '',
-    telefone: '',
-  };
+  medico: DoctorPayload | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,14 +33,7 @@ export class DoctorEditComponent implements OnInit {
 
     this.medicoService.buscarPorId(this.medicoId).subscribe({
       next: (dados: DoctorPayload) => {
-        this.medico = {
-          nome: dados.nome,
-          email: dados.email,
-          crmSigla: dados.crmSigla,
-          crmDigitos: dados.crmDigitos,
-          especialidade: dados.especialidade,
-          telefone: dados.telefone,
-        };
+        this.medico = dados;
       },
       error: (err) => {
         console.error('Erro ao carregar médico:', err);
