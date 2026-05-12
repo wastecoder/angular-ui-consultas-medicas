@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
-import { EditDoctor } from '../doctor.models';
+import { DoctorPayload } from '../doctor.models';
 import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { SnackbarService } from '@shared/services/snackbar.service';
 })
 export class DoctorEditComponent implements OnInit {
   medicoId!: number;
-  medico: EditDoctor = {
+  medico: DoctorPayload = {
     nome: '',
     email: '',
     crmSigla: '',
@@ -39,7 +39,7 @@ export class DoctorEditComponent implements OnInit {
     }
 
     this.medicoService.buscarPorId(this.medicoId).subscribe({
-      next: (dados: EditDoctor) => {
+      next: (dados: DoctorPayload) => {
         this.medico = {
           nome: dados.nome,
           email: dados.email,
@@ -59,7 +59,7 @@ export class DoctorEditComponent implements OnInit {
     });
   }
 
-  onSalvar(medicoAtualizado: EditDoctor) {
+  onSalvar(medicoAtualizado: DoctorPayload) {
     this.medicoService.atualizar(this.medicoId, medicoAtualizado).subscribe({
       next: () => {
         this.snackbar.show('Médico atualizado com sucesso!', 'success');

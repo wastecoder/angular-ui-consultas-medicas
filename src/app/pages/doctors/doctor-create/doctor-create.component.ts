@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
-import { CreateDoctor } from '../doctor.models';
+import { DoctorPayload } from '../doctor.models';
 import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class DoctorCreateComponent {
     private snackbar: SnackbarService
   ) {}
 
-  cadastrar(medico: CreateDoctor) {
+  cadastrar(medico: DoctorPayload) {
     this.medicoService.cadastrar(medico).subscribe({
       next: () => {
         this.snackbar.show('Médico cadastrado com sucesso!', 'success');

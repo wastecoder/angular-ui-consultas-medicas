@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  CreateDoctor,
-  EditDoctor,
+  DoctorPayload,
   DoctorTable,
   PageResponse,
   DoctorProfile,
@@ -54,11 +53,11 @@ export class DoctorService {
     return this.http.get<DoctorProfile>(`${this.medicoUrl}/${id}`);
   }
 
-  cadastrar(medico: CreateDoctor): Observable<DoctorTable> {
+  cadastrar(medico: DoctorPayload): Observable<DoctorTable> {
     return this.http.post<DoctorTable>(this.medicoUrl, medico);
   }
 
-  atualizar(id: number, medico: EditDoctor): Observable<DoctorTable> {
+  atualizar(id: number, medico: DoctorPayload): Observable<DoctorTable> {
     return this.http.put<DoctorTable>(`${this.medicoUrl}/${id}`, medico);
   }
 

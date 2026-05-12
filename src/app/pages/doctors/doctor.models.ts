@@ -1,15 +1,5 @@
-// Interface para criação de médico (sem o id)
-export interface CreateDoctor {
-  nome: string;
-  crmSigla: string;
-  crmDigitos: string;
-  especialidade: string;
-  email: string;
-  telefone: string;
-}
-
-// Interface para edição de médico (com o id)
-export interface EditDoctor {
+// Payload de criação/edição de médico (mesmo shape para POST e PUT).
+export interface DoctorPayload {
   nome: string;
   crmSigla: string;
   crmDigitos: string;

@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { EditDoctor } from '@pages/doctors/doctor.models';
+import { DoctorPayload } from '@pages/doctors/doctor.models';
 import { NgxMaskDirective } from 'ngx-mask';
 import { SIGLAS_CRM, ESPECIALIDADES } from '@pages/doctors/doctor.constants';
 
@@ -24,10 +24,10 @@ import { SIGLAS_CRM, ESPECIALIDADES } from '@pages/doctors/doctor.constants';
   ],
 })
 export class DoctorFormComponent {
-  @Output() salvar = new EventEmitter<EditDoctor>();
+  @Output() salvar = new EventEmitter<DoctorPayload>();
 
   @Input() titulo: string = '';
-  @Input() medico: EditDoctor = {
+  @Input() medico: DoctorPayload = {
     nome: '',
     email: '',
     crmSigla: '',
