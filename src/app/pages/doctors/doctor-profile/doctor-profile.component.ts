@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { DoctorProfile } from '@pages/doctors/doctor.models';
 import { FormattingService } from '@shared/services/formatting.service';
@@ -22,22 +23,27 @@ export class DoctorProfileComponent implements OnInit {
   private snackbar = inject(SnackbarService);
 
   doctor!: DoctorProfile;
+  loading = signal(false);
 
   constructor(private readonly formatting: FormattingService) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.doctorService.buscarPorId(id).subscribe({
-      next: (data) => {
-        this.doctor = data;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar médico:', err);
-        const mensagemErro = err.error?.message ?? 'Erro ao carregar médico.';
-        this.snackbar.show(mensagemErro, 'error');
-        this.router.navigate(['/doctors']);
-      },
-    });
+    this.loading.set(true);
+    this.doctorService
+      .buscarPorId(id)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (data) => {
+          this.doctor = data;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar médico:', err);
+          const mensagemErro = err.error?.message ?? 'Erro ao carregar médico.';
+          this.snackbar.show(mensagemErro, 'error');
+          this.router.navigate(['/doctors']);
+        },
+      });
   }
 
   update(medico: DoctorProfile) {
@@ -51,16 +57,20 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.ativar(this.doctor.id).subscribe({
-        next: () => {
-          this.doctor.ativo = true;
-          this.snackbar.show('Médico ativado com sucesso!', 'success');
-        },
-        error: (err) => {
-          console.error('Erro ao ativar médico:', err);
-          this.snackbar.show('Erro inesperado ao ativar médico.', 'error');
-        },
-      });
+      this.loading.set(true);
+      this.doctorService
+        .ativar(this.doctor.id)
+        .pipe(finalize(() => this.loading.set(false)))
+        .subscribe({
+          next: () => {
+            this.doctor.ativo = true;
+            this.snackbar.show('Médico ativado com sucesso!', 'success');
+          },
+          error: (err) => {
+            console.error('Erro ao ativar médico:', err);
+            this.snackbar.show('Erro inesperado ao ativar médico.', 'error');
+          },
+        });
     }
   }
 
@@ -71,16 +81,20 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.inativar(this.doctor.id).subscribe({
-        next: () => {
-          this.doctor.ativo = false;
-          this.snackbar.show('Médico inativado com sucesso!', 'success');
-        },
-        error: (err) => {
-          console.error('Erro ao inativar médico:', err);
-          this.snackbar.show('Erro inesperado ao inativar médico.', 'error');
-        },
-      });
+      this.loading.set(true);
+      this.doctorService
+        .inativar(this.doctor.id)
+        .pipe(finalize(() => this.loading.set(false)))
+        .subscribe({
+          next: () => {
+            this.doctor.ativo = false;
+            this.snackbar.show('Médico inativado com sucesso!', 'success');
+          },
+          error: (err) => {
+            console.error('Erro ao inativar médico:', err);
+            this.snackbar.show('Erro inesperado ao inativar médico.', 'error');
+          },
+        });
     }
   }
 
@@ -91,16 +105,20 @@ export class DoctorProfileComponent implements OnInit {
     });
 
     if (confirmed) {
-      this.doctorService.excluir(this.doctor.id).subscribe({
-        next: () => {
-          this.snackbar.show('Médico excluído com sucesso!', 'success');
-          this.router.navigate(['/doctors']);
-        },
-        error: (err) => {
-          console.error('Erro ao excluir médico:', err);
-          this.snackbar.show('Erro inesperado ao excluir médico.', 'error');
-        },
-      });
+      this.loading.set(true);
+      this.doctorService
+        .excluir(this.doctor.id)
+        .pipe(finalize(() => this.loading.set(false)))
+        .subscribe({
+          next: () => {
+            this.snackbar.show('Médico excluído com sucesso!', 'success');
+            this.router.navigate(['/doctors']);
+          },
+          error: (err) => {
+            console.error('Erro ao excluir médico:', err);
+            this.snackbar.show('Erro inesperado ao excluir médico.', 'error');
+          },
+        });
     }
   }
 

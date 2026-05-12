@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
 import { AuthService } from '@services/apis/auth/auth.service';
 import { LoginCredentials } from '../login.models';
@@ -15,11 +16,13 @@ import { Router } from '@angular/router';
 })
 export class LoginHomeComponent {
   errorMessage: string | null = null;
+  loading = signal(false);
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(credentials: LoginCredentials) {
     this.errorMessage = null;
+    this.loading.set(true);
 
     this.authService
       .login(
@@ -29,6 +32,7 @@ export class LoginHomeComponent {
         },
         credentials.rememberMe
       )
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: () => {
           this.router.navigate(['/']);

@@ -24,6 +24,7 @@ import { LoginCredentials } from '../../login.models';
 export class LoginFormComponent {
   @Output() login = new EventEmitter<LoginCredentials>();
   @Input() errorMessage: string | null = null;
+  @Input() loading = false;
 
   credentials: LoginCredentials = {
     username: '',

@@ -79,7 +79,7 @@
           <button
             type="submit"
             mat-flat-button
-            [disabled]="form.invalid"
+            [disabled]="form.invalid || loading"
             class="btn btn-form"
           >
             Entrar

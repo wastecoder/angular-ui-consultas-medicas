@@ -51,21 +51,21 @@
 
       <!-- Ativar (aparece apenas se inativo) -->
       @if (!doctor.ativo) {
-        <button class="btn btn-success" (click)="activate()">
+        <button class="btn btn-success" [disabled]="loading()" (click)="activate()">
           Ativar
         </button>
       }
 
       <!-- Inativar (aparece apenas se ativo) -->
       @if (doctor.ativo) {
-        <button class="btn btn-warning" (click)="deactivate()">
+        <button class="btn btn-warning" [disabled]="loading()" (click)="deactivate()">
           Inativar
         </button>
       }
 
       <!-- Excluir (aparece apenas se inativo) -->
       @if (!doctor.ativo) {
-        <button class="btn btn-danger" (click)="delete()">
+        <button class="btn btn-danger" [disabled]="loading()" (click)="delete()">
           Excluir
         </button>
       }

@@ -42,6 +42,7 @@ export class DoctorFormComponent implements OnChanges {
 
   @Input() titulo = '';
   @Input() valorInicial: DoctorPayload | null = null;
+  @Input() loading = false;
   @Output() salvar = new EventEmitter<DoctorPayload>();
 
   siglasCrm = SIGLAS_CRM;

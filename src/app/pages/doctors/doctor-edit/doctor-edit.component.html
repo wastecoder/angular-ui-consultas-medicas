@@ -1,5 +1,6 @@
 <app-doctor-form
   titulo="Atualização de Médico"
   [valorInicial]="medico"
+  [loading]="loading()"
   (salvar)="onSalvar($event)"
 ></app-doctor-form>
