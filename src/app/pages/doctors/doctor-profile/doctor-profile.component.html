@@ -44,28 +44,28 @@
 
     <!-- Botões -->
     <div class="profile-buttons">
-      <!-- Editar sempre aparece -->
-      <button class="btn btn-primary" (click)="update(doctor)">
+      <!-- Editar (apenas ADMIN) -->
+      <button *appHasRole="['ADMIN']" class="btn btn-primary" (click)="update(doctor)">
         Editar
       </button>
 
-      <!-- Ativar (aparece apenas se inativo) -->
+      <!-- Ativar (aparece apenas se inativo; ADMIN ou RECEPCIONISTA) -->
       @if (!doctor.ativo) {
-        <button class="btn btn-success" [disabled]="loading()" (click)="activate()">
+        <button *appHasRole="['ADMIN','RECEPCIONISTA']" class="btn btn-success" [disabled]="loading()" (click)="activate()">
           Ativar
         </button>
       }
 
-      <!-- Inativar (aparece apenas se ativo) -->
+      <!-- Inativar (aparece apenas se ativo; ADMIN ou RECEPCIONISTA) -->
       @if (doctor.ativo) {
-        <button class="btn btn-warning" [disabled]="loading()" (click)="deactivate()">
+        <button *appHasRole="['ADMIN','RECEPCIONISTA']" class="btn btn-warning" [disabled]="loading()" (click)="deactivate()">
           Inativar
         </button>
       }
 
-      <!-- Excluir (aparece apenas se inativo) -->
+      <!-- Excluir (aparece apenas se inativo; apenas ADMIN) -->
       @if (!doctor.ativo) {
-        <button class="btn btn-danger" [disabled]="loading()" (click)="delete()">
+        <button *appHasRole="['ADMIN']" class="btn btn-danger" [disabled]="loading()" (click)="delete()">
           Excluir
         </button>
       }

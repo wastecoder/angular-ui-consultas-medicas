@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { DoctorTable, DoctorSortField, SortDirection } from '../../doctor.models';
 import { PageEvent } from '@angular/material/paginator';
 import { FormattingService } from '@shared/services/formatting.service';
+import { HasRoleDirective } from '@shared/auth/has-role.directive';
 
 export type MedicoModel = DoctorTable;
 
@@ -23,6 +24,7 @@ export type MedicoModel = DoctorTable;
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
+    HasRoleDirective,
   ],
   templateUrl: './doctor-table.component.html',
 })

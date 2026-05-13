@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { environment } from '@env/environment';
 import { LoginRequest, LoginResponse } from './auth.models';
 import { Router } from '@angular/router';
+import { Funcao, isFuncao } from '@shared/auth/role.types';
 
 @Injectable({
   providedIn: 'root',
@@ -96,5 +97,24 @@ export class AuthService {
     const raw =
       localStorage.getItem('user_data') || sessionStorage.getItem('user_data');
     return raw ? JSON.parse(raw) : null;
+  }
+
+  getRoles(): Funcao[] {
+    const data = this.getUserData();
+    const raw = data?.scope;
+    if (!raw) return [];
+    const list = Array.isArray(raw) ? raw : String(raw).split(/\s+/);
+    return list
+      .map((r: string) => r.replace(/^ROLE_/, ''))
+      .filter(isFuncao);
+  }
+
+  hasRole(role: Funcao): boolean {
+    return this.getRoles().includes(role);
+  }
+
+  hasAnyRole(roles: Funcao[]): boolean {
+    const userRoles = this.getRoles();
+    return roles.some((r) => userRoles.includes(r));
   }
 }

@@ -7,11 +7,12 @@ import { DoctorProfile } from '@pages/doctors/doctor.models';
 import { FormattingService } from '@shared/services/formatting.service';
 import { DialogService } from '@shared/components/yes-no-dialog/dialog.service';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { HasRoleDirective } from '@shared/auth/has-role.directive';
 
 @Component({
   selector: 'app-doctor-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HasRoleDirective],
   templateUrl: './doctor-profile.component.html',
   styleUrl: './doctor-profile.component.css',
 })

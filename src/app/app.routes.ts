@@ -10,6 +10,7 @@ import { LayoutFullComponent } from './layouts/layout-full/layout-full.component
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
 import { LogoutComponent } from '@pages/logout/logout.component';
 import { authGuard } from '@guards/auth.guard';
+import { roleGuard } from '@guards/role.guard';
 
 export const routes: Routes = [
   // Rotas com layout completo (navbar + footer)
@@ -24,31 +25,37 @@ export const routes: Routes = [
       },
       {
         path: 'doctors',
+        canActivate: [authGuard],
         data: { title: 'Médicos' },
         children: [
           {
             path: '',
             component: DoctorListComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Lista de Médicos' },
           },
           {
             path: 'create',
             component: DoctorCreateComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Novo Médico' },
           },
           {
             path: ':id/edit',
             component: DoctorEditComponent,
+            canActivate: [roleGuard(['ADMIN'])],
             data: { title: 'Editar Médico' },
           },
           {
             path: ':id/profile',
             component: DoctorProfileComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Perfil do Médico' },
           },
           {
             path: 'filter',
             component: DoctorFilterHomeComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Filtrar Médico' },
           },
         ],
