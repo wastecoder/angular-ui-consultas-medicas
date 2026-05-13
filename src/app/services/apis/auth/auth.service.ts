@@ -1,12 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '@env/environment';
-import { LoginRequest, LoginResponse } from './auth.models';
+import {
+  LoginRequest,
+  LoginResponse,
+  LogoutRequest,
+  RefreshRequest,
+} from './auth.models';
 import { Router } from '@angular/router';
 import { Funcao, isFuncao } from '@shared/auth/role.types';
+
+const REFRESH_TOKEN_KEY = 'refresh_token';
+const USER_DATA_KEY = 'user_data';
 
 @Injectable({
   providedIn: 'root',
@@ -29,35 +37,79 @@ export class AuthService {
       .post<LoginResponse>(`${environment.apiUrl}auth/login`, credentials)
       .pipe(
         tap((response) => {
-          if (response?.token) {
-            this.saveToken(response.token, rememberMe);
-            this.saveUserData(response.token, rememberMe);
+          if (response?.accessToken && response?.refreshToken) {
+            this.saveTokens(response, rememberMe);
             this.currentUserSubject.next(this.getUserData());
           }
         })
       );
   }
 
-  logout(): void {
-    this.clearSession();
-    this.router.navigate(['/login']);
+  refresh(): Observable<LoginResponse> {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      return throwError(() => new Error('Sem refresh token'));
+    }
+
+    const body: RefreshRequest = { refreshToken };
+    return this.http
+      .post<LoginResponse>(`${environment.apiUrl}auth/refresh`, body)
+      .pipe(
+        tap((response) => {
+          if (response?.accessToken && response?.refreshToken) {
+            const storage = this.getActiveStorage();
+            this.saveTokensToStorage(response, storage);
+            this.currentUserSubject.next(this.getUserData());
+          }
+        }),
+        catchError((err) => {
+          this.clearSession();
+          return throwError(() => err);
+        })
+      );
   }
 
-  saveToken(token: string, rememberMe: boolean): void {
-    const storage = rememberMe ? localStorage : sessionStorage;
-    storage.setItem(environment.tokenKey, token);
+  logoutRemote(): Observable<void> {
+    const refreshToken = this.getRefreshToken();
+    const finalizeLocal = () => {
+      this.clearSession();
+      this.router.navigate(['/login']);
+    };
+
+    if (!refreshToken) {
+      finalizeLocal();
+      return new Observable<void>((subscriber) => {
+        subscriber.next();
+        subscriber.complete();
+      });
+    }
+
+    const body: LogoutRequest = { refreshToken };
+    return this.http
+      .post<void>(`${environment.apiUrl}auth/logout`, body)
+      .pipe(
+        catchError(() => {
+          return new Observable<void>((subscriber) => {
+            subscriber.next();
+            subscriber.complete();
+          });
+        }),
+        finalize(finalizeLocal)
+      );
   }
 
   clearSession(): void {
-    this.removeToken();
+    this.removeTokens();
     this.currentUserSubject.next(null);
   }
 
-  removeToken(): void {
+  removeTokens(): void {
     localStorage.removeItem(environment.tokenKey);
-    localStorage.removeItem('user_data');
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem(USER_DATA_KEY);
     sessionStorage.removeItem(environment.tokenKey);
-    sessionStorage.removeItem('user_data');
+    sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+    sessionStorage.removeItem(USER_DATA_KEY);
   }
 
   getToken(): string | null {
@@ -67,35 +119,57 @@ export class AuthService {
     );
   }
 
+  getRefreshToken(): string | null {
+    return (
+      localStorage.getItem(REFRESH_TOKEN_KEY) ||
+      sessionStorage.getItem(REFRESH_TOKEN_KEY)
+    );
+  }
+
   isLoggedIn(): boolean {
+    if (this.isAccessTokenValid()) return true;
+    return !!this.getRefreshToken();
+  }
+
+  isAccessTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
 
     try {
       const decoded: any = jwtDecode(token);
-      const expired = decoded.exp * 1000 < Date.now();
-      if (expired) {
-        this.removeToken();
-        return false;
-      }
-      return true;
-    } catch (e) {
-      this.removeToken();
+      return decoded.exp * 1000 > Date.now();
+    } catch {
       return false;
     }
   }
 
-  saveUserData(token: string, rememberMe: boolean): void {
+  private saveTokens(response: LoginResponse, rememberMe: boolean): void {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    this.saveTokensToStorage(response, storage);
+  }
+
+  private saveTokensToStorage(
+    response: LoginResponse,
+    storage: Storage
+  ): void {
+    storage.setItem(environment.tokenKey, response.accessToken);
+    storage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
     try {
-      const decoded: any = jwtDecode(token);
-      const storage = rememberMe ? localStorage : sessionStorage;
-      storage.setItem('user_data', JSON.stringify(decoded));
+      const decoded: any = jwtDecode(response.accessToken);
+      storage.setItem(USER_DATA_KEY, JSON.stringify(decoded));
     } catch {}
+  }
+
+  private getActiveStorage(): Storage {
+    return localStorage.getItem(REFRESH_TOKEN_KEY) !== null
+      ? localStorage
+      : sessionStorage;
   }
 
   getUserData(): any | null {
     const raw =
-      localStorage.getItem('user_data') || sessionStorage.getItem('user_data');
+      localStorage.getItem(USER_DATA_KEY) ||
+      sessionStorage.getItem(USER_DATA_KEY);
     return raw ? JSON.parse(raw) : null;
   }
 

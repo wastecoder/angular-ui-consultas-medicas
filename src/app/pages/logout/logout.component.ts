@@ -15,7 +15,7 @@ export class LogoutComponent {
   private router = inject(Router);
 
   onLogout(): void {
-    this.authService.logout();
+    this.authService.logoutRemote().subscribe();
   }
 
   onCancel(): void {
