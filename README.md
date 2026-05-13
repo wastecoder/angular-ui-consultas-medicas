@@ -1,59 +1,67 @@
-# AngularConsultasMedicas
+# Consultas Médicas — Front-end Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+Front-end do sistema de gestão de consultas médicas. Permite autenticação por JWT, gestão de médicos (CRUD, filtros, ativar/inativar/excluir) e está preparado para crescer com módulos de pacientes, consultas e relatórios. Consome a API Spring Boot do projeto irmão [`spring-api-consultas-medicas`](https://github.com/wastecoder/spring-api-consultas-medicas).
 
-## Development server
 
-To start a local development server, run:
+## Stack
+- Angular 19 (standalone, sem `AppModule`) com `strictTemplates`
+- Angular Material (tema azure-blue) + Bootstrap 5
+- ngx-mask para máscaras de input
+- `jwt-decode` para leitura de claims do token
+- TypeScript 5.7 em modo estrito
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Pré-requisitos
+- Node.js 20+ e npm
+- Back-end Spring `spring-api-consultas-medicas` rodando em `http://localhost:8080`
+  - Repositório: https://github.com/wastecoder/spring-api-consultas-medicas
+  - Siga o README do back para subir a API + Postgres (Docker ou IntelliJ).
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Como rodar
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+A aplicação sobe em `http://localhost:4200`. Para o primeiro login use a conta padrão (definida no `.env` do back-end):
 
-To build the project run:
+- Usuário: `admin`
+- Senha: `123456`
 
-```bash
-ng build
+
+## Scripts
+
+| Comando | O que faz |
+|---|---|
+| `npm start` | Servidor de desenvolvimento em `http://localhost:4200` |
+| `npm run build` | Build de produção em `dist/angular-consultas-medicas/` |
+| `npm run watch` | Build de desenvolvimento em watch mode |
+| `npm test` | Executa Karma + Jasmine (sem testes reais ainda) |
+
+
+## Estrutura de pastas
+
+```
+src/app/
+├── pages/         # Telas por feature (home, login, logout, doctors/*)
+├── services/      # Clientes HTTP (apis/auth, apis/doctor)
+├── shared/        # Componentes, diretivas e serviços reutilizáveis
+├── guards/        # authGuard, roleGuard
+├── layouts/       # LayoutFullComponent (navbar + footer) e LayoutBlankComponent
+└── app.routes.ts  # Roteamento aninhado em dois layouts
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Use os path aliases definidos em `tsconfig.json` em vez de `../../..`: `@pages`, `@shared`, `@services`, `@guards`, `@env`.
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Funcionalidades implementadas
+- Login com persistência em `localStorage` ("lembrar-me") ou `sessionStorage`
+- Interceptor HTTP que anexa `Authorization: Bearer …` e redireciona em 401/403
+- CRUD completo do módulo de Médicos (paginação server-side, ordenação, filtros)
+- Ativar / inativar / excluir médico com diálogo de confirmação
+- RBAC: botões e rotas conforme a função do JWT (ADMIN / RECEPCIONISTA / MEDICO / PACIENTE)
+- Feedback global de loading (`MatProgressBar`) e notificações via `SnackbarService`
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Outros módulos (Pacientes, Consultas, Relatórios) ainda não estão no front — eles existem no back e serão consumidos em fases futuras.
