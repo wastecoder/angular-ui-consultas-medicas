@@ -7,7 +7,7 @@ import {
   PageResponse,
   DoctorProfile,
 } from '@pages/doctors/doctor.models';
-import { environment } from '@env/environments';
+import { environment } from '@env/environment';
 import { DoctorFilter, DoctorSort } from '@pages/doctors/doctor.models';
 
 @Injectable({
