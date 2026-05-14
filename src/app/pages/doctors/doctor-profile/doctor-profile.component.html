@@ -1,6 +1,6 @@
 <main class="main-content">
-  <div *ngIf="doctor" class="profile-container">
-    <h2 class="profile-title">
+  <div *ngIf="doctor" class="page-container" style="--page-max-width: 700px;">
+    <h2 class="page-title">
       Perfil de Médico
     </h2>
 
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Botões -->
-    <div class="profile-buttons">
+    <div class="button-row">
       <!-- Editar (apenas ADMIN) -->
       <button *appHasRole="['ADMIN']" class="btn btn-primary" (click)="update(doctor)">
         Editar

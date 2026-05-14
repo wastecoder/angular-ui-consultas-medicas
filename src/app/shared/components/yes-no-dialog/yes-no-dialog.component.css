@@ -1,7 +1,7 @@
 /* Cor de fundo */
 ::ng-deep .mat-mdc-dialog-surface {
-    background-color: #121212 !important;
-    border: 1px solid #333;
+    background-color: var(--bg-page) !important;
+    border: 1px solid var(--border-default);
     width: 500px;
 }
 
@@ -13,7 +13,7 @@
 
 /* Cor do botão */
 ::ng-deep .mat-mdc-dialog-actions button {
-    background-color: #242424 !important;
+    background-color: var(--bg-table) !important;
     color: white !important;
 }
 

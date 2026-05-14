@@ -1,7 +1,7 @@
 .forgot-password-link {
   font-size: 0.9rem;
   text-decoration: none;
-  color: #1976D2;
+  color: var(--color-primary);
 }
 
 .forgot-password-link:hover {

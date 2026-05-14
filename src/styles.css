@@ -1,6 +1,31 @@
+    /* Tokens semânticos */
+:root {
+  /* Backgrounds */
+  --bg-page: #121212;
+  --bg-card: #202020;
+  --bg-elevated: #1A1A1A;
+  --bg-table: #242424;
+  --bg-action: #303030;
+
+  /* Text */
+  --text-primary: #FFF;
+  --text-secondary: #D2D2D2;
+  --text-soft: #CCC;
+  --text-error: #FF2F45;
+
+  /* Borders */
+  --border-default: #333;
+
+  /* Brand / status */
+  --color-primary: #1976D2;
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-error: #F44336;
+}
+
     /* Estilização geral*/
 html, body {
-  background-color: #121212;
+  background-color: var(--bg-page);
   color: white;
 
   height: 100%;
@@ -21,7 +46,7 @@ a {
 }
 
 hr {
-  border-color: #FFF;
+  border-color: var(--text-primary);
 }
 
 
@@ -39,7 +64,7 @@ hr {
 
 .btn-transparent:hover {
   color: white !important;
-  background-color: #333 !important;
+  background-color: var(--border-default) !important;
 }
 
 .colw-5 {
@@ -59,17 +84,17 @@ hr {
 }
 
 
-    /* Formulários */
-.central-form {
-  max-width: var(--form-max-width, 500px);
+    /* Container de página (forms, profile, etc.) */
+.page-container {
+  max-width: var(--page-max-width, 500px);
   padding: 60px;
-  background-color: #202020;
+  background-color: var(--bg-card);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  border: 1px solid #333;
+  border: 1px solid var(--border-default);
 }
 
-.form-title {
+.page-title {
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 55px;
@@ -84,12 +109,12 @@ button.btn-form {
   width: 100%;
   border-radius: 8px;
   font-size: 30px;
-  background-color: #1976D2 !important;
+  background-color: var(--color-primary) !important;
 }
 
 button.btn-form[disabled] {
   background-color: #0B3966 !important;
-  color: #CCC !important;
+  color: var(--text-soft) !important;
   opacity: 1 !important;
 }
 
@@ -97,17 +122,17 @@ button.btn-form[disabled] {
     /* Formulários - Angular Material */
 /* Texto digitado */
 .mat-mdc-input-element {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 /* Mensagem de erro */
 mat-error {
-  color: #FF2F45 !important;
+  color: var(--text-error) !important;
 }
 
 /* Mantém fundo preto e texto branco com autocomplete */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #202020 inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-card) inset !important;
   -webkit-text-fill-color: white !important;
 }
 
@@ -125,7 +150,7 @@ input:-webkit-autofill {
 
 /* Deixa o label do checkbox branco */
 .mdc-label {
-  color: #FFF;
+  color: var(--text-primary);
 }
 
 /* Deixa a cor da borda da caixa do checkbox cinza */
@@ -157,17 +182,17 @@ input:-webkit-autofill {
 
 /* Select: cor do "check" quando selecionado */
 .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after {
-  color: #D2D2D2 !important;
+  color: var(--text-secondary) !important;
 }
 
 /* Select: cor do texto das opções */
 .mat-mdc-option {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 /* Select: texto do valor selecionado */
 .mat-mdc-select-value-text {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 /* Select: fundo da opção selecionada quando reabre o menu */
@@ -177,14 +202,14 @@ input:-webkit-autofill {
 
 /* Select: fundo e cor do texto da opção selecionada quando reabre o menu */
 .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 
     /* Tabelas - Angular Material */
 /* Cor de fundo */
 table.mat-mdc-table {
-  background-color: #242424 !important;
+  background-color: var(--bg-table) !important;
 }
 
 /* Fonte branca nas células */
@@ -195,24 +220,24 @@ table.mat-mdc-table .mat-mdc-cell {
 
 /* Fundo mais escuro no cabeçalho */
 table.mat-mdc-table .mat-mdc-header-row {
-  background-color: #1A1A1A !important;
+  background-color: var(--bg-elevated) !important;
 }
 
 /* Botões de ação */
 .action-button {
-  background-color: #303030 !important;
+  background-color: var(--bg-action) !important;
   color: white !important;
 }
 
 /* Paginator: cor de fundo e fonte */
 .mat-mdc-paginator {
-  background-color: #1A1A1A !important;
+  background-color: var(--bg-elevated) !important;
   color: white !important;
 }
 
 /* Paginator: cor do fundo dos ícones com hover */
 .mat-mdc-paginator .mat-mdc-icon-button:hover {
-  background-color: #303030 !important;
+  background-color: var(--bg-action) !important;
 }
 
 /* Paginator: cor dos ícones (primeiro, anterior, próximo, último) */
@@ -231,27 +256,27 @@ table.mat-mdc-table .mat-mdc-header-row {
 .snackbar-success .mat-mdc-snackbar-surface,
 .snackbar-warning .mat-mdc-snackbar-surface,
 .snackbar-error .mat-mdc-snackbar-surface {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 /* Cor do botão de fechar */
 .snackbar-success .mat-mdc-snack-bar-action .mdc-button__label,
 .snackbar-warning .mat-mdc-snack-bar-action .mdc-button__label,
 .snackbar-error .mat-mdc-snack-bar-action .mdc-button__label {
-  color: #FFF !important;
+  color: var(--text-primary) !important;
 }
 
 /* Cor de fundo */
 .snackbar-success .mat-mdc-snackbar-surface {
-  background-color: #4CAF50 !important;
+  background-color: var(--color-success) !important;
 }
 
 .snackbar-warning .mat-mdc-snackbar-surface {
-  background-color: #FF9800 !important;
+  background-color: var(--color-warning) !important;
 }
 
 .snackbar-error .mat-mdc-snackbar-surface {
-  background-color: #F44336 !important;
+  background-color: var(--color-error) !important;
 }
 
 
@@ -273,7 +298,7 @@ table.mat-mdc-table .mat-mdc-header-row {
 .custom-chip .mdc-evolution-chip__text-label {
   font-size: 20px !important;
   font-weight: 500 !important;
-  color: #D2D2D2 !important;
+  color: var(--text-secondary) !important;
 }
 
 
@@ -287,12 +312,12 @@ table.mat-mdc-table .mat-mdc-header-row {
   background-color: transparent !important;
   border-radius: 20px !important;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  border: 1px solid #333;
+  border: 1px solid var(--border-default);
 }
 
 .mat-mdc-dialog-title {
   background-color: #151515 !important;
-  color: #FFF !important;
+  color: var(--text-primary) !important;
   text-transform: uppercase;
   text-align: center;
   font-size: 30px;
@@ -302,8 +327,7 @@ table.mat-mdc-table .mat-mdc-header-row {
 
 mat-dialog-content,
 mat-dialog-actions {
-  background-color: #202020;
-  color: red;
+  background-color: var(--bg-card);
   padding-left: 30px !important;
   padding-right: 30px !important;
 }
@@ -331,24 +355,24 @@ mat-dialog-actions {
 
 /* Status: cor da opção não selecionada */
 .status-toggle-group .mat-button-toggle {
-  color: #D2D2D2 !important;
+  color: var(--text-secondary) !important;
 }
 
 /* Status: cor da opção não selecionada ao passar o mouse em cima */
 .status-toggle-group .mat-button-toggle:hover {
-  background-color: #1a1a1a;
+  background-color: var(--bg-elevated);
 }
 
 /* Botões: espaço entre os botões */
-.dialog-buttons {
+.button-row {
   display: flex;
   gap: 15px;
 }
 
 /* Botões: cada opção ocupa 50% do espaço disponível */
-.dialog-buttons .btn {
+.button-row .btn {
   flex: 1;
   font-weight: 500;
   font-size: 1.1rem;
-  color: #FFF;
+  color: var(--text-primary);
 }
