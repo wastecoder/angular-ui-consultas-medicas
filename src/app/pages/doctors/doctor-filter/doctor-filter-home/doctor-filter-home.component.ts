@@ -16,9 +16,8 @@ import {
   DoctorFilter,
   DoctorSort,
   DoctorSortField,
-  PageResponse,
-  SortDirection,
 } from '@pages/doctors/doctor.models';
+import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { FormattingService } from '@shared/services/formatting.service';
 import { SnackbarService } from '@shared/services/snackbar.service';
 

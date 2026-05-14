@@ -1,3 +1,5 @@
+import { Sort } from '@shared/models/pagination.model';
+
 // Payload de criação/edição de médico (mesmo shape para POST e PUT).
 export interface DoctorPayload {
   nome: string;
@@ -39,20 +41,6 @@ export interface DoctorFilter {
   ativo?: boolean;
 }
 
-// Estrutura de resposta paginada vinda do Spring (Page<T>)
-export interface PageResponse<T> {
-  content: T[];
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
-}
-
 // Ordenação enviada para o back
 export type DoctorSortField = 'nome' | 'crm' | 'especialidade';
-export type SortDirection = 'asc' | 'desc';
-
-export interface DoctorSort {
-  ordenarPor: DoctorSortField;
-  direcao: SortDirection;
-}
+export type DoctorSort = Sort<DoctorSortField>;

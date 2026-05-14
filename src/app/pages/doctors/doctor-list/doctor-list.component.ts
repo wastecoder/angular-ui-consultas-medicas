@@ -4,12 +4,8 @@ import {
   DoctorTableComponent,
   MedicoModel,
 } from '../components/doctor-table/doctor-table.component';
-import {
-  DoctorSort,
-  DoctorSortField,
-  PageResponse,
-  SortDirection,
-} from '@pages/doctors/doctor.models';
+import { DoctorSort, DoctorSortField } from '@pages/doctors/doctor.models';
+import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';

@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import {
   DoctorPayload,
   DoctorTable,
-  PageResponse,
   DoctorProfile,
+  DoctorFilter,
+  DoctorSort,
 } from '@pages/doctors/doctor.models';
+import { PageResponse } from '@shared/models/pagination.model';
 import { environment } from '@env/environment';
-import { DoctorFilter, DoctorSort } from '@pages/doctors/doctor.models';
 
 @Injectable({
   providedIn: 'root',
