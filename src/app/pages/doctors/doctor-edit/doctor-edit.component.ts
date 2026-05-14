@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { DoctorFormComponent } from '../components/doctor-form/doctor-form.component';
 import { DoctorService } from '@services/apis/doctor/doctor.service';
-import { DoctorPayload } from '../doctor.models';
+import { DoctorPayload, DoctorProfile } from '../doctor.models';
 import { SnackbarService } from '@shared/services/snackbar.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { SnackbarService } from '@shared/services/snackbar.service';
 })
 export class DoctorEditComponent implements OnInit {
   medicoId!: number;
-  medico: DoctorPayload | null = null;
+  medico: DoctorProfile | null = null;
   loading = signal(false);
 
   constructor(
@@ -38,7 +38,7 @@ export class DoctorEditComponent implements OnInit {
       .buscarPorId(this.medicoId)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: (dados: DoctorPayload) => {
+        next: (dados: DoctorProfile) => {
           this.medico = dados;
         },
         error: (err) => {

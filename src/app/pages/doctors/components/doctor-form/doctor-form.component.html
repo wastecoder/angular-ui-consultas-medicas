@@ -110,7 +110,7 @@
                             matInput
                             type="tel"
                             formControlName="telefone"
-                            [mask]="'(00) 00000-0000'"
+                            [mask]="'(00) 0000-0000||(00) 00000-0000'"
                         />
 
                         @if (shouldShowError(form.controls.telefone)) {

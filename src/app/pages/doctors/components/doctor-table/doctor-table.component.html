@@ -15,19 +15,34 @@
 
     <!-- Nome -->
     <ng-container matColumnDef="nome">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-20"> Nome </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-20">
+        Nome
+        @if (sortActive !== 'nome') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
       <td mat-cell *matCellDef="let medico" class="colw-20"> {{ medico.nome }} </td>
     </ng-container>
 
     <!-- CRM -->
     <ng-container matColumnDef="crm">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-15"> CRM </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-15">
+        CRM
+        @if (sortActive !== 'crm') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
       <td mat-cell *matCellDef="let medico" class="colw-15"> {{ formatCrm(medico) }} </td>
     </ng-container>
 
     <!-- Especialidade -->
     <ng-container matColumnDef="especialidade">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-10"> Especialidade </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-10">
+        Especialidade
+        @if (sortActive !== 'especialidade') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
       <td mat-cell *matCellDef="let medico" class="colw-10"> {{ medico.especialidade | titlecase }} </td>
     </ng-container>
 

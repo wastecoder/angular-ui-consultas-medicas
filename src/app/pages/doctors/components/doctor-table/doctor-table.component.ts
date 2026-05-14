@@ -27,6 +27,7 @@ export type MedicoModel = DoctorTable;
     HasRoleDirective,
   ],
   templateUrl: './doctor-table.component.html',
+  styleUrl: './doctor-table.component.css',
 })
 export class DoctorTableComponent {
   @Input() medicos: MedicoModel[] = [];

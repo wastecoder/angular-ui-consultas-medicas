@@ -54,7 +54,7 @@ export class DoctorFormComponent implements OnChanges {
     crmSigla: ['', [Validators.required]],
     crmDigitos: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(6)]],
     especialidade: ['', [Validators.required]],
-    telefone: ['', [Validators.required, Validators.minLength(10)]],
+    telefone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
   });
 
   ngOnChanges(changes: SimpleChanges): void {
