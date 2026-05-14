@@ -1,121 +1,119 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar" [class.no-hover]="suppressHover()">
 
-    <!-- Brand -->
-    <a class="navbar-brand fs-4 mx-2" routerLink="/">
-        Administrador
-    </a>
+  <a class="brand" routerLink="/">{{ brandLabel() }}</a>
 
-    <!-- Toggler/collapse button -->
-    <button class="navbar-toggler mx-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+  <button
+    class="toggler"
+    type="button"
+    aria-label="menu"
+    (click)="toggleMenu()"
+  >
+    <span></span>
+  </button>
 
-    <!-- Navbar content -->
-    <div class="collapse navbar-collapse" id="navbarContent">
+  <div class="collapse" [class.open]="menuOpen()">
 
-        <!-- Centered Links -->
-        <ul class="navbar-nav mx-auto">
-            <li class="nav-item active">
-                <a class="nav-link" routerLink="/">
-                    <i class="fa-solid fa-house"></i>
-                    Página inicial
-                </a>
-            </li>
+    <ul class="nav center">
 
-            <!-- Botão de MÉDICO -->
-            <li *appHasRole="['ADMIN','RECEPCIONISTA']" class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdown1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa-solid fa-comments"></span>
-                    Médico
-                </a>
-                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown1">
-                    <a class="dropdown-item text-light" routerLink="/doctors/create">
-                        Cadastrar
-                    </a>
-                    <a class="dropdown-item text-light" routerLink="/doctors">
-                        Listar ativos
-                    </a>
-                    <a class="dropdown-item text-light" routerLink="/doctors/filter">
-                        Aplicar filtros
-                    </a>
-                </div>
-            </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Início
+        </a>
+      </li>
 
-            <!-- Botão de PACIENTE -->
-            <li *appHasRole="['ADMIN','RECEPCIONISTA']" class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa-solid fa-building-circle-check"></span>
-                    Paciente
-                </a>
-                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown2">
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Cadastrar
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Listar ativos
-                    </a>
-                </div>
-            </li>
+      <li
+        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        class="dropdown"
+        [class.open]="openDropdown() === 'medico'"
+      >
+        <a
+          class="nav-link"
+          href="#"
+          (click)="$event.preventDefault(); toggleDropdown('medico')"
+        >
+          Médico
+        </a>
+        <div class="dropdown-menu">
+          <a routerLink="/doctors/create">Cadastrar</a>
+          <a routerLink="/doctors">Listar ativos</a>
+          <a routerLink="/doctors/filter">Aplicar filtros</a>
+        </div>
+      </li>
 
-            <!-- Botão de CONSULTA -->
-            <li *appHasRole="['ADMIN','RECEPCIONISTA']" class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdown3" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa-solid fa-building-circle-check"></span>
-                    Consulta
-                </a>
-                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown3">
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Cadastrar
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Listar todas
-                    </a>
-                </div>
-            </li>
+      <li
+        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        class="dropdown"
+        [class.open]="openDropdown() === 'paciente'"
+      >
+        <a
+          class="nav-link"
+          href="#"
+          (click)="$event.preventDefault(); toggleDropdown('paciente')"
+        >
+          Paciente
+        </a>
+        <div class="dropdown-menu">
+          <a class="disabled" tabindex="-1">Cadastrar</a>
+          <a class="disabled" tabindex="-1">Listar ativos</a>
+        </div>
+      </li>
 
-            <!-- Botão de RELATÓRIO -->
-            <li *appHasRole="['ADMIN','RECEPCIONISTA']" class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdown4" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa-solid fa-building-circle-check"></span>
-                    Relatório
-                </a>
-                <div class="dropdown-menu bg-primary" aria-labelledby="dropdown4">
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Médico
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Paciente
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Consulta
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Operacional
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Financeiro
-                    </a>
-                    <a class="dropdown-item text-light disabled" aria-disabled="true" tabindex="-1">
-                        Produtividade
-                    </a>
-                </div>
-            </li>
-        </ul>
+      <li
+        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        class="dropdown"
+        [class.open]="openDropdown() === 'consulta'"
+      >
+        <a
+          class="nav-link"
+          href="#"
+          (click)="$event.preventDefault(); toggleDropdown('consulta')"
+        >
+          Consulta
+        </a>
+        <div class="dropdown-menu">
+          <a class="disabled" tabindex="-1">Cadastrar</a>
+          <a class="disabled" tabindex="-1">Listar todas</a>
+        </div>
+      </li>
 
-        <!-- Right aligned links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true" tabindex="-1">
-                    <span class="fa fa-user"></span>
-                    Perfil
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/logout">
-                    <span class="fa-solid fa-right-from-bracket"></span>
-                    Sair
-                </a>
-            </li>
-        </ul>
-    </div>
+      <li
+        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        class="dropdown"
+        [class.open]="openDropdown() === 'relatorio'"
+      >
+        <a
+          class="nav-link"
+          href="#"
+          (click)="$event.preventDefault(); toggleDropdown('relatorio')"
+        >
+          Relatório
+        </a>
+        <div class="dropdown-menu">
+          <a class="disabled" tabindex="-1">Médico</a>
+          <a class="disabled" tabindex="-1">Paciente</a>
+          <a class="disabled" tabindex="-1">Consulta</a>
+          <a class="disabled" tabindex="-1">Operacional</a>
+          <a class="disabled" tabindex="-1">Financeiro</a>
+          <a class="disabled" tabindex="-1">Produtividade</a>
+        </div>
+      </li>
+
+    </ul>
+
+    <ul class="nav right">
+      <li>
+        <a class="nav-link disabled" tabindex="-1">Perfil</a>
+      </li>
+      <li>
+        <a class="nav-link" routerLink="/logout">Sair</a>
+      </li>
+    </ul>
+
+  </div>
+
 </nav>
