@@ -130,4 +130,11 @@ export class DoctorProfileComponent implements OnInit {
   get telephoneFormatted(): string {
     return this.formatting.formatTelephone(this.doctor.telefone);
   }
+
+  get initials(): string {
+    const words = this.doctor.nome.split(/\s+/).filter((w) => w.length > 0);
+    const first = words[0]?.[0] ?? '';
+    const second = words[1]?.[0] ?? '';
+    return (first + second).toUpperCase();
+  }
 }
