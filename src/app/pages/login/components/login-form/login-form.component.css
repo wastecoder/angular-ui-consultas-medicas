@@ -1,9 +1,155 @@
-.forgot-password-link {
-  font-size: 0.9rem;
-  text-decoration: none;
-  color: var(--color-primary);
+:host {
+  --login-input-bg: var(--bg-elevated);
+  --login-text-muted: #888;
 }
 
-.forgot-password-link:hover {
+.login-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 48px 44px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.login-title {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--text-primary);
+}
+
+.login-subtitle {
+  margin: 0 0 32px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login-field-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.login-field-error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-error);
+}
+
+/* Override Material para o visual do mock */
+.login-input {
+  --mdc-outlined-text-field-container-shape: 8px;
+  --mdc-outlined-text-field-outline-color: var(--border-default);
+  --mdc-outlined-text-field-hover-outline-color: var(--text-primary);
+  --mdc-outlined-text-field-focus-outline-color: var(--color-primary);
+  width: 100%;
+}
+
+.login-input ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: var(--login-input-bg);
+  border-radius: 8px;
+}
+
+.login-input ::ng-deep .mat-mdc-form-field-infix {
+  min-height: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Mantém o fundo do input igual ao campo quando o navegador preenche via autocomplete */
+.login-input ::ng-deep input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--login-input-bg) inset !important;
+}
+
+.login-eye-btn {
+  color: var(--login-text-muted);
+}
+
+.login-eye-btn:hover {
+  color: var(--text-primary);
+}
+
+.login-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+/* Compensa o padding interno do mat-checkbox para alinhar com a borda esquerda do card */
+.login-row-between mat-checkbox {
+  margin-left: -11px;
+}
+
+.login-forgot {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.login-forgot:hover {
   color: #2F83D6;
+  text-decoration: underline;
+}
+
+.login-submit {
+  margin-top: 12px;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: var(--color-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.login-submit:hover:not([disabled]) {
+  filter: brightness(1.1);
+}
+
+.login-submit[disabled] {
+  background-color: #0B3966 !important;
+  color: var(--text-soft) !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 500px) {
+  .login-card {
+    padding: 32px 24px;
+    border-radius: 12px;
+  }
+
+  .login-title {
+    font-size: 1.4rem;
+  }
+
+  .login-row-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

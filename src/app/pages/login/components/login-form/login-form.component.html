@@ -1,93 +1,95 @@
-<main class="d-flex align-items-center vh-100 justify-content-center">
-  <div class="page-container" style="--page-max-width: 500px;">
+<main class="login-main">
+  <section class="login-card">
 
-    <h2 class="page-title">
-      Iniciar Sessão
-    </h2>
+    <h1 class="login-title">Entrar</h1>
+    <p class="login-subtitle">Acesse sua conta para continuar</p>
 
-    <form #form="ngForm" (ngSubmit)="onSubmit()" class="container-fluid">
+    <form #form="ngForm" (ngSubmit)="onSubmit()" class="login-form">
 
       @if (errorMessage) {
-        <div class="alert alert-danger mb-3">
+        <div class="alert alert-danger mb-0">
           {{ errorMessage }}
         </div>
       }
 
-      <div class="row">
-
-        <!-- Username -->
-        <div class="col-12">
-          <mat-form-field appearance="outline" class="w-100 form-field">
-            <mat-label>Username</mat-label>
-            <input
-              matInput
-              name="username"
-              #usernameModel="ngModel"
-              [(ngModel)]="credentials.username"
-              required
-              minlength="3"
-            />
-            @if (shouldShowError(usernameModel)) {
-              <mat-error>
-                {{ getErrorMessage(usernameModel.errors, 'Username') }}
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-
-        <!-- Password -->
-        <div class="col-12">
-          <mat-form-field appearance="outline" class="w-100 form-field">
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              type="password"
-              name="password"
-              #passwordModel="ngModel"
-              [(ngModel)]="credentials.password"
-              required
-              minlength="6"
-            />
-            @if (shouldShowError(passwordModel)) {
-              <mat-error>
-                {{ getErrorMessage(passwordModel.errors, 'Password') }}
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-
-        <div class="col-12 d-flex align-items-center justify-content-between checkbox-adjust-spacing">
-
-          <div class="checkbox-container">
-            <!-- Remember Me -->
-            <mat-checkbox
-              name="rememberMe"
-              [(ngModel)]="credentials.rememberMe"
-            >
-              Manter-me conectado
-            </mat-checkbox>
-          </div>
-
-          <!-- Esqueceu a senha -->
-          <a href="#" (click)="$event.preventDefault()" class="forgot-password-link">
-            Esqueceu a senha?
-          </a>
-
-        </div>
-
-        <div>
-          <button
-            type="submit"
-            mat-flat-button
-            [disabled]="form.invalid || loading"
-            class="btn btn-form"
-          >
-            Entrar
-          </button>
-        </div>
-
+      <!-- Usuário -->
+      <div class="login-field">
+        <label for="login-username" class="login-field-label">Usuário</label>
+        <mat-form-field appearance="outline" class="login-input no-bottom-gap-form-field">
+          <input
+            matInput
+            id="login-username"
+            name="username"
+            autocomplete="username"
+            #usernameModel="ngModel"
+            [(ngModel)]="credentials.username"
+            required
+            minlength="3"
+          />
+        </mat-form-field>
+        @if (shouldShowError(usernameModel)) {
+          <p class="login-field-error">
+            {{ getErrorMessage(usernameModel.errors, 'Usuário') }}
+          </p>
+        }
       </div>
+
+      <!-- Senha -->
+      <div class="login-field">
+        <label for="login-password" class="login-field-label">Senha</label>
+        <mat-form-field appearance="outline" class="login-input no-bottom-gap-form-field">
+          <input
+            matInput
+            id="login-password"
+            name="password"
+            autocomplete="current-password"
+            [type]="passwordVisible ? 'text' : 'password'"
+            #passwordModel="ngModel"
+            [(ngModel)]="credentials.password"
+            required
+            minlength="6"
+          />
+          <button
+            matSuffix
+            mat-icon-button
+            type="button"
+            class="login-eye-btn"
+            [attr.aria-label]="passwordVisible ? 'esconder senha' : 'mostrar senha'"
+            (click)="togglePasswordVisibility()"
+          >
+            <mat-icon>{{ passwordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        @if (shouldShowError(passwordModel)) {
+          <p class="login-field-error">
+            {{ getErrorMessage(passwordModel.errors, 'Senha') }}
+          </p>
+        }
+      </div>
+
+      <div class="login-row-between">
+        <mat-checkbox
+          name="rememberMe"
+          [(ngModel)]="credentials.rememberMe"
+        >
+          Manter-me conectado
+        </mat-checkbox>
+
+        <a class="login-forgot" href="#" (click)="$event.preventDefault()">
+          Esqueci minha senha?
+        </a>
+      </div>
+
+      <button
+        type="submit"
+        mat-flat-button
+        [disabled]="form.invalid || loading"
+        class="login-submit"
+      >
+        Entrar
+      </button>
+
     </form>
 
-  </div>
+  </section>
 </main>

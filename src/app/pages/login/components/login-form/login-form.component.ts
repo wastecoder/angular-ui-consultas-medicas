@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { LoginCredentials } from '../../login.models';
 
 @Component({
@@ -19,6 +20,7 @@ import { LoginCredentials } from '../../login.models';
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatIconModule,
   ],
 })
 export class LoginFormComponent {
@@ -32,8 +34,14 @@ export class LoginFormComponent {
     rememberMe: false,
   };
 
+  passwordVisible = false;
+
   onSubmit() {
     this.login.emit(this.credentials);
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   shouldShowError(control: NgModel | null): boolean {
