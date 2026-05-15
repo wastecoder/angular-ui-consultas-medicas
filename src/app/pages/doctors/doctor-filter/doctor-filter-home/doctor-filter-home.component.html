@@ -1,35 +1,107 @@
-<div class="container my-4">
-  <h2>Filtrar Médicos</h2>
+<div class="list-page">
+  <h1 class="page-title-list">Médicos</h1>
 
-  <!-- Barra de ações -->
-  <div class="d-flex align-items-center gap-3 my-4">
-    <button class="btn btn-primary btn-open-filter" (click)="openDialog()">
-      Filtros
+  <div class="toolbar">
+    <button type="button" class="btn-filter" (click)="toggleFilterBar()">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filtros</span>
     </button>
 
-
-    <!-- Chips simulando filtros aplicados -->
-    @if (filterLabels().status) {
-      <mat-chip color="primary" selected class="custom-chip">
-        Status: {{ filterLabels().status }}
-      </mat-chip>
+    @if (chips().status) {
+      <span class="active-chip chip-status">
+        Status: {{ chips().status }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearStatus()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
     }
 
-    @if (filterLabels().nome) {
-      <mat-chip color="accent" selected class="custom-chip">
-        Nome: {{ filterLabels().nome }}
-      </mat-chip>
+    @if (chips().nome) {
+      <span class="active-chip chip-name">
+        Nome: {{ chips().nome }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearNome()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
     }
 
-    @if (filterLabels().crm) {
-      <mat-chip color="warn" selected class="custom-chip">
-        {{ filterLabels().crm }}
-      </mat-chip>
+    @if (chips().crm) {
+      <span class="active-chip chip-crm">
+        CRM: {{ chips().crm }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearCrm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().especialidade) {
+      <span class="active-chip chip-esp">
+        Especialidade: {{ chips().especialidade }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearEspecialidade()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (hasAnyChip()) {
+      <button type="button" class="link-clear" (click)="clearAll()">Limpar tudo</button>
     }
   </div>
 
+  @if (filterBarOpen()) {
+    <section class="filter-bar">
+      <div class="chip-group" role="radiogroup" aria-label="Status">
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'todos'"
+                (click)="setDraftStatus('todos')">Todos</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'ativo'"
+                (click)="setDraftStatus('ativo')">Ativo</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'inativo'"
+                (click)="setDraftStatus('inativo')">Inativo</button>
+      </div>
 
-  <!-- Tabela de resultados -->
+      <div class="bar-divider" aria-hidden="true"></div>
+
+      <input
+        type="text"
+        class="bar-input bar-input-nome"
+        placeholder="Nome"
+        [(ngModel)]="draftNome"
+      />
+
+      <select class="bar-select bar-select-uf" [(ngModel)]="draftCrmSigla">
+        <option value="">UF</option>
+        @for (sigla of siglasCrm; track sigla) {
+          <option [value]="sigla">{{ sigla }}</option>
+        }
+      </select>
+
+      <input
+        type="text"
+        class="bar-input bar-input-crm"
+        placeholder="Dígitos CRM"
+        mask="000000"
+        [(ngModel)]="draftCrmDigitos"
+      />
+
+      <select class="bar-select bar-select-esp" [(ngModel)]="draftEspecialidade">
+        <option value="">Especialidade</option>
+        @for (esp of especialidades; track esp) {
+          <option [value]="esp">{{ esp | titlecase }}</option>
+        }
+      </select>
+
+      <div class="bar-actions">
+        <button type="button" class="btn-apply" (click)="applyDraftFilters()">Filtrar</button>
+        <button type="button" class="icon-btn" title="Fechar filtros" (click)="toggleFilterBar()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </section>
+  }
+
   <app-doctor-table
     [medicos]="pageResponse.content"
     [totalElements]="pageResponse.totalElements"

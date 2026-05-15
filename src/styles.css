@@ -101,6 +101,24 @@ hr {
   color: white;
 }
 
+
+    /* Páginas de tabela/listagem */
+.list-page {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.page-title-list {
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 .form-field {
   margin-bottom: 20px;
 }
@@ -280,28 +298,6 @@ table.mat-mdc-table .mat-mdc-header-row {
 }
 
 
-    /* Filtros */
-/* Botão: abrir dialog de filtros */
-.btn-open-filter {
-  padding: 5px 40px;
-  font-size: 20px;
-  font-weight: 500;
-}
-
-/* Chips: espaçamento interno */
-.custom-chip {
-  padding: 11px 10px !important;
-  height: auto !important;
-}
-
-/* Chips: fonte */
-.custom-chip .mdc-evolution-chip__text-label {
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  color: var(--text-secondary) !important;
-}
-
-
     /* Dialog - Angular Material */
 /* Campos: remove a margim-bottom */
 .no-bottom-gap-form-field .mat-mdc-form-field-subscript-wrapper {
@@ -334,33 +330,6 @@ mat-dialog-actions {
 
 mat-dialog-actions {
   padding-bottom: 35px !important;
-}
-
-/* Status: opções ocupam 100% de largura */
-.status-toggle-group {
-  display: flex;
-  width: 100%;
-}
-
-/* Status: cada opção ocupa 50% do espaço disponível */
-.status-toggle-group .mat-button-toggle {
-  flex: 1;
-}
-
-/* Status: cor da opção selecionada */
-.status-toggle-group .mat-button-toggle-checked {
-  background-color: #7C7C7C !important;
-  color: white !important;
-}
-
-/* Status: cor da opção não selecionada */
-.status-toggle-group .mat-button-toggle {
-  color: var(--text-secondary) !important;
-}
-
-/* Status: cor da opção não selecionada ao passar o mouse em cima */
-.status-toggle-group .mat-button-toggle:hover {
-  background-color: var(--bg-elevated);
 }
 
 /* Botões: espaço entre os botões */

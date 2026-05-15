@@ -38,6 +38,7 @@ export interface DoctorFilter {
   nome?: string;
   crmSigla?: string;
   crmDigitos?: string;
+  especialidade?: string;
   ativo?: boolean;
 }
 

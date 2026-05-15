@@ -48,10 +48,15 @@ export class DoctorService {
       params = params.set('nome', filtros.nome.trim());
     }
 
-    if (filtros?.crmSigla && filtros?.crmDigitos && filtros.crmDigitos.trim()) {
-      params = params
-        .set('crmSigla', filtros.crmSigla)
-        .set('crmDigitos', filtros.crmDigitos.trim());
+    if (filtros?.crmSigla) {
+      params = params.set('crmSigla', filtros.crmSigla);
+      if (filtros?.crmDigitos && filtros.crmDigitos.trim()) {
+        params = params.set('crmDigitos', filtros.crmDigitos.trim());
+      }
+    }
+
+    if (filtros?.especialidade) {
+      params = params.set('especialidade', filtros.especialidade);
     }
 
     if (filtros?.ativo !== undefined) {

@@ -1,12 +1,11 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatChipsModule } from '@angular/material/chips';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { DoctorFilterDialogComponent } from '../components/doctor-filter-dialog/doctor-filter-dialog.component';
+import { NgxMaskDirective } from 'ngx-mask';
 import {
   DoctorTableComponent,
   MedicoModel,
@@ -17,28 +16,32 @@ import {
   DoctorSort,
   DoctorSortField,
 } from '@pages/doctors/doctor.models';
+import { ESPECIALIDADES, SIGLAS_CRM } from '@pages/doctors/doctor.constants';
 import { PageResponse, SortDirection } from '@shared/models/pagination.model';
-import { FormattingService } from '@shared/services/formatting.service';
 import { SnackbarService } from '@shared/services/snackbar.service';
+
+type StatusOption = 'todos' | 'ativo' | 'inativo';
 
 @Component({
   selector: 'app-doctor-filter-home',
   standalone: true,
   imports: [
     CommonModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatChipsModule,
+    FormsModule,
+    MatIconModule,
+    NgxMaskDirective,
     DoctorTableComponent,
   ],
   templateUrl: './doctor-filter-home.component.html',
+  styleUrl: './doctor-filter-home.component.css',
 })
 export class DoctorFilterHomeComponent implements OnInit {
   private readonly medicoService = inject(DoctorService);
-  private formattingService = inject(FormattingService);
   private snackbar = inject(SnackbarService);
   private readonly router = inject(Router);
-  private readonly dialog = inject(MatDialog);
+
+  readonly siglasCrm = SIGLAS_CRM;
+  readonly especialidades = ESPECIALIDADES;
 
   pageResponse: PageResponse<MedicoModel> = {
     content: [],
@@ -52,36 +55,41 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   sort: DoctorSort = { ordenarPor: 'nome', direcao: 'asc' };
 
-  filterLabels = computed(() => {
+  filterBarOpen = signal(false);
+
+  // Drafts do formulário inline (preenchidos quando a barra abre)
+  draftStatus: StatusOption = 'ativo';
+  draftNome: string = '';
+  draftCrmSigla: string = '';
+  draftCrmDigitos: string = '';
+  draftEspecialidade: string = '';
+
+  chips = computed(() => {
     const filters = this.activeFilters();
 
-    const nome = filters.nome?.trim();
-    const crmPreenchido = Boolean(
-      filters.crmSigla && filters.crmDigitos?.trim()
-    );
+    const status =
+      filters.ativo === true
+        ? 'Ativo'
+        : filters.ativo === false
+        ? 'Inativo'
+        : '';
 
-    // Prioridade 1: ativo + nome
-    if (nome) {
-      return {
-        status: filters.ativo ? 'Ativo' : 'Inativo',
-        nome,
-      };
-    }
+    const nome = filters.nome?.trim() ?? '';
 
-    // Prioridade 2: CRM completo
-    if (crmPreenchido) {
-      return {
-        crm: this.formattingService.formatCrm({
-          crmSigla: filters.crmSigla!,
-          crmDigitos: filters.crmDigitos!.trim(),
-        }),
-      };
-    }
+    const sigla = filters.crmSigla;
+    const digitos = filters.crmDigitos?.trim();
+    const crm = sigla ? (digitos ? `${sigla} ${digitos}` : sigla) : '';
 
-    // Prioridade 3: apenas ativo
-    return {
-      status: filters.ativo ? 'Ativo' : 'Inativo',
-    };
+    const especialidade = filters.especialidade
+      ? this.titleCase(filters.especialidade)
+      : '';
+
+    return { status, nome, crm, especialidade };
+  });
+
+  hasAnyChip = computed(() => {
+    const c = this.chips();
+    return Boolean(c.status || c.nome || c.crm || c.especialidade);
   });
 
   ngOnInit(): void {
@@ -120,17 +128,79 @@ export class DoctorFilterHomeComponent implements OnInit {
     this.loadDoctorsWithFilters(0, this.pageResponse.size);
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DoctorFilterDialogComponent, {
-      width: '450px',
-    });
+  toggleFilterBar() {
+    if (!this.filterBarOpen()) {
+      this.hydrateDraftsFromActiveFilters();
+    }
+    this.filterBarOpen.update((open) => !open);
+  }
 
-    dialogRef.afterClosed().subscribe((filtros: DoctorFilter | undefined) => {
-      if (filtros) {
-        this.activeFilters.set(filtros);
-        this.loadDoctorsWithFilters(0, this.pageResponse.size);
-      }
-    });
+  setDraftStatus(value: StatusOption) {
+    this.draftStatus = value;
+  }
+
+  applyDraftFilters() {
+    const status = this.draftStatus;
+    const nome = this.draftNome.trim();
+    const sigla = this.draftCrmSigla;
+    const digitos = this.draftCrmDigitos.trim();
+    const especialidade = this.draftEspecialidade;
+
+    if (digitos && !sigla) {
+      this.snackbar.show(
+        'Selecione uma UF para filtrar pelos dígitos do CRM.',
+        'warning'
+      );
+      return;
+    }
+
+    const filters: DoctorFilter = {
+      ativo:
+        status === 'ativo' ? true : status === 'inativo' ? false : undefined,
+      nome: nome || undefined,
+      crmSigla: sigla || undefined,
+      crmDigitos: sigla && digitos ? digitos : undefined,
+      especialidade: especialidade || undefined,
+    };
+
+    this.activeFilters.set(filters);
+    this.filterBarOpen.set(false);
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
+  }
+
+  clearStatus() {
+    this.activeFilters.update((f) => ({ ...f, ativo: undefined }));
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
+  }
+
+  clearNome() {
+    this.activeFilters.update((f) => ({ ...f, nome: undefined }));
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
+  }
+
+  clearCrm() {
+    this.activeFilters.update((f) => ({
+      ...f,
+      crmSigla: undefined,
+      crmDigitos: undefined,
+    }));
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
+  }
+
+  clearEspecialidade() {
+    this.activeFilters.update((f) => ({ ...f, especialidade: undefined }));
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
+  }
+
+  clearAll() {
+    this.activeFilters.set({ ativo: true });
+    this.draftStatus = 'ativo';
+    this.draftNome = '';
+    this.draftCrmSigla = '';
+    this.draftCrmDigitos = '';
+    this.draftEspecialidade = '';
+    this.filterBarOpen.set(false);
+    this.loadDoctorsWithFilters(0, this.pageResponse.size);
   }
 
   update(medico: MedicoModel) {
@@ -139,5 +209,19 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   viewProfile(medico: MedicoModel) {
     this.router.navigate(['/doctors', medico.id, 'profile']);
+  }
+
+  private hydrateDraftsFromActiveFilters() {
+    const f = this.activeFilters();
+    this.draftStatus =
+      f.ativo === true ? 'ativo' : f.ativo === false ? 'inativo' : 'todos';
+    this.draftNome = f.nome ?? '';
+    this.draftCrmSigla = f.crmSigla ?? '';
+    this.draftCrmDigitos = f.crmDigitos ?? '';
+    this.draftEspecialidade = f.especialidade ?? '';
+  }
+
+  private titleCase(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   }
 }
