@@ -321,31 +321,13 @@ table.mat-mdc-table .mat-mdc-header-row {
 
 
     /* Snackbar - Angular Material */
-/* Cor do texto */
-.snackbar-success .mat-mdc-snackbar-surface,
-.snackbar-warning .mat-mdc-snackbar-surface,
-.snackbar-error .mat-mdc-snackbar-surface {
-  color: var(--text-primary) !important;
-}
-
-/* Cor do botão de fechar */
-.snackbar-success .mat-mdc-snack-bar-action .mdc-button__label,
-.snackbar-warning .mat-mdc-snack-bar-action .mdc-button__label,
-.snackbar-error .mat-mdc-snack-bar-action .mdc-button__label {
-  color: var(--text-primary) !important;
-}
-
-/* Cor de fundo */
-.snackbar-success .mat-mdc-snackbar-surface {
-  background-color: var(--color-success) !important;
-}
-
-.snackbar-warning .mat-mdc-snackbar-surface {
-  background-color: var(--color-warning) !important;
-}
-
-.snackbar-error .mat-mdc-snackbar-surface {
-  background-color: var(--color-error) !important;
+/* Reset do container do MatSnackBar para que o ToastSnackbarComponent
+   desenhe o card por completo (sem fundo/padding/sombra do Material). */
+.toast-panel .mat-mdc-snackbar-surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: unset;
 }
 
 

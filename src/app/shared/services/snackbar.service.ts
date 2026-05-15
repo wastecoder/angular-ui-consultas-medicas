@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { ToastSnackbarComponent } from '../components/toast-snackbar/toast-snackbar.component';
 
 export type NotificationType = 'success' | 'warning' | 'error';
 
@@ -7,14 +9,15 @@ export type NotificationType = 'success' | 'warning' | 'error';
   providedIn: 'root',
 })
 export class SnackbarService {
-  constructor(private snackBar: MatSnackBar) {}
+  private readonly snackBar = inject(MatSnackBar);
 
   show(message: string, type: NotificationType = 'success', duration = 3000) {
-    this.snackBar.open(message, '✖', {
+    this.snackBar.openFromComponent(ToastSnackbarComponent, {
+      data: { message, type, duration },
       duration,
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
-      panelClass: [`snackbar-${type}`], // classe CSS
+      panelClass: ['toast-panel', `toast-${type}`],
     });
   }
 }
