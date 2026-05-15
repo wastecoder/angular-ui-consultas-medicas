@@ -1,3 +1,12 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
 .profile-card {
   box-sizing: border-box;
   width: 100%;
