@@ -27,6 +27,7 @@ import { SIGLAS_CRM, ESPECIALIDADES } from '@pages/doctors/doctor.constants';
   selector: 'app-doctor-form',
   standalone: true,
   templateUrl: './doctor-form.component.html',
+  styleUrl: './doctor-form.component.css',
   imports: [
     CommonModule,
     ReactiveFormsModule,
