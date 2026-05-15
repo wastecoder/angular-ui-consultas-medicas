@@ -86,6 +86,7 @@ export class DoctorListComponent implements OnInit {
     const confirmed = await this.dialogService.confirm({
       title: `${willActivate ? 'Ativar' : 'Inativar'} médico`,
       content: `Tem certeza que deseja ${acao} o médico ${doctor.nome}?`,
+      type: willActivate ? 'activate' : 'deactivate',
     });
 
     if (!confirmed) {

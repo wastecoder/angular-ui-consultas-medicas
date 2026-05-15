@@ -1,23 +1,129 @@
-/* Cor de fundo */
+/* Container do dialog (anula paddings padrão do Material) */
 ::ng-deep .mat-mdc-dialog-surface {
-    background-color: var(--bg-page) !important;
-    border: 1px solid var(--border-default);
-    width: 500px;
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-default);
+  border-radius: 12px !important;
+  width: 500px;
+  overflow: hidden;
+  padding: 0 !important;
 }
 
-/* Cor do título e conteúdo */
-::ng-deep .mat-mdc-dialog-title,
-::ng-deep .mat-mdc-dialog-content {
-    color: white !important;
+/* ---------- Header ---------- */
+.dialog-header {
+  background-color: var(--bg-raised);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-default);
 }
 
-/* Cor do botão */
-::ng-deep .mat-mdc-dialog-actions button {
-    background-color: var(--bg-table) !important;
-    color: white !important;
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Cor ao passar o mouse em cima do botão */
-::ng-deep .mat-mdc-dialog-actions button:hover {
-    background-color: #393939 !important;
+.icon-success {
+  background-color: rgba(76, 175, 80, 0.18);
+  color: var(--color-success);
+}
+
+.icon-warning {
+  background-color: rgba(255, 152, 0, 0.18);
+  color: var(--color-warning);
+}
+
+.icon-error {
+  background-color: rgba(244, 67, 54, 0.18);
+  color: var(--color-error);
+}
+
+::ng-deep .mat-mdc-dialog-title.dialog-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: white;
+  background: transparent !important;
+  text-transform: none !important;
+  letter-spacing: normal;
+}
+
+::ng-deep .mat-mdc-dialog-title.dialog-title::before {
+  display: none !important;
+}
+
+/* ---------- Content ---------- */
+.dialog-content {
+  padding: 22px 24px !important;
+  margin: 0 !important;
+}
+
+.dialog-content p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ---------- Actions ---------- */
+::ng-deep .mat-mdc-dialog-actions.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 14px 24px !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  border-top: 1px solid var(--border-default);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+  padding: 9px 20px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-default);
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: white;
+  filter: none;
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+}
+
+.btn-warning {
+  background-color: var(--color-warning);
+  color: #1a1a1a;
+  border: none;
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: white;
+  border: none;
 }

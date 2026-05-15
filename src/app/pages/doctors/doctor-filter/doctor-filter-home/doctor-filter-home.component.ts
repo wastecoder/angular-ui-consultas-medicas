@@ -223,6 +223,7 @@ export class DoctorFilterHomeComponent implements OnInit {
     const confirmed = await this.dialogService.confirm({
       title: `${willActivate ? 'Ativar' : 'Inativar'} médico`,
       content: `Tem certeza que deseja ${acao} o médico ${medico.nome}?`,
+      type: willActivate ? 'activate' : 'deactivate',
     });
 
     if (!confirmed) {

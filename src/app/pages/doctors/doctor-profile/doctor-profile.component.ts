@@ -55,6 +55,7 @@ export class DoctorProfileComponent implements OnInit {
     const confirmed = await this.dialogService.confirm({
       title: 'Ativar médico',
       content: `Tem certeza que deseja ativar o médico ${this.doctor.nome}?`,
+      type: 'activate',
     });
 
     if (confirmed) {
@@ -79,6 +80,7 @@ export class DoctorProfileComponent implements OnInit {
     const confirmed = await this.dialogService.confirm({
       title: 'Inativar médico',
       content: `Tem certeza que deseja inativar o médico ${this.doctor.nome}?`,
+      type: 'deactivate',
     });
 
     if (confirmed) {
@@ -103,6 +105,7 @@ export class DoctorProfileComponent implements OnInit {
     const confirmed = await this.dialogService.confirm({
       title: 'Excluir médico',
       content: `Tem certeza que deseja excluir o médico ${this.doctor.nome}?`,
+      type: 'delete',
     });
 
     if (confirmed) {

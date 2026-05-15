@@ -3,6 +3,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
+export type DialogType = 'activate' | 'deactivate' | 'delete';
+
+export interface DialogData {
+  title: string;
+  content: string;
+  type: DialogType;
+}
+
 @Component({
   selector: 'app-yes-no-dialog',
   standalone: true,
@@ -11,7 +19,16 @@ import { MatDialogModule } from '@angular/material/dialog';
   styleUrl: './yes-no-dialog.component.css',
 })
 export class YesNoDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; content: string }
-  ) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  get confirmLabel(): string {
+    switch (this.data.type) {
+      case 'activate':
+        return 'Sim, ativar';
+      case 'deactivate':
+        return 'Sim, inativar';
+      case 'delete':
+        return 'Sim, excluir';
+    }
+  }
 }

@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { YesNoDialogComponent } from '@shared/components/yes-no-dialog/yes-no-dialog.component';
+import {
+  DialogData,
+  YesNoDialogComponent,
+} from '@shared/components/yes-no-dialog/yes-no-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +12,7 @@ import { YesNoDialogComponent } from '@shared/components/yes-no-dialog/yes-no-di
 export class DialogService {
   private readonly dialog = inject(MatDialog);
 
-  confirm(data: { title: string; content: string }): Promise<boolean> {
+  confirm(data: DialogData): Promise<boolean> {
     const dialogRef = this.dialog.open(YesNoDialogComponent, {
       data,
     });
