@@ -19,6 +19,7 @@ import {
 import { ESPECIALIDADES, SIGLAS_CRM } from '@pages/doctors/doctor.constants';
 import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { DialogService } from '@shared/components/yes-no-dialog/dialog.service';
 
 type StatusOption = 'todos' | 'ativo' | 'inativo';
 
@@ -38,6 +39,7 @@ type StatusOption = 'todos' | 'ativo' | 'inativo';
 export class DoctorFilterHomeComponent implements OnInit {
   private readonly medicoService = inject(DoctorService);
   private snackbar = inject(SnackbarService);
+  private readonly dialogService = inject(DialogService);
   private readonly router = inject(Router);
 
   readonly siglasCrm = SIGLAS_CRM;
@@ -54,6 +56,8 @@ export class DoctorFilterHomeComponent implements OnInit {
   activeFilters = signal<DoctorFilter>({ ativo: true });
 
   sort: DoctorSort = { ordenarPor: 'nome', direcao: 'asc' };
+
+  currentPage = 0;
 
   filterBarOpen = signal(false);
 
@@ -97,7 +101,7 @@ export class DoctorFilterHomeComponent implements OnInit {
   }
 
   loadDoctorsWithFilters(
-    page: number = this.pageResponse.number,
+    page: number = this.currentPage,
     size: number = this.pageResponse.size
   ): void {
     this.medicoService
@@ -105,18 +109,19 @@ export class DoctorFilterHomeComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.pageResponse = data;
+          this.currentPage = page;
         },
         error: (error) => {
           console.error('Erro ao carregar médicos:', error);
           const errorMessage =
             error.error?.message ?? 'Erro ao carregar médicos.';
           this.snackbar.show(errorMessage, 'error');
-          this.router.navigate(['/doctors']);
         },
       });
   }
 
   onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
     this.loadDoctorsWithFilters(event.pageIndex, event.pageSize);
   }
 
@@ -209,6 +214,38 @@ export class DoctorFilterHomeComponent implements OnInit {
 
   viewProfile(medico: MedicoModel) {
     this.router.navigate(['/doctors', medico.id, 'profile']);
+  }
+
+  async toggleAtivo(medico: MedicoModel): Promise<void> {
+    const willActivate = !medico.ativo;
+    const acao = willActivate ? 'ativar' : 'inativar';
+
+    const confirmed = await this.dialogService.confirm({
+      title: `${willActivate ? 'Ativar' : 'Inativar'} médico`,
+      content: `Tem certeza que deseja ${acao} o médico ${medico.nome}?`,
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    const request$ = willActivate
+      ? this.medicoService.ativar(medico.id)
+      : this.medicoService.inativar(medico.id);
+
+    request$.subscribe({
+      next: () => {
+        this.snackbar.show(
+          `Médico ${willActivate ? 'ativado' : 'inativado'} com sucesso!`,
+          'success',
+        );
+        this.loadDoctorsWithFilters();
+      },
+      error: (err) => {
+        console.error(`Erro ao ${acao} médico:`, err);
+        this.snackbar.show(`Erro inesperado ao ${acao} médico.`, 'error');
+      },
+    });
   }
 
   private hydrateDraftsFromActiveFilters() {

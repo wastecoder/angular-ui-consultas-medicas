@@ -4,6 +4,7 @@
   --bg-page: #121212;
   --bg-card: #202020;
   --bg-elevated: #1A1A1A;
+  --bg-raised: #2A2A2A;
   --bg-table: #242424;
   --bg-action: #303030;
 
@@ -67,12 +68,20 @@ hr {
   background-color: var(--border-default) !important;
 }
 
-.colw-5 {
-  width: 5%;
+.colw-6 {
+  width: 6%;
 }
 
 .colw-10 {
   width: 10%;
+}
+
+.colw-12 {
+  width: 12%;
+}
+
+.colw-14 {
+  width: 14%;
 }
 
 .colw-15 {
@@ -81,6 +90,18 @@ hr {
 
 .colw-20 {
   width: 20%;
+}
+
+.colw-24 {
+  width: 24%;
+}
+
+.colw-26 {
+  width: 26%;
+}
+
+.table-responsive {
+  overflow-x: auto;
 }
 
 
@@ -266,6 +287,36 @@ table.mat-mdc-table .mat-mdc-header-row {
 /* Paginator: opacidade da cor dos ícones desativados */
 .mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-button-disabled .mat-mdc-paginator-icon {
   opacity: 0.3;
+}
+
+
+    /* MatMenu - tema escuro */
+.mat-mdc-menu-panel {
+  background-color: var(--bg-elevated) !important;
+  border: 1px solid var(--border-default);
+}
+
+.mat-mdc-menu-content {
+  background-color: var(--bg-elevated) !important;
+  padding: 6px !important;
+}
+
+.mat-mdc-menu-item {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-item .mat-mdc-menu-item-text {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-item .mat-icon {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-menu-item:hover:not(:disabled),
+.mat-mdc-menu-item.cdk-program-focused:not(:disabled),
+.mat-mdc-menu-item.cdk-keyboard-focused:not(:disabled) {
+  background-color: var(--bg-action) !important;
 }
 
 

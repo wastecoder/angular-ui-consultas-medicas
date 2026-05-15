@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
@@ -22,6 +23,7 @@ export type MedicoModel = DoctorTable;
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
@@ -44,14 +46,14 @@ export class DoctorTableComponent {
 
   @Output() onRequestUpdate = new EventEmitter<MedicoModel>();
   @Output() onRequestViewProfile = new EventEmitter<MedicoModel>();
+  @Output() onRequestToggleAtivo = new EventEmitter<MedicoModel>();
 
   constructor(private readonly formatting: FormattingService) {}
 
   displayedColumns: string[] = [
-    'id',
     'nome',
-    'crm',
     'especialidade',
+    'crm',
     'email',
     'telefone',
     'acoes',
@@ -63,6 +65,10 @@ export class DoctorTableComponent {
 
   viewProfile(medico: MedicoModel) {
     this.onRequestViewProfile.emit(medico);
+  }
+
+  toggleAtivo(medico: MedicoModel) {
+    this.onRequestToggleAtivo.emit(medico);
   }
 
   onPageChange(event: PageEvent) {

@@ -6,3 +6,10 @@
   margin-left: 4px;
   opacity: 0.55;
 }
+
+.col-acoes {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+

@@ -19,6 +19,7 @@ export interface DoctorTable {
   especialidade: string;
   email: string;
   telefone: string;
+  ativo: boolean;
 }
 
 // Interface para perfil detalhado do médico
