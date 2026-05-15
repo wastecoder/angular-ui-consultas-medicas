@@ -2,6 +2,7 @@
   width: 380px;
   height: 380px;
   background-color: var(--bg-elevated);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.10);
 }
 
 .logout-inner {
