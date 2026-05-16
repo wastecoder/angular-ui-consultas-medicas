@@ -245,6 +245,15 @@ input:-webkit-autofill {
 }
 
 
+    /* Autocomplete - tema escuro */
+/* Autocomplete: fundo do painel (mesmo tom do MatSelect). As regras de
+   .mat-mdc-option (hover, selected, texto) acima já são compartilhadas. */
+.mat-mdc-autocomplete-panel {
+  background-color: #353535 !important;
+}
+
+
+
     /* Tabelas - Angular Material */
 /* Cor de fundo */
 table.mat-mdc-table {

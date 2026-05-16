@@ -1,0 +1,222 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.btn-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+
+.btn-filter:hover {
+  background-color: var(--bg-action);
+}
+
+.btn-filter mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px 5px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid;
+  color: var(--text-primary);
+}
+
+.chip-data {
+  background-color: rgba(25, 118, 210, 0.15);
+  border-color: rgba(25, 118, 210, 0.4);
+}
+
+.chip-medico {
+  background-color: rgba(0, 188, 212, 0.15);
+  border-color: rgba(0, 188, 212, 0.4);
+}
+
+.chip-paciente {
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.chip-status {
+  background-color: rgba(255, 152, 0, 0.15);
+  border-color: rgba(255, 152, 0, 0.4);
+}
+
+.chip-x {
+  width: 18px;
+  height: 18px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.chip-x:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.chip-x mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
+}
+
+.link-clear {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  font-family: inherit;
+  padding: 4px 8px;
+}
+
+.link-clear:hover {
+  color: var(--text-primary);
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+}
+
+.bar-input,
+.bar-select {
+  padding: 7px 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+
+.bar-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.bar-input:focus,
+.bar-select:focus {
+  outline: none;
+  border-color: var(--text-secondary);
+}
+
+.bar-input-data {
+  width: 140px;
+}
+
+.bar-input-medico,
+.bar-input-paciente {
+  width: 180px;
+}
+
+.bar-select-status {
+  width: 150px;
+}
+
+.bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  align-self: center;
+}
+
+.btn-apply {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--color-primary);
+}
+
+.btn-apply:hover {
+  filter: brightness(1.1);
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: var(--bg-action);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.icon-btn:hover {
+  color: var(--text-primary);
+  filter: brightness(1.2);
+}
+
+.icon-btn mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
+
+@media (max-width: 900px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bar-input,
+  .bar-select {
+    width: 100%;
+  }
+
+  .bar-actions {
+    margin-left: 0;
+  }
+
+  .link-clear {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,17 @@
+<div class="list-page">
+  <h1 class="page-title-list">Consultas de hoje ({{ hojeFormatado }})</h1>
+
+  <app-appointment-table
+    [consultas]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
+    (onRequestUpdate)="update($event)"
+    (onRequestViewProfile)="viewProfile($event)"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  >
+  </app-appointment-table>
+</div>

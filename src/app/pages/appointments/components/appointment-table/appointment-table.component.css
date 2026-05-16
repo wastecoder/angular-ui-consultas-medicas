@@ -1,0 +1,43 @@
+.sort-icon-inactive {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-left: 4px;
+  opacity: 0.55;
+}
+
+.col-acoes {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.status-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border: 1px solid;
+}
+
+.status-agendada {
+  color: var(--color-primary);
+  background-color: rgba(25, 118, 210, 0.15);
+  border-color: rgba(25, 118, 210, 0.4);
+}
+
+.status-realizada {
+  color: var(--color-success);
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.status-cancelada {
+  color: var(--color-error);
+  background-color: rgba(244, 67, 54, 0.15);
+  border-color: rgba(244, 67, 54, 0.4);
+}

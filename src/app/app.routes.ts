@@ -10,6 +10,11 @@ import { PatientListComponent } from '@pages/patients/patient-list/patient-list.
 import { PatientEditComponent } from '@pages/patients/patient-edit/patient-edit.component';
 import { PatientProfileComponent } from '@pages/patients/patient-profile/patient-profile.component';
 import { PatientFilterHomeComponent } from '@pages/patients/patient-filter/patient-filter-home/patient-filter-home.component';
+import { AppointmentCreateComponent } from '@pages/appointments/appointment-create/appointment-create.component';
+import { AppointmentListComponent } from '@pages/appointments/appointment-list/appointment-list.component';
+import { AppointmentEditComponent } from '@pages/appointments/appointment-edit/appointment-edit.component';
+import { AppointmentProfileComponent } from '@pages/appointments/appointment-profile/appointment-profile.component';
+import { AppointmentFilterHomeComponent } from '@pages/appointments/appointment-filter/appointment-filter-home/appointment-filter-home.component';
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
@@ -99,6 +104,43 @@ export const routes: Routes = [
             component: PatientFilterHomeComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Filtrar Paciente' },
+          },
+        ],
+      },
+      {
+        path: 'appointments',
+        canActivate: [authGuard],
+        data: { title: 'Consultas' },
+        children: [
+          {
+            path: '',
+            component: AppointmentListComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Lista de Consultas' },
+          },
+          {
+            path: 'create',
+            component: AppointmentCreateComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Nova Consulta' },
+          },
+          {
+            path: ':id/edit',
+            component: AppointmentEditComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Editar Consulta' },
+          },
+          {
+            path: ':id/profile',
+            component: AppointmentProfileComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Perfil da Consulta' },
+          },
+          {
+            path: 'filter',
+            component: AppointmentFilterHomeComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Filtrar Consulta' },
           },
         ],
       },

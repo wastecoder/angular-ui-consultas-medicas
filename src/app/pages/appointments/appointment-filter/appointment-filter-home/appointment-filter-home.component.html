@@ -1,0 +1,129 @@
+<div class="list-page">
+  <h1 class="page-title-list">Consultas</h1>
+
+  <div class="toolbar">
+    <button type="button" class="btn-filter" (click)="toggleFilterBar()">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filtros</span>
+    </button>
+
+    @if (chips().data) {
+      <span class="active-chip chip-data">
+        Data: {{ chips().data }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearData()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().medico) {
+      <span class="active-chip chip-medico">
+        Médico: {{ chips().medico }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearMedico()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().paciente) {
+      <span class="active-chip chip-paciente">
+        Paciente: {{ chips().paciente }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearPaciente()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().status) {
+      <span class="active-chip chip-status">
+        Status: {{ chips().status }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearStatus()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (hasAnyChip()) {
+      <button type="button" class="link-clear" (click)="clearAll()">Limpar tudo</button>
+    }
+  </div>
+
+  @if (filterBarOpen()) {
+    <section class="filter-bar">
+      <input
+        type="text"
+        class="bar-input bar-input-data"
+        placeholder="dd/mm/aaaa"
+        [matDatepicker]="picker"
+        [(ngModel)]="draftData"
+        (click)="picker.open()"
+        readonly
+      />
+      <mat-datepicker #picker></mat-datepicker>
+
+      <input
+        type="text"
+        class="bar-input bar-input-medico"
+        placeholder="Médico"
+        [formControl]="draftMedicoControl"
+        [matAutocomplete]="autoMedico"
+        autocomplete="off"
+      />
+      <mat-autocomplete
+        #autoMedico="matAutocomplete"
+        [displayWith]="displayPessoa"
+        (optionSelected)="onDraftMedicoSelecionado($event.option.value)"
+      >
+        @for (m of medicosSugeridos$ | async; track m.id) {
+          <mat-option [value]="m">{{ m.nome }}</mat-option>
+        }
+      </mat-autocomplete>
+
+      <input
+        type="text"
+        class="bar-input bar-input-paciente"
+        placeholder="Paciente"
+        [formControl]="draftPacienteControl"
+        [matAutocomplete]="autoPaciente"
+        autocomplete="off"
+      />
+      <mat-autocomplete
+        #autoPaciente="matAutocomplete"
+        [displayWith]="displayPessoa"
+        (optionSelected)="onDraftPacienteSelecionado($event.option.value)"
+      >
+        @for (p of pacientesSugeridos$ | async; track p.id) {
+          <mat-option [value]="p">{{ p.nome }}</mat-option>
+        }
+      </mat-autocomplete>
+
+      <select class="bar-select bar-select-status" [(ngModel)]="draftStatus">
+        <option value="">Status</option>
+        @for (status of statusList; track status) {
+          <option [value]="status">{{ statusLabel[status] }}</option>
+        }
+      </select>
+
+      <div class="bar-actions">
+        <button type="button" class="btn-apply" (click)="applyDraftFilters()">Filtrar</button>
+        <button type="button" class="icon-btn" title="Fechar filtros" (click)="toggleFilterBar()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </section>
+  }
+
+  <app-appointment-table
+    [consultas]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
+    (onRequestUpdate)="update($event)"
+    (onRequestViewProfile)="viewProfile($event)"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  >
+  </app-appointment-table>
+</div>

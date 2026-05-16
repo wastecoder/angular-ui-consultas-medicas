@@ -1,0 +1,175 @@
+<main class="d-flex align-items-center justify-content-center appointment-form-wrapper">
+  <div class="page-container" style="--page-max-width: 1000px;">
+
+    <h2 class="page-title">
+      {{ titulo }}
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="appointment-form">
+
+      <fieldset class="form-section">
+        <legend>Dados da consulta</legend>
+
+        <div class="row">
+          <!-- Data -->
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="w-100 form-field">
+              <mat-label>Data do atendimento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [min]="hoje"
+                formControlName="dataAtendimento"
+              />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              @if (shouldShowError(form.controls.dataAtendimento)) {
+                <mat-error>
+                  {{ getErrorMessage(form.controls.dataAtendimento.errors, 'Data do atendimento') }}
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <!-- Horário -->
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="w-100 form-field">
+              <mat-label>Horário</mat-label>
+              <input
+                matInput
+                type="time"
+                #horaInput
+                formControlName="horarioAtendimento"
+              />
+              <mat-icon
+                matSuffix
+                class="icon-clickable"
+                role="button"
+                tabindex="0"
+                aria-label="Abrir seletor de horário"
+                (click)="abrirSeletorHora(horaInput)"
+                (keydown.enter)="abrirSeletorHora(horaInput)"
+              >schedule</mat-icon>
+
+              @if (shouldShowError(form.controls.horarioAtendimento)) {
+                <mat-error>
+                  {{ getErrorMessage(form.controls.horarioAtendimento.errors, 'Horário') }}
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Duração -->
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="w-100 form-field">
+              <mat-label>Duração</mat-label>
+              <mat-select formControlName="duracaoEmMinutos">
+                @for (d of duracoes; track d) {
+                  <mat-option [value]="d">{{ d }} min</mat-option>
+                }
+              </mat-select>
+
+              @if (shouldShowError(form.controls.duracaoEmMinutos)) {
+                <mat-error>
+                  {{ getErrorMessage(form.controls.duracaoEmMinutos.errors, 'Duração') }}
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <!-- Preço -->
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="w-100 form-field">
+              <mat-label>Preço</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="preco"
+                mask="separator.2"
+                thousandSeparator="."
+                decimalMarker=","
+                prefix="R$ "
+                [allowNegativeNumbers]="false"
+                placeholder="R$ 0,00"
+                inputmode="decimal"
+              />
+
+              @if (shouldShowError(form.controls.preco)) {
+                <mat-error>
+                  {{ getErrorMessage(form.controls.preco.errors, 'Preço') }}
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Participantes</legend>
+
+        <div class="row">
+          <div class="col-6">
+            <app-person-autocomplete
+              tipo="medico"
+              label="Médico"
+              placeholder="Digite o nome do médico"
+              hint="Selecione uma opção da lista"
+              [valorInicial]="medicoInicial"
+              [obrigatorio]="true"
+              [tocado]="pessoasTocadas"
+              (selecionado)="onMedicoSelecionado($event)"
+            ></app-person-autocomplete>
+          </div>
+          <div class="col-6">
+            <app-person-autocomplete
+              tipo="paciente"
+              label="Paciente"
+              placeholder="Digite o nome do paciente"
+              hint="Selecione uma opção da lista"
+              [valorInicial]="pacienteInicial"
+              [obrigatorio]="true"
+              [tocado]="pessoasTocadas"
+              (selecionado)="onPacienteSelecionado($event)"
+            ></app-person-autocomplete>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Detalhes</legend>
+
+        <mat-form-field appearance="outline" class="w-100 form-field">
+          <mat-label>Motivo</mat-label>
+          <textarea
+            matInput
+            formControlName="motivo"
+            rows="3"
+            [maxlength]="motivoMax"
+          ></textarea>
+          <mat-hint align="end">{{ form.controls.motivo.value.length }} / {{ motivoMax }}</mat-hint>
+
+          @if (shouldShowError(form.controls.motivo)) {
+            <mat-error>
+              {{ getErrorMessage(form.controls.motivo.errors, 'Motivo') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </fieldset>
+
+      <!-- Botão -->
+      <button
+        type="submit"
+        mat-flat-button
+        [disabled]="loading"
+        class="btn btn-form"
+      >
+        Salvar
+      </button>
+
+    </form>
+
+  </div>
+</main>

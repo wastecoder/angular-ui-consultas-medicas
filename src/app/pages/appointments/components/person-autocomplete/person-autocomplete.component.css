@@ -1,0 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host .person-autocomplete {
+  margin-bottom: 0;
+}

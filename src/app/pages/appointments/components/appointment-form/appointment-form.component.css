@@ -1,0 +1,80 @@
+.appointment-form-wrapper {
+  min-height: calc(100vh - 115px);
+  padding: 35px 16px;
+  box-sizing: border-box;
+}
+
+:host .page-container {
+  padding-top: 35px;
+  padding-bottom: 35px;
+  border-radius: 10px;
+}
+
+:host .page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin: 0 0 35px;
+  padding: 0 0 13px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.form-section:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 13px;
+  border-bottom: none;
+}
+
+.form-section legend {
+  float: none;
+  width: auto;
+  padding: 0;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+:host .form-field {
+  margin-bottom: 0;
+}
+
+:host .form-field {
+  --mat-form-field-container-height: 48px;
+}
+
+:host .form-field .mat-mdc-form-field-infix {
+  min-height: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+:host .form-field .mat-mdc-input-element,
+:host .form-field .mat-mdc-select-value {
+  font-size: 0.9rem;
+}
+
+:host .btn-form {
+  font-size: 1.6rem;
+}
+
+.icon-clickable {
+  cursor: pointer;
+}
+
+.icon-clickable:hover {
+  color: var(--text-primary);
+}

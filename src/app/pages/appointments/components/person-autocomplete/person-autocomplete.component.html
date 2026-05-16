@@ -1,0 +1,31 @@
+<mat-form-field appearance="outline" class="w-100 form-field person-autocomplete">
+  <mat-label>{{ label }}</mat-label>
+  <mat-icon matPrefix>search</mat-icon>
+  <input
+    matInput
+    type="text"
+    [formControl]="control"
+    [matAutocomplete]="auto"
+    [placeholder]="placeholder"
+    (focus)="abrirPainel()"
+    (blur)="onBlur()"
+    autocomplete="off"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayPessoa"
+    (optionSelected)="onOptionSelected($event)"
+  >
+    @for (pessoa of sugestoes$ | async; track pessoa.id) {
+      <mat-option [value]="pessoa">{{ pessoa.nome }}</mat-option>
+    }
+  </mat-autocomplete>
+
+  @if (hint && !mostrarErroObrigatorio) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+
+  @if (mostrarErroObrigatorio) {
+    <mat-error>{{ label }} é obrigatório.</mat-error>
+  }
+</mat-form-field>

@@ -1,0 +1,128 @@
+<div class="table-responsive">
+  <table mat-table
+         [dataSource]="consultas"
+         matSort
+         [matSortActive]="sortActive"
+         [matSortDirection]="sortDirection"
+         [matSortDisableClear]="true"
+         (matSortChange)="onSortChange($event)"
+         class="mat-elevation-z8 w-100">
+
+    <!-- Data -->
+    <ng-container matColumnDef="dataAtendimento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-12">
+        Data
+        @if (sortActive !== 'dataAtendimento') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-12">
+        {{ consulta.dataAtendimento | date:'dd/MM/yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- Horário -->
+    <ng-container matColumnDef="horarioAtendimento">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-8">
+        Hora
+        @if (sortActive !== 'horarioAtendimento') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-8">
+        {{ formatHora(consulta.horarioAtendimento) }}
+      </td>
+    </ng-container>
+
+    <!-- Médico -->
+    <ng-container matColumnDef="medico">
+      <th mat-header-cell *matHeaderCellDef class="colw-20"> Médico </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-20"> {{ consulta.medico?.nome }} </td>
+    </ng-container>
+
+    <!-- Paciente -->
+    <ng-container matColumnDef="paciente">
+      <th mat-header-cell *matHeaderCellDef class="colw-20"> Paciente </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-20"> {{ consulta.paciente?.nome }} </td>
+    </ng-container>
+
+    <!-- Status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-12">
+        Status
+        @if (sortActive !== 'status') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-12">
+        <span class="status-chip"
+              [class.status-agendada]="consulta.status === 'AGENDADA'"
+              [class.status-realizada]="consulta.status === 'REALIZADA'"
+              [class.status-cancelada]="consulta.status === 'CANCELADA'">
+          {{ statusLabel(consulta.status) }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Preço -->
+    <ng-container matColumnDef="preco">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-10">
+        Preço
+        @if (sortActive !== 'preco') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-10">
+        {{ formatPreco(consulta.preco) }}
+      </td>
+    </ng-container>
+
+    <!-- Duração -->
+    <ng-container matColumnDef="duracaoEmMinutos">
+      <th mat-header-cell *matHeaderCellDef class="colw-8"> Duração </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-8"> {{ consulta.duracaoEmMinutos }} min </td>
+    </ng-container>
+
+    <!-- Ações -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef class="colw-6 col-acoes"> Ações </th>
+      <td mat-cell *matCellDef="let consulta" class="colw-6 col-acoes">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          matTooltip="Ações"
+          class="action-button"
+          aria-label="Abrir menu de ações"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          @if (consulta.status === 'AGENDADA') {
+            <button mat-menu-item (click)="update(consulta)">
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button>
+          }
+
+          <button mat-menu-item (click)="viewProfile(consulta)">
+            <mat-icon>visibility</mat-icon>
+            <span>Visualizar consulta</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  (page)="onPageChange($event)">
+</mat-paginator>
