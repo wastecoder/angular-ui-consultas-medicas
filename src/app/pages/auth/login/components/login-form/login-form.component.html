@@ -75,7 +75,7 @@
           Manter-me conectado
         </mat-checkbox>
 
-        <a class="login-forgot" href="#" (click)="$event.preventDefault()">
+        <a class="login-forgot" routerLink="/forgot-password">
           Esqueci minha senha?
         </a>
       </div>
@@ -88,6 +88,11 @@
       >
         Entrar
       </button>
+
+      <p class="login-signup">
+        Novo paciente?
+        <a routerLink="/signup">Cadastre-se aqui</a>
+      </p>
 
     </form>
 

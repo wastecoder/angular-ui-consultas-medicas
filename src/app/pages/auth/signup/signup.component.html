@@ -1,0 +1,211 @@
+<main class="auth-main">
+  <section class="auth-card auth-card-wide">
+
+    <h1 class="auth-title">Criar conta</h1>
+    <p class="auth-subtitle">
+      Cadastre-se como paciente para agendar suas consultas.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+
+      <fieldset class="auth-fieldset">
+        <legend>Dados pessoais</legend>
+
+        <div class="auth-field">
+          <label for="signup-nome" class="auth-field-label">Nome completo</label>
+          <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+            <input matInput id="signup-nome" formControlName="nome" />
+          </mat-form-field>
+          @if (shouldShowError(form.controls.nome)) {
+            <p class="auth-field-error">
+              {{ getErrorMessage(form.controls.nome.errors, 'Nome') }}
+            </p>
+          }
+        </div>
+
+        <div class="auth-row">
+          <div class="auth-field">
+            <label for="signup-cpf" class="auth-field-label">CPF</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <input matInput id="signup-cpf" formControlName="cpf" mask="000.000.000-00" />
+            </mat-form-field>
+            @if (shouldShowError(form.controls.cpf)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.cpf.errors, 'CPF') }}
+              </p>
+            }
+          </div>
+
+          <div class="auth-field">
+            <label for="signup-sexo" class="auth-field-label">Sexo</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <mat-select id="signup-sexo" formControlName="sexo">
+                @for (sexo of sexos; track sexo) {
+                  <mat-option [value]="sexo">{{ sexo | titlecase }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            @if (shouldShowError(form.controls.sexo)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.sexo.errors, 'Sexo') }}
+              </p>
+            }
+          </div>
+        </div>
+
+        <div class="auth-row">
+          <div class="auth-field">
+            <label for="signup-telefone" class="auth-field-label">Telefone</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <input
+                matInput
+                id="signup-telefone"
+                type="tel"
+                formControlName="telefone"
+                [mask]="'(00) 0000-0000||(00) 00000-0000'"
+              />
+            </mat-form-field>
+            @if (shouldShowError(form.controls.telefone)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.telefone.errors, 'Telefone') }}
+              </p>
+            }
+          </div>
+
+          <div class="auth-field">
+            <label for="signup-data" class="auth-field-label">Data de nascimento</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <input
+                matInput
+                id="signup-data"
+                [matDatepicker]="picker"
+                formControlName="dataNascimento"
+                [max]="hoje"
+              />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            @if (shouldShowError(form.controls.dataNascimento)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.dataNascimento.errors, 'Data de nascimento') }}
+              </p>
+            }
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="auth-fieldset">
+        <legend>Credenciais de acesso</legend>
+
+        <div class="auth-field">
+          <label for="signup-email" class="auth-field-label">E-mail</label>
+          <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+            <input
+              matInput
+              id="signup-email"
+              type="email"
+              autocomplete="email"
+              formControlName="email"
+            />
+          </mat-form-field>
+          @if (shouldShowError(form.controls.email)) {
+            <p class="auth-field-error">
+              {{ getErrorMessage(form.controls.email.errors, 'E-mail') }}
+            </p>
+          }
+        </div>
+
+        <div class="auth-field">
+          <label for="signup-username" class="auth-field-label">Nome de usuário</label>
+          <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+            <input
+              matInput
+              id="signup-username"
+              autocomplete="username"
+              formControlName="username"
+            />
+          </mat-form-field>
+          @if (shouldShowError(form.controls.username)) {
+            <p class="auth-field-error">
+              {{ getErrorMessage(form.controls.username.errors, 'Usuário') }}
+            </p>
+          }
+        </div>
+
+        <div class="auth-row">
+          <div class="auth-field">
+            <label for="signup-senha" class="auth-field-label">Senha</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <input
+                matInput
+                id="signup-senha"
+                [type]="senhaVisible() ? 'text' : 'password'"
+                autocomplete="new-password"
+                formControlName="senha"
+              />
+              <button
+                matSuffix
+                mat-icon-button
+                type="button"
+                class="auth-eye-btn"
+                [attr.aria-label]="senhaVisible() ? 'esconder senha' : 'mostrar senha'"
+                (click)="toggleSenha()"
+              >
+                <mat-icon>{{ senhaVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+            @if (shouldShowError(form.controls.senha)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.senha.errors, 'Senha') }}
+              </p>
+            }
+          </div>
+
+          <div class="auth-field">
+            <label for="signup-confirmar" class="auth-field-label">Confirmar senha</label>
+            <mat-form-field appearance="outline" class="auth-input no-bottom-gap-form-field">
+              <input
+                matInput
+                id="signup-confirmar"
+                [type]="confirmarVisible() ? 'text' : 'password'"
+                autocomplete="new-password"
+                formControlName="confirmarSenha"
+              />
+              <button
+                matSuffix
+                mat-icon-button
+                type="button"
+                class="auth-eye-btn"
+                [attr.aria-label]="confirmarVisible() ? 'esconder senha' : 'mostrar senha'"
+                (click)="toggleConfirmar()"
+              >
+                <mat-icon>{{ confirmarVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+            @if (shouldShowError(form.controls.confirmarSenha)) {
+              <p class="auth-field-error">
+                {{ getErrorMessage(form.controls.confirmarSenha.errors, 'Confirmação') }}
+              </p>
+            }
+          </div>
+        </div>
+      </fieldset>
+
+      <button
+        type="submit"
+        mat-flat-button
+        [disabled]="form.invalid || loading()"
+        class="auth-submit"
+      >
+        {{ loading() ? 'Cadastrando...' : 'Criar conta' }}
+      </button>
+
+      <p class="auth-footer-link">
+        Já tem uma conta?
+        <a routerLink="/login">Faça login</a>
+      </p>
+
+    </form>
+
+  </section>
+</main>

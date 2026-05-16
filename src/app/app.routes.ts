@@ -21,7 +21,10 @@ import { UserEditComponent } from '@pages/users/user-edit/user-edit.component';
 import { UserProfileComponent } from '@pages/users/user-profile/user-profile.component';
 import { UserFilterHomeComponent } from '@pages/users/user-filter/user-filter-home/user-filter-home.component';
 import { OperationalDashboardComponent } from '@pages/dashboards/operational/operational-dashboard.component';
-import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
+import { LoginHomeComponent } from '@pages/auth/login/login-home/login-home.component';
+import { SignupComponent } from '@pages/auth/signup/signup.component';
+import { ForgotPasswordComponent } from '@pages/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from '@pages/auth/reset-password/reset-password.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
 import { LogoutComponent } from '@pages/logout/logout.component';
@@ -212,6 +215,21 @@ export const routes: Routes = [
         path: 'login',
         component: LoginHomeComponent,
         data: { title: 'Login' },
+      },
+      {
+        path: 'signup',
+        component: SignupComponent,
+        data: { title: 'Criar conta' },
+      },
+      {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        data: { title: 'Recuperar senha' },
+      },
+      {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
+        data: { title: 'Redefinir senha' },
       },
       {
         path: 'logout',

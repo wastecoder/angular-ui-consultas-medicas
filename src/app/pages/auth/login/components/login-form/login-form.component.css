@@ -137,6 +137,23 @@
   opacity: 1 !important;
 }
 
+.login-signup {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.login-signup a {
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.login-signup a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 500px) {
   .login-card {
     padding: 32px 24px;

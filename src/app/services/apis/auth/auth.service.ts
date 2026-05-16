@@ -5,10 +5,13 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '@env/environment';
 import {
+  ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
   LogoutRequest,
   RefreshRequest,
+  ResetPasswordRequest,
+  SignupRequest,
 } from './auth.models';
 import { Router } from '@angular/router';
 import { Funcao, isFuncao } from '@shared/auth/role.types';
@@ -43,6 +46,35 @@ export class AuthService {
           }
         })
       );
+  }
+
+  signup(payload: SignupRequest, rememberMe: boolean = true): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${environment.apiUrl}auth/signup`, payload)
+      .pipe(
+        tap((response) => {
+          if (response?.accessToken && response?.refreshToken) {
+            this.saveTokens(response, rememberMe);
+            this.currentUserSubject.next(this.getUserData());
+          }
+        })
+      );
+  }
+
+  forgotPassword(email: string): Observable<void> {
+    const body: ForgotPasswordRequest = { email };
+    return this.http.post<void>(
+      `${environment.apiUrl}auth/forgot-password`,
+      body
+    );
+  }
+
+  resetPassword(token: string, novaSenha: string): Observable<void> {
+    const body: ResetPasswordRequest = { token, novaSenha };
+    return this.http.post<void>(
+      `${environment.apiUrl}auth/reset-password`,
+      body
+    );
   }
 
   refresh(): Observable<LoginResponse> {
