@@ -1,0 +1,97 @@
+<article *ngIf="usuario" class="profile-card">
+
+  <header class="profile-header">
+    <div class="avatar" aria-hidden="true">{{ initials }}</div>
+
+    <div class="identity">
+      <h1 class="name">{{ usuario.username }}</h1>
+      <p class="subtitle">{{ funcaoLabel[usuario.funcao] }}</p>
+    </div>
+
+    <span class="status-badge" [class.status-active]="usuario.ativo" [class.status-inactive]="!usuario.ativo">
+      {{ usuario.ativo ? 'Ativo' : 'Inativo' }}
+    </span>
+  </header>
+
+  <hr class="divider">
+
+  <section class="fields">
+    <div class="field">
+      <span class="label">Email</span>
+      <span class="value">{{ usuario.email }}</span>
+    </div>
+    <div class="field">
+      <span class="label">Função</span>
+      <span class="value">{{ funcaoLabel[usuario.funcao] }}</span>
+    </div>
+    <div class="field">
+      <span class="label">ID</span>
+      <span class="value">#{{ usuario.id }}</span>
+    </div>
+
+    @if (usuario.auditoria) {
+      <div class="field">
+        <span class="label">Criado por</span>
+        <span class="value">
+          {{ usuario.auditoria.createdBy ?? '—' }}
+          @if (usuario.auditoria.createdDate) {
+            <span class="meta"> em {{ usuario.auditoria.createdDate | date:'dd/MM/yyyy HH:mm' }}</span>
+          }
+        </span>
+      </div>
+      <div class="field">
+        <span class="label">Última alteração</span>
+        <span class="value">
+          {{ usuario.auditoria.lastModifiedBy ?? '—' }}
+          @if (usuario.auditoria.lastModifiedDate) {
+            <span class="meta"> em {{ usuario.auditoria.lastModifiedDate | date:'dd/MM/yyyy HH:mm' }}</span>
+          }
+        </span>
+      </div>
+    }
+  </section>
+
+  <footer class="actions">
+    <!-- Editar (apenas ADMIN) -->
+    <button *appHasRole="['ADMIN']" class="btn btn-primary" type="button" (click)="update(usuario)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      <span>Editar</span>
+    </button>
+
+    @if (!usuario.ativo) {
+      <button *appHasRole="['ADMIN','RECEPCIONISTA']" class="btn btn-success" type="button" [disabled]="loading()" (click)="activate()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="6 4 20 12 6 20 6 4"/>
+        </svg>
+        <span>Ativar</span>
+      </button>
+    }
+
+    @if (usuario.ativo) {
+      <button *appHasRole="['ADMIN','RECEPCIONISTA']" class="btn btn-warning" type="button" [disabled]="loading()" (click)="deactivate()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </svg>
+        <span>Inativar</span>
+      </button>
+    }
+
+    @if (!usuario.ativo) {
+      <button *appHasRole="['ADMIN']" class="btn btn-danger" type="button" [disabled]="loading()" (click)="delete()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6"/>
+          <path d="M14 11v6"/>
+          <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+        </svg>
+        <span>Excluir</span>
+      </button>
+    }
+  </footer>
+
+</article>

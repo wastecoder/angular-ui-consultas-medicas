@@ -86,6 +86,25 @@
       <li
         *appHasRole="['ADMIN','RECEPCIONISTA']"
         class="dropdown"
+        [class.open]="openDropdown() === 'usuario'"
+      >
+        <a
+          class="nav-link"
+          href="#"
+          (click)="$event.preventDefault(); toggleDropdown('usuario')"
+        >
+          Usuário
+        </a>
+        <div class="dropdown-menu">
+          <a routerLink="/users/create">Cadastrar</a>
+          <a routerLink="/users">Listar ativos</a>
+          <a routerLink="/users/filter">Aplicar filtros</a>
+        </div>
+      </li>
+
+      <li
+        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        class="dropdown"
         [class.open]="openDropdown() === 'relatorio'"
       >
         <a

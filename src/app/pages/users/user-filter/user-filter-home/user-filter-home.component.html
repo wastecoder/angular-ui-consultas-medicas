@@ -1,0 +1,95 @@
+<div class="list-page">
+  <h1 class="page-title-list">Usuários</h1>
+
+  <div class="toolbar">
+    <button type="button" class="btn-filter" (click)="toggleFilterBar()">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filtros</span>
+    </button>
+
+    @if (chips().status) {
+      <span class="active-chip chip-status">
+        Status: {{ chips().status }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearStatus()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().username) {
+      <span class="active-chip chip-username">
+        Usuário: {{ chips().username }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearUsername()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().funcao) {
+      <span class="active-chip chip-funcao">
+        Função: {{ chips().funcao }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearFuncao()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (hasAnyChip()) {
+      <button type="button" class="link-clear" (click)="clearAll()">Limpar tudo</button>
+    }
+  </div>
+
+  @if (filterBarOpen()) {
+    <section class="filter-bar">
+      <div class="chip-group" role="radiogroup" aria-label="Status">
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'todos'"
+                (click)="setDraftStatus('todos')">Todos</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'ativo'"
+                (click)="setDraftStatus('ativo')">Ativo</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'inativo'"
+                (click)="setDraftStatus('inativo')">Inativo</button>
+      </div>
+
+      <div class="bar-divider" aria-hidden="true"></div>
+
+      <input
+        type="text"
+        class="bar-input bar-input-username"
+        placeholder="Usuário"
+        [(ngModel)]="draftUsername"
+      />
+
+      <select class="bar-select bar-select-funcao" [(ngModel)]="draftFuncao">
+        <option value="">Função</option>
+        @for (f of funcoes; track f) {
+          <option [value]="f">{{ funcaoLabel[f] }}</option>
+        }
+      </select>
+
+      <div class="bar-actions">
+        <button type="button" class="btn-apply" (click)="applyDraftFilters()">Filtrar</button>
+        <button type="button" class="icon-btn" title="Fechar filtros" (click)="toggleFilterBar()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </section>
+  }
+
+  <app-user-table
+    [usuarios]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
+    (onRequestUpdate)="update($event)"
+    (onRequestViewProfile)="viewProfile($event)"
+    (onRequestToggleAtivo)="toggleAtivo($event)"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  >
+  </app-user-table>
+</div>

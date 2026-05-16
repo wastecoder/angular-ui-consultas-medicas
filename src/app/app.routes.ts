@@ -15,6 +15,11 @@ import { AppointmentListComponent } from '@pages/appointments/appointment-list/a
 import { AppointmentEditComponent } from '@pages/appointments/appointment-edit/appointment-edit.component';
 import { AppointmentProfileComponent } from '@pages/appointments/appointment-profile/appointment-profile.component';
 import { AppointmentFilterHomeComponent } from '@pages/appointments/appointment-filter/appointment-filter-home/appointment-filter-home.component';
+import { UserCreateComponent } from '@pages/users/user-create/user-create.component';
+import { UserListComponent } from '@pages/users/user-list/user-list.component';
+import { UserEditComponent } from '@pages/users/user-edit/user-edit.component';
+import { UserProfileComponent } from '@pages/users/user-profile/user-profile.component';
+import { UserFilterHomeComponent } from '@pages/users/user-filter/user-filter-home/user-filter-home.component';
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
@@ -141,6 +146,43 @@ export const routes: Routes = [
             component: AppointmentFilterHomeComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Filtrar Consulta' },
+          },
+        ],
+      },
+      {
+        path: 'users',
+        canActivate: [authGuard],
+        data: { title: 'Usuários' },
+        children: [
+          {
+            path: '',
+            component: UserListComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Lista de Usuários' },
+          },
+          {
+            path: 'create',
+            component: UserCreateComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Novo Usuário' },
+          },
+          {
+            path: ':id/edit',
+            component: UserEditComponent,
+            canActivate: [roleGuard(['ADMIN'])],
+            data: { title: 'Editar Usuário' },
+          },
+          {
+            path: ':id/profile',
+            component: UserProfileComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Perfil do Usuário' },
+          },
+          {
+            path: 'filter',
+            component: UserFilterHomeComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Filtrar Usuários' },
           },
         ],
       },

@@ -1,0 +1,99 @@
+<div class="table-responsive">
+  <table mat-table
+         [dataSource]="usuarios"
+         matSort
+         [matSortActive]="sortActive"
+         [matSortDirection]="sortDirection"
+         [matSortDisableClear]="true"
+         (matSortChange)="onSortChange($event)"
+         class="mat-elevation-z8 w-100">
+
+    <!-- Username -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-24">
+        Usuário
+        @if (sortActive !== 'username') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let usuario" class="colw-24"> {{ usuario.username }} </td>
+    </ng-container>
+
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-26">
+        E-mail
+        @if (sortActive !== 'email') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let usuario" class="colw-26"> {{ usuario.email }} </td>
+    </ng-container>
+
+    <!-- Função -->
+    <ng-container matColumnDef="funcao">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="colw-20">
+        Função
+        @if (sortActive !== 'funcao') {
+          <mat-icon class="sort-icon-inactive">unfold_more</mat-icon>
+        }
+      </th>
+      <td mat-cell *matCellDef="let usuario" class="colw-20"> {{ labelFuncao(usuario.funcao) }} </td>
+    </ng-container>
+
+    <!-- Ativo -->
+    <ng-container matColumnDef="ativo">
+      <th mat-header-cell *matHeaderCellDef class="colw-14"> Status </th>
+      <td mat-cell *matCellDef="let usuario" class="colw-14">
+        <span class="status-badge" [class.is-ativo]="usuario.ativo" [class.is-inativo]="!usuario.ativo">
+          {{ usuario.ativo ? 'Ativo' : 'Inativo' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Ações -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef class="colw-6 col-acoes"> Ações </th>
+      <td mat-cell *matCellDef="let usuario" class="colw-6 col-acoes">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          matTooltip="Ações"
+          class="action-button"
+          aria-label="Abrir menu de ações"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button *appHasRole="['ADMIN']" mat-menu-item (click)="update(usuario)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+
+          <button mat-menu-item (click)="viewProfile(usuario)">
+            <mat-icon>person</mat-icon>
+            <span>Visualizar perfil</span>
+          </button>
+
+          <button *appHasRole="['ADMIN','RECEPCIONISTA']" mat-menu-item (click)="toggleAtivo(usuario)">
+            <mat-icon>{{ usuario.ativo ? 'toggle_off' : 'toggle_on' }}</mat-icon>
+            <span>{{ usuario.ativo ? 'Inativar' : 'Ativar' }}</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  (page)="onPageChange($event)">
+</mat-paginator>
