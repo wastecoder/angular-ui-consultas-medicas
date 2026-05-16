@@ -20,6 +20,7 @@ import { UserListComponent } from '@pages/users/user-list/user-list.component';
 import { UserEditComponent } from '@pages/users/user-edit/user-edit.component';
 import { UserProfileComponent } from '@pages/users/user-profile/user-profile.component';
 import { UserFilterHomeComponent } from '@pages/users/user-filter/user-filter-home/user-filter-home.component';
+import { OperationalDashboardComponent } from '@pages/dashboards/operational/operational-dashboard.component';
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
@@ -183,6 +184,19 @@ export const routes: Routes = [
             component: UserFilterHomeComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Filtrar Usuários' },
+          },
+        ],
+      },
+      {
+        path: 'dashboards',
+        canActivate: [authGuard],
+        data: { title: 'Dashboards' },
+        children: [
+          {
+            path: 'operacional',
+            component: OperationalDashboardComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Dashboard Operacional' },
           },
         ],
       },

@@ -1,0 +1,212 @@
+<div class="list-page">
+  <h1 class="page-title-list">Dashboard Operacional</h1>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Consultas de hoje</div>
+      <div class="kpi-value">{{ hojePage()?.totalElements ?? '—' }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Próximos 7 dias</div>
+      <div class="kpi-value">{{ proximos7Page()?.totalElements ?? '—' }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Pendentes</div>
+      <div class="kpi-value">{{ pendentesPage()?.totalElements ?? '—' }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Médicos sem agendamento</div>
+      <div class="kpi-value">
+        {{ semAgendamentoPage()?.totalElements ?? '—' }}
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Consultas de hoje -->
+  <section class="dash-section">
+    <h2 class="dash-title">Consultas de hoje</h2>
+    @if (hojeLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap">
+        @if ((hojePage()?.totalElements ?? 0) > 0) {
+          <canvas
+            baseChart
+            type="doughnut"
+            [data]="hojeChart()"
+            [options]="doughnutOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem consultas hoje.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="hojePage()?.content ?? []">
+          <ng-container matColumnDef="horario">
+            <th mat-header-cell *matHeaderCellDef>Horário</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatHora(row.horarioConsulta) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="medico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomeMedico }}</td>
+          </ng-container>
+          <ng-container matColumnDef="paciente">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomePaciente }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let row">
+              {{ statusLabel(row.statusConsulta) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="hojeColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: hojeColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="hojePage()?.totalElements ?? 0"
+          [pageSize]="hojePage()?.size ?? pageSize"
+          [pageIndex]="hojePage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onHojePage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Próximos 7 dias -->
+  <section class="dash-section">
+    <h2 class="dash-title">Consultas dos próximos 7 dias</h2>
+    @if (proximos7Loading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap">
+        @if ((proximos7Page()?.totalElements ?? 0) > 0) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="proximos7Chart()"
+            [options]="barOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem consultas nos próximos 7 dias.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="proximos7Page()?.content ?? []">
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatData(row.dataConsulta) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="medico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomeMedico }}</td>
+          </ng-container>
+          <ng-container matColumnDef="paciente">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomePaciente }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let row">
+              {{ statusLabel(row.statusConsulta) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="proximos7Columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: proximos7Columns"></tr>
+        </table>
+        <mat-paginator
+          [length]="proximos7Page()?.totalElements ?? 0"
+          [pageSize]="proximos7Page()?.size ?? pageSize"
+          [pageIndex]="proximos7Page()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onProximos7Page($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Consultas pendentes -->
+  <section class="dash-section">
+    <h2 class="dash-title">Consultas pendentes</h2>
+    @if (pendentesLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body single">
+      <div class="table-wrap table-responsive">
+        @if ((pendentesPage()?.totalElements ?? 0) === 0 && !pendentesLoading()) {
+          <div class="empty">Sem consultas pendentes.</div>
+        }
+        <table mat-table [dataSource]="pendentesPage()?.content ?? []">
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatData(row.dataConsulta) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="medico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomeMedico }}</td>
+          </ng-container>
+          <ng-container matColumnDef="paciente">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomePaciente }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="pendentesColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: pendentesColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="pendentesPage()?.totalElements ?? 0"
+          [pageSize]="pendentesPage()?.size ?? pageSize"
+          [pageIndex]="pendentesPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onPendentesPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Médicos sem agendamento -->
+  <section class="dash-section">
+    <h2 class="dash-title">Médicos sem agendamento no mês</h2>
+    @if (semAgendamentoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body single">
+      <div class="table-wrap table-responsive">
+        @if (
+          (semAgendamentoPage()?.totalElements ?? 0) === 0 &&
+          !semAgendamentoLoading()
+        ) {
+          <div class="empty">Todos os médicos têm agendamento neste mês.</div>
+        }
+        <table mat-table [dataSource]="semAgendamentoPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomeMedico }}</td>
+          </ng-container>
+          <ng-container matColumnDef="especialidade">
+            <th mat-header-cell *matHeaderCellDef>Especialidade</th>
+            <td mat-cell *matCellDef="let row">{{ row.especialidadeMedica }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="semAgendamentoColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: semAgendamentoColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="semAgendamentoPage()?.totalElements ?? 0"
+          [pageSize]="semAgendamentoPage()?.size ?? pageSize"
+          [pageIndex]="semAgendamentoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onSemAgendamentoPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+</div>
