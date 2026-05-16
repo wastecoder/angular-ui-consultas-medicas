@@ -5,6 +5,11 @@ import { DoctorListComponent } from '@pages/doctors/doctor-list/doctor-list.comp
 import { DoctorEditComponent } from '@pages/doctors/doctor-edit/doctor-edit.component';
 import { DoctorProfileComponent } from '@pages/doctors/doctor-profile/doctor-profile.component';
 import { DoctorFilterHomeComponent } from '@pages/doctors/doctor-filter/doctor-filter-home/doctor-filter-home.component';
+import { PatientCreateComponent } from '@pages/patients/patient-create/patient-create.component';
+import { PatientListComponent } from '@pages/patients/patient-list/patient-list.component';
+import { PatientEditComponent } from '@pages/patients/patient-edit/patient-edit.component';
+import { PatientProfileComponent } from '@pages/patients/patient-profile/patient-profile.component';
+import { PatientFilterHomeComponent } from '@pages/patients/patient-filter/patient-filter-home/patient-filter-home.component';
 import { LoginHomeComponent } from '@pages/login/login-home/login-home.component';
 import { LayoutFullComponent } from './layouts/layout-full/layout-full.component';
 import { LayoutBlankComponent } from './layouts/layout-blank/layout-blank.component';
@@ -57,6 +62,43 @@ export const routes: Routes = [
             component: DoctorFilterHomeComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Filtrar Médico' },
+          },
+        ],
+      },
+      {
+        path: 'patients',
+        canActivate: [authGuard],
+        data: { title: 'Pacientes' },
+        children: [
+          {
+            path: '',
+            component: PatientListComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Lista de Pacientes' },
+          },
+          {
+            path: 'create',
+            component: PatientCreateComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Novo Paciente' },
+          },
+          {
+            path: ':id/edit',
+            component: PatientEditComponent,
+            canActivate: [roleGuard(['ADMIN'])],
+            data: { title: 'Editar Paciente' },
+          },
+          {
+            path: ':id/profile',
+            component: PatientProfileComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Perfil do Paciente' },
+          },
+          {
+            path: 'filter',
+            component: PatientFilterHomeComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Filtrar Paciente' },
           },
         ],
       },

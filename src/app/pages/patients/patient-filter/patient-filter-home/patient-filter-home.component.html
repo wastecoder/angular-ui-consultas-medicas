@@ -1,0 +1,112 @@
+<div class="list-page">
+  <h1 class="page-title-list">Pacientes</h1>
+
+  <div class="toolbar">
+    <button type="button" class="btn-filter" (click)="toggleFilterBar()">
+      <mat-icon>filter_list</mat-icon>
+      <span>Filtros</span>
+    </button>
+
+    @if (chips().status) {
+      <span class="active-chip chip-status">
+        Status: {{ chips().status }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearStatus()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().nome) {
+      <span class="active-chip chip-name">
+        Nome: {{ chips().nome }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearNome()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().cpf) {
+      <span class="active-chip chip-cpf">
+        CPF: {{ chips().cpf }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearCpf()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (chips().sexo) {
+      <span class="active-chip chip-sexo">
+        Sexo: {{ chips().sexo }}
+        <button class="chip-x" type="button" title="Remover" (click)="clearSexo()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    }
+
+    @if (hasAnyChip()) {
+      <button type="button" class="link-clear" (click)="clearAll()">Limpar tudo</button>
+    }
+  </div>
+
+  @if (filterBarOpen()) {
+    <section class="filter-bar">
+      <div class="chip-group" role="radiogroup" aria-label="Status">
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'todos'"
+                (click)="setDraftStatus('todos')">Todos</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'ativo'"
+                (click)="setDraftStatus('ativo')">Ativo</button>
+        <button type="button" class="chip"
+                [class.is-active]="draftStatus === 'inativo'"
+                (click)="setDraftStatus('inativo')">Inativo</button>
+      </div>
+
+      <div class="bar-divider" aria-hidden="true"></div>
+
+      <input
+        type="text"
+        class="bar-input bar-input-nome"
+        placeholder="Nome"
+        [(ngModel)]="draftNome"
+      />
+
+      <input
+        type="text"
+        class="bar-input bar-input-cpf"
+        placeholder="CPF"
+        mask="000.000.000-00"
+        [(ngModel)]="draftCpf"
+      />
+
+      <select class="bar-select bar-select-sexo" [(ngModel)]="draftSexo">
+        <option value="">Sexo</option>
+        @for (sexo of sexos; track sexo) {
+          <option [value]="sexo">{{ sexo | titlecase }}</option>
+        }
+      </select>
+
+      <div class="bar-actions">
+        <button type="button" class="btn-apply" (click)="applyDraftFilters()">Filtrar</button>
+        <button type="button" class="icon-btn" title="Fechar filtros" (click)="toggleFilterBar()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </section>
+  }
+
+  <app-patient-table
+    [pacientes]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
+    (onRequestUpdate)="update($event)"
+    (onRequestViewProfile)="viewProfile($event)"
+    (onRequestToggleAtivo)="toggleAtivo($event)"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  >
+  </app-patient-table>
+</div>

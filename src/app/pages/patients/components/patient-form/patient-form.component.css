@@ -1,0 +1,80 @@
+/* Wrapper: garante respiro entre o card e a navbar/footer (35px) */
+.patient-form-wrapper {
+  min-height: calc(100vh - 115px);
+  padding: 35px 16px;
+  box-sizing: border-box;
+}
+
+/* Card: padding vertical 35px (sobrescreve 60px global) + borda menos arredondada */
+:host .page-container {
+  padding-top: 35px;
+  padding-bottom: 35px;
+  border-radius: 10px;
+}
+
+/* Título: tamanho/peso iguais ao .page-title-list, 35px abaixo (sobrescreve 55px global e h2 do Bootstrap 2rem) */
+:host .page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+.patient-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin: 0 0 35px;
+  padding: 0 0 13px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.form-section:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 13px;
+  border-bottom: none;
+}
+
+/* Sobrescreve Bootstrap: legend { float: left; width: 100%; font-size: calc(1.275rem + 0.3vw) } */
+.form-section legend {
+  float: none;
+  width: auto;
+  padding: 0;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Anula o .form-field { margin-bottom: 20px } global — o espaço entre campos vem do gap da seção */
+:host .form-field {
+  margin-bottom: 0;
+}
+
+/* Inputs um pouco menores (altura e fonte) — proporcionais à legenda */
+:host .form-field {
+  --mat-form-field-container-height: 48px;
+}
+
+/* Centraliza o texto verticalmente dentro do input (Material por padrão usa padding-top > padding-bottom no outline) */
+:host .form-field .mat-mdc-form-field-infix {
+  min-height: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+:host .form-field .mat-mdc-input-element,
+:host .form-field .mat-mdc-select-value {
+  font-size: 0.9rem;
+}
+
+/* Botão Salvar */
+:host .btn-form {
+  font-size: 1.6rem;
+}

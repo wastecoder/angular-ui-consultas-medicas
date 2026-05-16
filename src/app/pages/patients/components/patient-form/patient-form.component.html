@@ -1,0 +1,140 @@
+<main class="d-flex align-items-center justify-content-center patient-form-wrapper">
+    <div class="page-container" style="--page-max-width: 1000px;">
+
+        <h2 class="page-title">
+            {{ titulo }}
+        </h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="patient-form">
+
+            <fieldset class="form-section">
+                <legend>Dados pessoais</legend>
+
+                <!-- Nome -->
+                <mat-form-field appearance="outline" class="w-100 form-field">
+                    <mat-label>Nome</mat-label>
+                    <input
+                        matInput
+                        formControlName="nome"
+                    />
+
+                    @if (shouldShowError(form.controls.nome)) {
+                        <mat-error>
+                            {{ getErrorMessage(form.controls.nome.errors, 'Nome') }}
+                        </mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Email -->
+                <mat-form-field appearance="outline" class="w-100 form-field">
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        type="email"
+                        formControlName="email"
+                    />
+
+                    @if (shouldShowError(form.controls.email)) {
+                        <mat-error>
+                            {{ getErrorMessage(form.controls.email.errors, 'E-mail') }}
+                        </mat-error>
+                    }
+                </mat-form-field>
+
+                <div class="row">
+                    <!-- CPF -->
+                    <div class="col-6">
+                        <mat-form-field appearance="outline" class="w-100 form-field">
+                            <mat-label>CPF</mat-label>
+                            <input
+                                matInput
+                                formControlName="cpf"
+                                mask="000.000.000-00"
+                            />
+
+                            @if (shouldShowError(form.controls.cpf)) {
+                                <mat-error>
+                                    {{ getErrorMessage(form.controls.cpf.errors, 'CPF') }}
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Sexo -->
+                    <div class="col-6">
+                        <mat-form-field appearance="outline" class="w-100 form-field">
+                            <mat-label>Sexo</mat-label>
+                            <mat-select formControlName="sexo">
+                                @for (sexo of sexos; track sexo) {
+                                    <mat-option [value]="sexo">
+                                        {{ sexo | titlecase }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+
+                            @if (shouldShowError(form.controls.sexo)) {
+                                <mat-error>
+                                    {{ getErrorMessage(form.controls.sexo.errors, 'Sexo') }}
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Telefone -->
+                    <div class="col-6">
+                        <mat-form-field appearance="outline" class="w-100 form-field">
+                            <mat-label>Telefone</mat-label>
+                            <input
+                                matInput
+                                type="tel"
+                                formControlName="telefone"
+                                [mask]="'(00) 0000-0000||(00) 00000-0000'"
+                            />
+
+                            @if (shouldShowError(form.controls.telefone)) {
+                                <mat-error>
+                                    {{ getErrorMessage(form.controls.telefone.errors, 'Telefone') }}
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Data de nascimento -->
+                    <div class="col-6">
+                        <mat-form-field appearance="outline" class="w-100 form-field">
+                            <mat-label>Data de nascimento</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="picker"
+                                formControlName="dataNascimento"
+                                [max]="hoje"
+                            />
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+
+                            @if (shouldShowError(form.controls.dataNascimento)) {
+                                <mat-error>
+                                    {{ getErrorMessage(form.controls.dataNascimento.errors, 'Data de nascimento') }}
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Botão -->
+            <button
+                type="submit"
+                mat-flat-button
+                [disabled]="form.invalid || loading"
+                class="btn btn-form"
+            >
+                Salvar
+            </button>
+
+        </form>
+
+    </div>
+</main>

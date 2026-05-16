@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideNgxMask } from 'ngx-mask'; // Importando ngx-mask
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { authInterceptor } from './services/apis/auth/auth.interceptor';
 import { loadingInterceptor } from './services/interceptors/loading.interceptor';
 
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideNgxMask(),
+    provideNativeDateAdapter(),
     provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor]))
   ],
 };

@@ -1,0 +1,18 @@
+<div class="list-page">
+  <h1 class="page-title-list">Pacientes Ativos</h1>
+
+  <app-patient-table
+    [pacientes]="pageResponse.content"
+    [totalElements]="pageResponse.totalElements"
+    [pageIndex]="pageResponse.number"
+    [pageSize]="pageResponse.size"
+    [sortActive]="sort.ordenarPor"
+    [sortDirection]="sort.direcao"
+    (onRequestUpdate)="update($event)"
+    (onRequestViewProfile)="viewProfile($event)"
+    (onRequestToggleAtivo)="toggleAtivo($event)"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  >
+  </app-patient-table>
+</div>
