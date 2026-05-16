@@ -44,15 +44,18 @@ export class LoginHomeComponent {
   }
 
   private mapLoginError(err: HttpErrorResponse): string {
+    // Mensagens 401 do back podem distinguir motivos (credenciais inválidas vs
+    // usuário inativo); preserve a mensagem específica quando vier.
+    const backMessage = err.error?.message;
     switch (err.status) {
       case 401:
-        return 'Usuário ou senha inválidos. Tente novamente.';
+        return backMessage ?? 'Usuário ou senha inválidos. Tente novamente.';
       case 429:
-        return 'Muitas tentativas. Tente novamente em alguns instantes.';
+        return backMessage ?? 'Muitas tentativas. Tente novamente em alguns instantes.';
       case 0:
         return 'Servidor indisponível. Verifique sua conexão.';
       default:
-        return 'Erro inesperado. Tente novamente mais tarde.';
+        return backMessage ?? 'Erro inesperado. Tente novamente mais tarde.';
     }
   }
 }
