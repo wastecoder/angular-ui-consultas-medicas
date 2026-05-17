@@ -23,6 +23,7 @@ import { UserFilterHomeComponent } from '@pages/users/user-filter/user-filter-ho
 import { OperationalDashboardComponent } from '@pages/dashboards/operational/operational-dashboard.component';
 import { FinancialDashboardComponent } from '@pages/dashboards/financial/financial-dashboard.component';
 import { AppointmentsDashboardComponent } from '@pages/dashboards/appointments/appointments-dashboard.component';
+import { MedicoDashboardComponent } from '@pages/dashboards/medico/medico-dashboard.component';
 import { LoginHomeComponent } from '@pages/auth/login/login-home/login-home.component';
 import { SignupComponent } from '@pages/auth/signup/signup.component';
 import { ForgotPasswordComponent } from '@pages/auth/forgot-password/forgot-password.component';
@@ -214,6 +215,12 @@ export const routes: Routes = [
             component: AppointmentsDashboardComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Dashboard de Consultas' },
+          },
+          {
+            path: 'medico',
+            component: MedicoDashboardComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Dashboard Médico' },
           },
         ],
       },

@@ -1,0 +1,135 @@
+/* ---- KPIs ---- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kpi-card {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: none !important;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  margin-top: 6px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Seções ---- */
+.dash-section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dash-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.section-body {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.section-body.single {
+  grid-template-columns: 1fr;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 260px;
+  min-width: 0;
+  background-color: var(--bg-elevated);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.chart-wrap.wide {
+  height: 320px;
+}
+
+.chart-wrap.tall {
+  height: 360px;
+}
+
+.table-wrap {
+  min-width: 0;
+}
+
+.empty {
+  color: var(--text-soft);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* Indicador colorido por especialidade (espelha a cor do gráfico). */
+.color-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ---- Filtro mes/ano do ranking ---- */
+/* Botão "Aplicar" reusa .dash-btn-apply de styles.css. */
+.mes-ano-form {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(120px, 160px) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.mes-ano-form .dash-btn-apply {
+  width: 80px;
+  padding: 0;
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 1100px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section-body {
+    grid-template-columns: 1fr;
+  }
+  .chart-wrap {
+    height: 220px;
+  }
+  .mes-ano-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+  .kpi-value {
+    font-size: 1.8rem;
+  }
+}

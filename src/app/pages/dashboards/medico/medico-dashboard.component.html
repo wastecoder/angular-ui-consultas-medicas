@@ -1,0 +1,295 @@
+<div class="list-page">
+  <h1 class="page-title-list">Dashboard Médico</h1>
+
+  <!-- KPIs -->
+  @if (cardsLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+  <div class="kpi-row">
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Médicos cadastrados</div>
+      <div class="kpi-value">{{ formatNumero(kpiTotalMedicos()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Consultas realizadas</div>
+      <div class="kpi-value">
+        {{ formatNumero(kpiTotalConsultasRealizadas()) }}
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Faturamento acumulado</div>
+      <div class="kpi-value">{{ formatBRL(kpiFaturamentoTotal()) }}</div>
+    </mat-card>
+  </div>
+
+  <!-- Distribuição de médicos por especialidade -->
+  <section class="dash-section">
+    <h2 class="dash-title">Distribuição de médicos por especialidade</h2>
+    @if (especialidadesLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasEspecialidades()) {
+          <canvas
+            baseChart
+            type="doughnut"
+            [data]="especialidadeChart()"
+            [options]="doughnutOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem médicos cadastrados por especialidade.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="especialidadesPage()?.content ?? []">
+          <ng-container matColumnDef="especialidade">
+            <th mat-header-cell *matHeaderCellDef>Especialidade</th>
+            <td mat-cell *matCellDef="let row">
+              <span
+                class="color-swatch"
+                [style.background-color]="
+                  corEspecialidade(
+                    row.especialidade,
+                    indexEspecialidade(row.especialidade)
+                  )
+                "
+              ></span>
+              {{ formatEspecialidade(row.especialidade) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Médicos</th>
+            <td mat-cell *matCellDef="let row">{{ row.total }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="especialidadesColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: especialidadesColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="especialidadesPage()?.totalElements ?? 0"
+          [pageSize]="especialidadesPage()?.size ?? pageSize"
+          [pageIndex]="especialidadesPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onEspecialidadesPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top 10 médicos por consultas realizadas -->
+  <section class="dash-section">
+    <h2 class="dash-title">Top 10 médicos por consultas realizadas</h2>
+    @if (consultasRealizadasLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasConsultasRealizadas()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="topConsultasRealizadasChart()"
+            [options]="barHorizontalOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem consultas realizadas registradas.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table
+          mat-table
+          [dataSource]="consultasRealizadasPage()?.content ?? []"
+        >
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Consultas</th>
+            <td mat-cell *matCellDef="let row">{{ row.total }}</td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="consultasRealizadasColumns"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: consultasRealizadasColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="consultasRealizadasPage()?.totalElements ?? 0"
+          [pageSize]="consultasRealizadasPage()?.size ?? pageSize"
+          [pageIndex]="consultasRealizadasPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onConsultasRealizadasPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ranking do mês -->
+  <section class="dash-section">
+    <h2 class="dash-title">Ranking de médicos com mais consultas no mês</h2>
+    @if (rankingMesLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <form
+      class="mes-ano-form"
+      [formGroup]="mesAnoForm"
+      (ngSubmit)="aplicarMesAno()"
+    >
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Mês</mat-label>
+        <mat-select formControlName="mes">
+          @for (opt of mesesOptions; track opt.valor) {
+            <mat-option [value]="opt.valor">{{ opt.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Ano</mat-label>
+        <mat-select formControlName="ano">
+          @for (ano of anosOptions; track ano) {
+            <mat-option [value]="ano">{{ ano }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        type="submit"
+        class="dash-btn-apply"
+        [disabled]="rankingMesLoading()"
+      >
+        Aplicar
+      </button>
+    </form>
+
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasRankingMes()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="rankingMesChart()"
+            [options]="barHorizontalOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">
+            Sem consultas no mês/ano selecionado.
+          </div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="rankingMesPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Consultas</th>
+            <td mat-cell *matCellDef="let row">{{ row.total }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="rankingMesColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: rankingMesColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="rankingMesPage()?.totalElements ?? 0"
+          [pageSize]="rankingMesPage()?.size ?? pageSize"
+          [pageIndex]="rankingMesPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onRankingMesPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top 10 médicos por faturamento -->
+  <section class="dash-section">
+    <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+    @if (faturamentoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasFaturamento()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="topFaturamentoChart()"
+            [options]="barHorizontalBRLOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem faturamento por médico.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="faturamentoPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total faturado</th>
+            <td mat-cell *matCellDef="let row">{{ formatBRL(row.total) }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="faturamentoColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: faturamentoColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="faturamentoPage()?.totalElements ?? 0"
+          [pageSize]="faturamentoPage()?.size ?? pageSize"
+          [pageIndex]="faturamentoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onFaturamentoPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Taxa de cancelamento por médico -->
+  <section class="dash-section">
+    <h2 class="dash-title">Taxa de cancelamento por médico</h2>
+    @if (taxaCancelamentoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body single">
+      <div class="table-wrap table-responsive">
+        @if (
+          (taxaCancelamentoPage()?.totalElements ?? 0) === 0 &&
+          !taxaCancelamentoLoading()
+        ) {
+          <div class="empty">
+            Sem taxa de cancelamento registrada por médico.
+          </div>
+        }
+        <table mat-table [dataSource]="taxaCancelamentoPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+          </ng-container>
+          <ng-container matColumnDef="taxa">
+            <th mat-header-cell *matHeaderCellDef>Taxa</th>
+            <td mat-cell *matCellDef="let row">{{ row.taxa }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="taxaCancelamentoColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: taxaCancelamentoColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="taxaCancelamentoPage()?.totalElements ?? 0"
+          [pageSize]="taxaCancelamentoPage()?.size ?? pageSize"
+          [pageIndex]="taxaCancelamentoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onTaxaCancelamentoPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+</div>
