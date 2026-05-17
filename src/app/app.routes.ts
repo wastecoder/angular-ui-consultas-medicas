@@ -25,6 +25,7 @@ import { FinancialDashboardComponent } from '@pages/dashboards/financial/financi
 import { AppointmentsDashboardComponent } from '@pages/dashboards/appointments/appointments-dashboard.component';
 import { MedicoDashboardComponent } from '@pages/dashboards/medico/medico-dashboard.component';
 import { PatientDashboardComponent } from '@pages/dashboards/paciente/paciente-dashboard.component';
+import { ProdutividadeDashboardComponent } from '@pages/dashboards/produtividade/produtividade-dashboard.component';
 import { LoginHomeComponent } from '@pages/auth/login/login-home/login-home.component';
 import { SignupComponent } from '@pages/auth/signup/signup.component';
 import { ForgotPasswordComponent } from '@pages/auth/forgot-password/forgot-password.component';
@@ -228,6 +229,12 @@ export const routes: Routes = [
             component: PatientDashboardComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Dashboard de Pacientes' },
+          },
+          {
+            path: 'produtividade',
+            component: ProdutividadeDashboardComponent,
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            data: { title: 'Dashboard de Produtividade' },
           },
         ],
       },

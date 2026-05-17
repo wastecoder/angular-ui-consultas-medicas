@@ -1,0 +1,251 @@
+/* ---- KPIs ---- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+}
+
+.kpi-row--top {
+  align-items: stretch;
+}
+
+.kpi-card {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kpi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  margin-top: 6px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.kpi-export {
+  color: var(--text-soft) !important;
+}
+
+.kpi-export:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Card "Médias" com 3 sub-valores. */
+.kpi-card--multi .kpi-sub-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.kpi-sub {
+  background-color: var(--bg-elevated);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.kpi-sub-label {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.kpi-sub-value {
+  margin-top: 4px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Seções ---- */
+.dash-section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dash-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.section-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 260px;
+  min-width: 0;
+  background-color: var(--bg-elevated);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.chart-wrap.tall {
+  height: 360px;
+}
+
+.table-wrap {
+  min-width: 0;
+}
+
+.empty {
+  color: var(--text-soft);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* ---- Cards visuais de tempos médios ---- */
+.tempos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tempo-card {
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.tempo-card .kpi-export {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.tempo-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background-color: rgba(25, 118, 210, 0.18);
+  color: #64B5F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tempo-icon mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.tempo-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tempo-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.tempo-unit {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-soft);
+  margin-left: 4px;
+}
+
+/* ---- Toolbar (título + status toggle + download) ---- */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-toolbar .dash-title {
+  margin-right: auto;
+}
+
+.toolbar-export {
+  margin-left: 4px;
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 1100px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+  .kpi-card--multi .kpi-sub-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .section-body {
+    grid-template-columns: 1fr;
+  }
+  .tempos-grid {
+    grid-template-columns: 1fr;
+  }
+  .chart-wrap {
+    height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-card--multi .kpi-sub-row {
+    grid-template-columns: 1fr;
+  }
+  .kpi-value {
+    font-size: 1.8rem;
+  }
+  .tempo-value {
+    font-size: 1.6rem;
+  }
+  .section-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .section-toolbar .dash-title {
+    margin-right: 0;
+  }
+  .status-toggle {
+    width: 100%;
+  }
+}

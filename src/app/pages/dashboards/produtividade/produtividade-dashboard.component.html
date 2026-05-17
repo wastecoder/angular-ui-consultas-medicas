@@ -1,0 +1,238 @@
+<div class="list-page">
+  <h1 class="page-title-list">Dashboard de Produtividade</h1>
+
+  @if (kpisLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  <!-- KPIs principais: Médias + Taxa de comparecimento -->
+  <div class="kpi-row kpi-row--top">
+
+    <mat-card class="kpi-card kpi-card--multi">
+      <div class="kpi-card-header">
+        <div class="kpi-label">Médias de consultas</div>
+        <button
+          mat-icon-button
+          class="kpi-export"
+          [matMenuTriggerFor]="menuMedias"
+          aria-label="Baixar médias de consultas"
+          matTooltip="Baixar"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menuMedias="matMenu">
+          <button mat-menu-item (click)="baixar('media-consultas', 'CSV', 'media-consultas')">
+            <mat-icon>description</mat-icon>
+            <span>Baixar CSV</span>
+          </button>
+          <button mat-menu-item (click)="baixar('media-consultas', 'PDF', 'media-consultas')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <span>Baixar PDF</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="kpi-sub-row">
+        <div class="kpi-sub">
+          <div class="kpi-sub-label">Por dia</div>
+          <div class="kpi-sub-value">{{ formatNumero(mediaSig()?.porDia) }}</div>
+        </div>
+        <div class="kpi-sub">
+          <div class="kpi-sub-label">Por semana</div>
+          <div class="kpi-sub-value">{{ formatNumero(mediaSig()?.porSemana) }}</div>
+        </div>
+        <div class="kpi-sub">
+          <div class="kpi-sub-label">Por mês</div>
+          <div class="kpi-sub-value">{{ formatNumero(mediaSig()?.porMes) }}</div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="kpi-card kpi-card--single">
+      <div class="kpi-card-header">
+        <div class="kpi-label">Taxa de comparecimento</div>
+        <button
+          mat-icon-button
+          class="kpi-export"
+          [matMenuTriggerFor]="menuTaxa"
+          aria-label="Baixar taxa de comparecimento"
+          matTooltip="Baixar"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menuTaxa="matMenu">
+          <button mat-menu-item (click)="baixar('taxa-comparecimento', 'CSV', 'taxa-comparecimento')">
+            <mat-icon>description</mat-icon>
+            <span>Baixar CSV</span>
+          </button>
+          <button mat-menu-item (click)="baixar('taxa-comparecimento', 'PDF', 'taxa-comparecimento')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <span>Baixar PDF</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="kpi-value">{{ formatNumero(taxaSig()?.percentual) }}%</div>
+    </mat-card>
+
+  </div>
+
+  <!-- Tempos médios: duração e espera -->
+  <section class="dash-section">
+    <h2 class="dash-title">Tempos médios</h2>
+
+    <div class="tempos-grid">
+
+      <mat-card class="tempo-card">
+        <div class="tempo-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="tempo-body">
+          <div class="kpi-label">Duração média</div>
+          <div class="tempo-value">
+            {{ formatNumero(duracaoSig()?.minutos) }}
+            <span class="tempo-unit">min</span>
+          </div>
+        </div>
+        <button
+          mat-icon-button
+          class="kpi-export"
+          [matMenuTriggerFor]="menuDuracao"
+          aria-label="Baixar tempo médio de duração"
+          matTooltip="Baixar"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menuDuracao="matMenu">
+          <button mat-menu-item (click)="baixar('tempo-medio-duracao', 'CSV', 'tempo-medio-duracao')">
+            <mat-icon>description</mat-icon>
+            <span>Baixar CSV</span>
+          </button>
+          <button mat-menu-item (click)="baixar('tempo-medio-duracao', 'PDF', 'tempo-medio-duracao')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <span>Baixar PDF</span>
+          </button>
+        </mat-menu>
+      </mat-card>
+
+      <mat-card class="tempo-card">
+        <div class="tempo-icon">
+          <mat-icon>hourglass_top</mat-icon>
+        </div>
+        <div class="tempo-body">
+          <div class="kpi-label">Espera média</div>
+          <div class="tempo-value">
+            {{ formatNumero(esperaSig()?.dias) }}
+            <span class="tempo-unit">dias</span>
+          </div>
+        </div>
+        <button
+          mat-icon-button
+          class="kpi-export"
+          [matMenuTriggerFor]="menuEspera"
+          aria-label="Baixar tempo médio de espera"
+          matTooltip="Baixar"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menuEspera="matMenu">
+          <button mat-menu-item (click)="baixar('tempo-medio-espera', 'CSV', 'tempo-medio-espera')">
+            <mat-icon>description</mat-icon>
+            <span>Baixar CSV</span>
+          </button>
+          <button mat-menu-item (click)="baixar('tempo-medio-espera', 'PDF', 'tempo-medio-espera')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <span>Baixar PDF</span>
+          </button>
+        </mat-menu>
+      </mat-card>
+
+    </div>
+  </section>
+
+  <!-- Consultas por mês -->
+  <section class="dash-section">
+    <div class="section-toolbar">
+      <h2 class="dash-title">Consultas por mês</h2>
+
+      <mat-button-toggle-group
+        class="status-toggle dash-toggle"
+        [value]="statusSelecionado()"
+        (change)="onStatusChange($event.value)"
+        hideSingleSelectionIndicator
+      >
+        @for (s of statusOptions; track s) {
+          <mat-button-toggle [value]="s">{{ statusLabel(s) }}</mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuMes"
+        aria-label="Baixar consultas por mês"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuMes="matMenu">
+        <button mat-menu-item (click)="baixarConsultasPorMes('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarConsultasPorMes('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    @if (mesLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasConsultasPorMes()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="consultasPorMesChart()"
+            [options]="barOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem dados para o status selecionado.</div>
+        }
+      </div>
+
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="consultasPorMesPage()?.content ?? []">
+          <ng-container matColumnDef="ano">
+            <th mat-header-cell *matHeaderCellDef>Ano</th>
+            <td mat-cell *matCellDef="let row">{{ row.ano }}</td>
+          </ng-container>
+          <ng-container matColumnDef="mes">
+            <th mat-header-cell *matHeaderCellDef>Mês</th>
+            <td mat-cell *matCellDef="let row">{{ mesLongo(row.mes) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total de consultas</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatInteiro(row.totalConsultas) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="consultasPorMesColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: consultasPorMesColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="consultasPorMesPage()?.totalElements ?? 0"
+          [pageSize]="consultasPorMesPage()?.size ?? pageSize"
+          [pageIndex]="consultasPorMesPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onConsultasPorMesPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+</div>

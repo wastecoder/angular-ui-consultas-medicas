@@ -557,6 +557,35 @@ mat-dialog-actions {
   filter: brightness(1.1);
 }
 
+
+    /* Dashboards - mat-button-toggle no tema escuro (compartilhado) */
+.dash-toggle {
+  --mat-standard-button-toggle-background-color: var(--bg-elevated);
+  --mat-standard-button-toggle-text-color: var(--text-soft);
+  --mat-standard-button-toggle-selected-state-background-color: var(--color-primary);
+  --mat-standard-button-toggle-selected-state-text-color: var(--text-primary);
+  --mat-standard-button-toggle-divider-color: var(--border-default);
+  --mat-standard-button-toggle-hover-state-layer-opacity: 0.06;
+  --mat-standard-button-toggle-focus-state-layer-opacity: 0.1;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dash-toggle .mat-button-toggle-label-content {
+  line-height: 36px;
+  padding: 0 14px;
+  font-weight: 500;
+}
+
+.dash-toggle .mat-button-toggle + .mat-button-toggle {
+  border-left: 1px solid var(--border-default);
+}
+
+.dash-toggle .mat-button-toggle-checked .mat-button-toggle-label-content {
+  color: var(--text-primary);
+}
+
 .dash-btn-apply:disabled {
   opacity: 0.6;
   cursor: not-allowed;
