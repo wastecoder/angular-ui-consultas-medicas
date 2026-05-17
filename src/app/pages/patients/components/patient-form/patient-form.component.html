@@ -107,6 +107,9 @@
                             <mat-label>Data de nascimento</mat-label>
                             <input
                                 matInput
+                                appDateMask
+                                inputmode="numeric"
+                                placeholder="dd/mm/aaaa"
                                 [matDatepicker]="picker"
                                 formControlName="dataNascimento"
                                 [max]="hoje"

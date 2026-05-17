@@ -138,8 +138,27 @@
   border-color: var(--text-secondary);
 }
 
+.bar-date-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .bar-input-data {
   width: 140px;
+  padding-right: 34px;
+}
+
+.bar-date-toggle {
+  position: absolute;
+  right: 2px;
+  color: var(--text-secondary);
+}
+
+.bar-date-toggle .mat-mdc-icon-button {
+  width: 30px;
+  height: 30px;
+  padding: 4px;
 }
 
 .bar-input-medico,
@@ -208,7 +227,8 @@
   }
 
   .bar-input,
-  .bar-select {
+  .bar-select,
+  .bar-date-wrapper {
     width: 100%;
   }
 

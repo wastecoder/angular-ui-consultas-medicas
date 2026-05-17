@@ -22,9 +22,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { PacientePayload } from '@pages/patients/patient.models';
 import { NgxMaskDirective } from 'ngx-mask';
+import { DateMaskDirective } from '@shared/directives/date-mask.directive';
 import { SEXOS } from '@pages/patients/patient.constants';
 
 const notFutureValidator: ValidatorFn = (
@@ -50,8 +50,8 @@ const notFutureValidator: ValidatorFn = (
     MatButtonModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     NgxMaskDirective,
+    DateMaskDirective,
   ],
 })
 export class PatientFormComponent implements OnChanges {

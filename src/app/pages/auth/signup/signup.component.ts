@@ -16,9 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxMaskDirective } from 'ngx-mask';
+import { DateMaskDirective } from '@shared/directives/date-mask.directive';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '@services/apis/auth/auth.service';
 import { SignupRequest } from '@services/apis/auth/auth.models';
@@ -49,9 +49,9 @@ const notFutureValidator: ValidatorFn = (
     MatButtonModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatIconModule,
     NgxMaskDirective,
+    DateMaskDirective,
   ],
 })
 export class SignupComponent {

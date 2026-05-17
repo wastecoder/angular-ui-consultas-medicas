@@ -17,6 +17,9 @@
               <mat-label>Data do atendimento</mat-label>
               <input
                 matInput
+                appDateMask
+                inputmode="numeric"
+                placeholder="dd/mm/aaaa"
                 [matDatepicker]="picker"
                 [min]="hoje"
                 formControlName="dataAtendimento"

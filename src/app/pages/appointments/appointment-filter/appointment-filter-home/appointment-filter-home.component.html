@@ -50,15 +50,18 @@
 
   @if (filterBarOpen()) {
     <section class="filter-bar">
-      <input
-        type="text"
-        class="bar-input bar-input-data"
-        placeholder="dd/mm/aaaa"
-        [matDatepicker]="picker"
-        [(ngModel)]="draftData"
-        (click)="picker.open()"
-        readonly
-      />
+      <div class="bar-date-wrapper">
+        <input
+          type="text"
+          class="bar-input bar-input-data"
+          placeholder="dd/mm/aaaa"
+          inputmode="numeric"
+          appDateMask
+          [matDatepicker]="picker"
+          [(ngModel)]="draftData"
+        />
+        <mat-datepicker-toggle class="bar-date-toggle" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      </div>
       <mat-datepicker #picker></mat-datepicker>
 
       <input

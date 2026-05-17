@@ -78,6 +78,9 @@
               <input
                 matInput
                 id="signup-data"
+                appDateMask
+                inputmode="numeric"
+                placeholder="dd/mm/aaaa"
                 [matDatepicker]="picker"
                 formControlName="dataNascimento"
                 [max]="hoje"

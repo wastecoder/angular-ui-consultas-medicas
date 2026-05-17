@@ -12,7 +12,6 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -45,6 +44,7 @@ import {
 } from '@pages/appointments/appointment.constants';
 import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { DateMaskDirective } from '@shared/directives/date-mask.directive';
 
 interface FiltrosAtivos {
   filtros: ConsultaFilter;
@@ -62,7 +62,7 @@ interface FiltrosAtivos {
     MatIconModule,
     MatAutocompleteModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    DateMaskDirective,
     AppointmentTableComponent,
   ],
   templateUrl: './appointment-filter-home.component.html',
