@@ -28,6 +28,7 @@
 html, body {
   background-color: var(--bg-page);
   color: white;
+  color-scheme: dark;
 
   height: 100%;
   margin: 0;
