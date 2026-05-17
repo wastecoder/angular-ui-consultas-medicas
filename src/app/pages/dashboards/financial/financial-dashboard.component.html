@@ -1,0 +1,298 @@
+<div class="list-page">
+  <h1 class="page-title-list">Dashboard Financeiro</h1>
+
+  <!-- KPIs -->
+  @if (cardsLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+  <div class="kpi-row">
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Faturamento do mês</div>
+      <div class="kpi-value">{{ formatBRL(faturamentoMesAtual()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Faturamento do ano</div>
+      <div class="kpi-value">{{ formatBRL(faturamentoAnoAtual()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Perda do mês</div>
+      <div class="kpi-value loss">{{ formatBRL(perdaMesAtual()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Perda total</div>
+      <div class="kpi-value loss">
+        {{ perdasTotal() !== null ? formatBRL(perdasTotal()) : '—' }}
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Card de período -->
+  <section class="dash-section">
+    <h2 class="dash-title">Consultar por período</h2>
+    @if (periodoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <form
+      class="periodo-form"
+      [formGroup]="periodoForm"
+      (ngSubmit)="aplicarPeriodo()"
+    >
+      <mat-form-field
+        appearance="outline"
+        subscriptSizing="dynamic"
+        class="periodo-field financial-date-range"
+      >
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            formControlName="inicio"
+            placeholder="Início"
+          />
+          <input matEndDate formControlName="fim" placeholder="Fim" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button type="submit" class="btn-apply" [disabled]="periodoLoading()">
+        Aplicar
+      </button>
+
+      <div class="periodo-result">
+        <div class="periodo-result-item">
+          <span class="periodo-result-label">Faturamento</span>
+          <span class="periodo-result-value">
+            {{
+              faturamentoPeriodo() !== null
+                ? formatBRL(faturamentoPeriodo())
+                : '—'
+            }}
+          </span>
+        </div>
+        <div class="periodo-result-item">
+          <span class="periodo-result-label">Perda</span>
+          <span class="periodo-result-value loss">
+            {{ perdaPeriodo() !== null ? formatBRL(perdaPeriodo()) : '—' }}
+          </span>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- Faturamento x Perda mensal -->
+  <section class="dash-section">
+    <h2 class="dash-title">Faturamento vs Perda (últimos 12 meses)</h2>
+    <div class="section-body single">
+      <div class="chart-wrap wide">
+        @if (hasFaturamentoVsPerda()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="faturamentoVsPerdaChart()"
+            [options]="barOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem dados de faturamento ou perda.</div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Faturamento por Especialidade -->
+  <section class="dash-section">
+    <h2 class="dash-title">Faturamento por especialidade</h2>
+    @if (faturamentoEspecialidadeLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap">
+        @if (hasEspecialidades()) {
+          <canvas
+            baseChart
+            type="doughnut"
+            [data]="especialidadeChart()"
+            [options]="doughnutOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem faturamento por especialidade.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table
+          mat-table
+          [dataSource]="faturamentoEspecialidadePage()?.content ?? []"
+        >
+          <ng-container matColumnDef="especialidadeMedica">
+            <th mat-header-cell *matHeaderCellDef>Especialidade</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatEspecialidade(row.especialidadeMedica) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="totalFaturado">
+            <th mat-header-cell *matHeaderCellDef>Total faturado</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatBRL(row.totalFaturado) }}
+            </td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="faturamentoEspecialidadeColumns"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: faturamentoEspecialidadeColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="faturamentoEspecialidadePage()?.totalElements ?? 0"
+          [pageSize]="faturamentoEspecialidadePage()?.size ?? pageSize"
+          [pageIndex]="faturamentoEspecialidadePage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onFaturamentoEspecialidadePage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top 10 médicos -->
+  <section class="dash-section">
+    <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+    @if (faturamentoMedicoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasTopMedicos()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="topMedicosChart()"
+            [options]="barHorizontalOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem faturamento por médico.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="faturamentoMedicoPage()?.content ?? []">
+          <ng-container matColumnDef="nomeMedico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomeMedico }}</td>
+          </ng-container>
+          <ng-container matColumnDef="totalFaturado">
+            <th mat-header-cell *matHeaderCellDef>Total faturado</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatBRL(row.totalFaturado) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="faturamentoMedicoColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: faturamentoMedicoColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="faturamentoMedicoPage()?.totalElements ?? 0"
+          [pageSize]="faturamentoMedicoPage()?.size ?? pageSize"
+          [pageIndex]="faturamentoMedicoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onFaturamentoMedicoPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Faturamento mensal (tabela) -->
+  <section class="dash-section">
+    <h2 class="dash-title">Faturamento mensal</h2>
+    @if (faturamentoMensalLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body single">
+      <div class="table-wrap table-responsive">
+        @if (
+          (faturamentoMensalPage()?.totalElements ?? 0) === 0 &&
+          !faturamentoMensalLoading()
+        ) {
+          <div class="empty">Sem faturamento mensal registrado.</div>
+        }
+        <table mat-table [dataSource]="faturamentoMensalPage()?.content ?? []">
+          <ng-container matColumnDef="ano">
+            <th mat-header-cell *matHeaderCellDef>Ano</th>
+            <td mat-cell *matCellDef="let row">{{ row.ano }}</td>
+          </ng-container>
+          <ng-container matColumnDef="mes">
+            <th mat-header-cell *matHeaderCellDef>Mês</th>
+            <td mat-cell *matCellDef="let row">{{ formatMes(row.mes) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="totalFaturado">
+            <th mat-header-cell *matHeaderCellDef>Total faturado</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatBRL(row.totalFaturado) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="faturamentoMensalColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: faturamentoMensalColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="faturamentoMensalPage()?.totalElements ?? 0"
+          [pageSize]="faturamentoMensalPage()?.size ?? pageSize"
+          [pageIndex]="faturamentoMensalPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onFaturamentoMensalPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perda mensal (tabela) -->
+  <section class="dash-section">
+    <h2 class="dash-title">Perda mensal com cancelamentos</h2>
+    @if (perdaMensalLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body single">
+      <div class="table-wrap table-responsive">
+        @if (
+          (perdaMensalPage()?.totalElements ?? 0) === 0 && !perdaMensalLoading()
+        ) {
+          <div class="empty">Sem perdas mensais registradas.</div>
+        }
+        <table mat-table [dataSource]="perdaMensalPage()?.content ?? []">
+          <ng-container matColumnDef="ano">
+            <th mat-header-cell *matHeaderCellDef>Ano</th>
+            <td mat-cell *matCellDef="let row">{{ row.ano }}</td>
+          </ng-container>
+          <ng-container matColumnDef="mes">
+            <th mat-header-cell *matHeaderCellDef>Mês</th>
+            <td mat-cell *matCellDef="let row">{{ formatMes(row.mes) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="totalPerdido">
+            <th mat-header-cell *matHeaderCellDef>Total perdido</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="loss">{{ formatBRL(row.totalPerdido) }}</span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="perdaMensalColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: perdaMensalColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="perdaMensalPage()?.totalElements ?? 0"
+          [pageSize]="perdaMensalPage()?.size ?? pageSize"
+          [pageIndex]="perdaMensalPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onPerdaMensalPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+</div>

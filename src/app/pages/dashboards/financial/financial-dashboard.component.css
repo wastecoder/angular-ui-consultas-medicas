@@ -1,0 +1,237 @@
+/* ---- KPIs ---- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kpi-card {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: none !important;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  margin-top: 6px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.kpi-value.loss,
+.loss {
+  color: #ef5350;
+}
+
+/* ---- Seções ---- */
+.dash-section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dash-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.section-body {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.section-body.single {
+  grid-template-columns: 1fr;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 260px;
+  min-width: 0;
+  background-color: var(--bg-elevated);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.chart-wrap.wide {
+  height: 320px;
+}
+
+.chart-wrap.tall {
+  height: 360px;
+}
+
+.table-wrap {
+  min-width: 0;
+}
+
+.empty {
+  color: var(--text-soft);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* ---- Card de período ---- */
+.periodo-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.periodo-field {
+  width: 100%;
+}
+
+/* Compacta o mat-form-field do range picker para casar com .bar-input
+   usado no filtro de Consultas. */
+:host ::ng-deep .financial-date-range {
+  font-size: 0.88rem;
+}
+
+:host ::ng-deep .financial-date-range .mat-mdc-text-field-wrapper {
+  background-color: var(--bg-card);
+  border-radius: 6px;
+  padding: 0 12px;
+}
+
+:host ::ng-deep .financial-date-range .mat-mdc-form-field-flex {
+  min-height: 34px;
+  align-items: center;
+}
+
+:host ::ng-deep .financial-date-range .mat-mdc-form-field-infix {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: auto;
+  width: auto;
+}
+
+:host ::ng-deep .financial-date-range .mdc-notched-outline__leading,
+:host ::ng-deep .financial-date-range .mdc-notched-outline__notch,
+:host ::ng-deep .financial-date-range .mdc-notched-outline__trailing {
+  border-color: var(--border-default);
+}
+
+:host ::ng-deep .financial-date-range:hover .mdc-notched-outline__leading,
+:host ::ng-deep .financial-date-range:hover .mdc-notched-outline__notch,
+:host ::ng-deep .financial-date-range:hover .mdc-notched-outline__trailing,
+:host ::ng-deep .financial-date-range.mat-focused .mdc-notched-outline__leading,
+:host ::ng-deep .financial-date-range.mat-focused .mdc-notched-outline__notch,
+:host ::ng-deep .financial-date-range.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--text-secondary);
+  border-width: 1px;
+}
+
+:host ::ng-deep .financial-date-range input.mat-start-date,
+:host ::ng-deep .financial-date-range input.mat-end-date {
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+
+:host ::ng-deep .financial-date-range .mat-date-range-input-separator {
+  color: var(--text-secondary);
+}
+
+:host ::ng-deep .financial-date-range .mat-mdc-icon-button {
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+  color: var(--text-secondary);
+}
+
+/* Botão "Aplicar" — mesmo visual do "Filtrar" em appointment-filter. */
+.btn-apply {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--color-primary);
+}
+
+.btn-apply:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btn-apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.periodo-result {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.periodo-result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.periodo-result-label {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.periodo-result-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 1100px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section-body {
+    grid-template-columns: 1fr;
+  }
+  .chart-wrap {
+    height: 220px;
+  }
+  .periodo-form {
+    grid-template-columns: 1fr;
+  }
+  .periodo-result {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+  .kpi-value {
+    font-size: 1.8rem;
+  }
+}

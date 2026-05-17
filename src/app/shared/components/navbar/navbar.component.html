@@ -119,7 +119,9 @@
           <a class="disabled" tabindex="-1">Paciente</a>
           <a class="disabled" tabindex="-1">Consulta</a>
           <a routerLink="/dashboards/operacional">Operacional</a>
-          <a class="disabled" tabindex="-1">Financeiro</a>
+          <ng-container *appHasRole="['ADMIN']">
+            <a routerLink="/dashboards/financeiro">Financeiro</a>
+          </ng-container>
           <a class="disabled" tabindex="-1">Produtividade</a>
         </div>
       </li>

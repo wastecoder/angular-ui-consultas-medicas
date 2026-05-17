@@ -455,6 +455,12 @@ mat-dialog-actions {
   color: var(--text-primary) !important;
 }
 
+/* Range picker: cor das datas entre o início e o fim (parecida com hover, mas distinta). */
+.mat-calendar-body-in-range::before,
+.mat-calendar-body-in-comparison-range::before {
+  background: #454545 !important;
+}
+
 .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
   border-color: var(--text-secondary) !important;
 }

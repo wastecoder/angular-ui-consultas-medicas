@@ -21,6 +21,7 @@ import { UserEditComponent } from '@pages/users/user-edit/user-edit.component';
 import { UserProfileComponent } from '@pages/users/user-profile/user-profile.component';
 import { UserFilterHomeComponent } from '@pages/users/user-filter/user-filter-home/user-filter-home.component';
 import { OperationalDashboardComponent } from '@pages/dashboards/operational/operational-dashboard.component';
+import { FinancialDashboardComponent } from '@pages/dashboards/financial/financial-dashboard.component';
 import { LoginHomeComponent } from '@pages/auth/login/login-home/login-home.component';
 import { SignupComponent } from '@pages/auth/signup/signup.component';
 import { ForgotPasswordComponent } from '@pages/auth/forgot-password/forgot-password.component';
@@ -200,6 +201,12 @@ export const routes: Routes = [
             component: OperationalDashboardComponent,
             canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Dashboard Operacional' },
+          },
+          {
+            path: 'financeiro',
+            component: FinancialDashboardComponent,
+            canActivate: [roleGuard(['ADMIN'])],
+            data: { title: 'Dashboard Financeiro' },
           },
         ],
       },
