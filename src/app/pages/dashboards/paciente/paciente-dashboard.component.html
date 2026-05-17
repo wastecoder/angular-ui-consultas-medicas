@@ -1,0 +1,308 @@
+<div class="list-page">
+  <h1 class="page-title-list">Dashboard de Pacientes</h1>
+
+  <!-- KPIs -->
+  @if (cardsLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+  <div class="kpi-row">
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Pacientes cadastrados</div>
+      <div class="kpi-value">{{ formatNumero(kpiTotalPacientes()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Cancelamentos acumulados</div>
+      <div class="kpi-value">{{ formatNumero(kpiTotalCancelamentos()) }}</div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <div class="kpi-label">Consultas no período</div>
+      <div class="kpi-value">{{ formatNumero(kpiTotalConsultasPeriodo()) }}</div>
+    </mat-card>
+  </div>
+
+  <!-- Distribuição por sexo -->
+  <section class="dash-section">
+    <h2 class="dash-title">Distribuição de pacientes por sexo</h2>
+    @if (distribuicaoSexoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasDistribuicaoSexo()) {
+          <canvas
+            baseChart
+            type="doughnut"
+            [data]="sexoChart()"
+            [options]="doughnutOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem pacientes cadastrados.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="distribuicaoSexoPage()?.content ?? []">
+          <ng-container matColumnDef="sexo">
+            <th mat-header-cell *matHeaderCellDef>Sexo</th>
+            <td mat-cell *matCellDef="let row">
+              <span
+                class="color-swatch"
+                [style.background-color]="corSexo(row.sexo)"
+              ></span>
+              {{ sexoLabel(row.sexo) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Pacientes</th>
+            <td mat-cell *matCellDef="let row">{{ row.totalPacientes }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="distribuicaoSexoColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: distribuicaoSexoColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="distribuicaoSexoPage()?.totalElements ?? 0"
+          [pageSize]="distribuicaoSexoPage()?.size ?? pageSize"
+          [pageIndex]="distribuicaoSexoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onDistribuicaoSexoPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Distribuição por faixa etária -->
+  <section class="dash-section">
+    <h2 class="dash-title">Distribuição de pacientes por faixa etária</h2>
+    @if (distribuicaoFaixaEtariaLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasDistribuicaoFaixaEtaria()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="faixaEtariaChart()"
+            [options]="barOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem pacientes para agrupar por faixa etária.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table
+          mat-table
+          [dataSource]="distribuicaoFaixaEtariaPage()?.content ?? []"
+        >
+          <ng-container matColumnDef="faixa">
+            <th mat-header-cell *matHeaderCellDef>Faixa etária</th>
+            <td mat-cell *matCellDef="let row">{{ row.faixaEtaria }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Pacientes</th>
+            <td mat-cell *matCellDef="let row">{{ row.totalPacientes }}</td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="distribuicaoFaixaEtariaColumns"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: distribuicaoFaixaEtariaColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="distribuicaoFaixaEtariaPage()?.totalElements ?? 0"
+          [pageSize]="distribuicaoFaixaEtariaPage()?.size ?? pageSize"
+          [pageIndex]="distribuicaoFaixaEtariaPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onDistribuicaoFaixaEtariaPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pacientes com mais consultas (período) -->
+  <section class="dash-section">
+    <h2 class="dash-title">Pacientes com mais consultas no período</h2>
+    @if (maisConsultasLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <form
+      class="dash-periodo-form"
+      [formGroup]="periodoForm"
+      (ngSubmit)="aplicarPeriodo()"
+    >
+      <mat-form-field
+        appearance="outline"
+        subscriptSizing="dynamic"
+        class="dash-periodo-field dash-date-range"
+      >
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate formControlName="inicio" placeholder="Início" />
+          <input matEndDate formControlName="fim" placeholder="Fim" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button
+        type="submit"
+        class="dash-btn-apply"
+        [disabled]="maisConsultasLoading()"
+      >
+        Aplicar
+      </button>
+    </form>
+
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasMaisConsultas()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="topMaisConsultasChart()"
+            [options]="barHorizontalOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem consultas no período selecionado.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="maisConsultasPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomePaciente }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Consultas</th>
+            <td mat-cell *matCellDef="let row">{{ row.totalConsultas }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="maisConsultasColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: maisConsultasColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="maisConsultasPage()?.totalElements ?? 0"
+          [pageSize]="maisConsultasPage()?.size ?? pageSize"
+          [pageIndex]="maisConsultasPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onMaisConsultasPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cancelamentos por paciente -->
+  <section class="dash-section">
+    <h2 class="dash-title">Cancelamentos por paciente</h2>
+    @if (cancelamentosLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="section-body">
+      <div class="chart-wrap tall">
+        @if (hasCancelamentos()) {
+          <canvas
+            baseChart
+            type="bar"
+            [data]="topCancelamentosChart()"
+            [options]="barHorizontalOptions"
+          ></canvas>
+        } @else {
+          <div class="empty">Sem cancelamentos registrados.</div>
+        }
+      </div>
+      <div class="table-wrap table-responsive">
+        <table mat-table [dataSource]="cancelamentosPage()?.content ?? []">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let row">{{ row.nomePaciente }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Cancelamentos</th>
+            <td mat-cell *matCellDef="let row">{{ row.totalCancelamentos }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="cancelamentosColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: cancelamentosColumns"
+          ></tr>
+        </table>
+        <mat-paginator
+          [length]="cancelamentosPage()?.totalElements ?? 0"
+          [pageSize]="cancelamentosPage()?.size ?? pageSize"
+          [pageIndex]="cancelamentosPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onCancelamentosPage($event)"
+        ></mat-paginator>
+      </div>
+    </div>
+  </section>
+
+  <!-- Histórico do paciente -->
+  <section class="dash-section">
+    <h2 class="dash-title">Histórico do paciente</h2>
+    @if (historicoLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="picker-row">
+      <app-person-autocomplete
+        tipo="paciente"
+        label="Paciente"
+        placeholder="Buscar paciente"
+        (selecionado)="onPacienteSelecionado($event)"
+      ></app-person-autocomplete>
+    </div>
+
+    <div class="table-wrap table-responsive">
+      @if (!pacienteSelecionado()) {
+        <div class="empty">Selecione um paciente para ver o histórico.</div>
+      } @else if (
+        (historicoPage()?.totalElements ?? 0) === 0 && !historicoLoading()
+      ) {
+        <div class="empty">
+          Este paciente não possui consultas registradas.
+        </div>
+      }
+      @if (pacienteSelecionado()) {
+        <table mat-table [dataSource]="historicoPage()?.content ?? []">
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatData(row.dataAtendimento) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="horario">
+            <th mat-header-cell *matHeaderCellDef>Horário</th>
+            <td mat-cell *matCellDef="let row">
+              {{ formatHora(row.horarioAtendimento) }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="medico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let row">{{ row.medico?.nome }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let row">
+              {{ statusLabel(row.status) }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="historicoColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: historicoColumns"></tr>
+        </table>
+        <mat-paginator
+          [length]="historicoPage()?.totalElements ?? 0"
+          [pageSize]="historicoPage()?.size ?? pageSize"
+          [pageIndex]="historicoPage()?.number ?? 0"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onHistoricoPage($event)"
+        ></mat-paginator>
+      }
+    </div>
+  </section>
+</div>
