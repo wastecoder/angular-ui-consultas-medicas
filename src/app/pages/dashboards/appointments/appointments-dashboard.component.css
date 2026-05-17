@@ -106,95 +106,8 @@
 }
 
 /* ---- Card de período ---- */
-.periodo-form {
-  display: grid;
-  grid-template-columns: minmax(220px, 320px) auto 1fr;
-  gap: 16px;
-  align-items: center;
-}
-
-.periodo-field {
-  width: 100%;
-}
-
-/* Compacta o date-range do "Por Período". O autocomplete usa altura padrão
-   do Material para que a mat-label flutuante centralize corretamente. */
-:host ::ng-deep .appointments-date-range {
-  font-size: 0.88rem;
-}
-
-:host ::ng-deep .appointments-date-range .mat-mdc-text-field-wrapper {
-  background-color: var(--bg-card);
-  border-radius: 6px;
-  padding: 0 12px;
-}
-
-:host ::ng-deep .appointments-date-range .mat-mdc-form-field-flex {
-  min-height: 34px;
-  align-items: center;
-}
-
-:host ::ng-deep .appointments-date-range .mat-mdc-form-field-infix {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  min-height: auto;
-  width: auto;
-}
-
-:host ::ng-deep .appointments-date-range .mdc-notched-outline__leading,
-:host ::ng-deep .appointments-date-range .mdc-notched-outline__notch,
-:host ::ng-deep .appointments-date-range .mdc-notched-outline__trailing {
-  border-color: var(--border-default);
-}
-
-:host ::ng-deep .appointments-date-range:hover .mdc-notched-outline__leading,
-:host ::ng-deep .appointments-date-range:hover .mdc-notched-outline__notch,
-:host ::ng-deep .appointments-date-range:hover .mdc-notched-outline__trailing,
-:host ::ng-deep .appointments-date-range.mat-focused .mdc-notched-outline__leading,
-:host ::ng-deep .appointments-date-range.mat-focused .mdc-notched-outline__notch,
-:host ::ng-deep .appointments-date-range.mat-focused .mdc-notched-outline__trailing {
-  border-color: var(--text-secondary);
-  border-width: 1px;
-}
-
-:host ::ng-deep .appointments-date-range input.mat-start-date,
-:host ::ng-deep .appointments-date-range input.mat-end-date {
-  color: var(--text-primary);
-  font-size: 0.88rem;
-  font-family: inherit;
-}
-
-:host ::ng-deep .appointments-date-range .mat-date-range-input-separator {
-  color: var(--text-secondary);
-}
-
-:host ::ng-deep .appointments-date-range .mat-mdc-icon-button {
-  color: var(--text-secondary);
-  width: 30px;
-  height: 30px;
-  padding: 4px;
-}
-
-.btn-apply {
-  padding: 7px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.88rem;
-  font-family: inherit;
-  color: var(--text-primary);
-  background-color: var(--color-primary);
-}
-
-.btn-apply:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-.btn-apply:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+/* Layout, range picker e botão "Aplicar" estão em styles.css (.dash-periodo-form,
+   .dash-date-range, .dash-btn-apply), compartilhados com financial-dashboard. */
 
 /* ---- Responsivo ---- */
 @media (max-width: 1100px) {
@@ -206,9 +119,6 @@
   }
   .chart-wrap {
     height: 220px;
-  }
-  .periodo-form {
-    grid-template-columns: 1fr;
   }
 }
 

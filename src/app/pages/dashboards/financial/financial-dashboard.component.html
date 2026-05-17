@@ -33,14 +33,14 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
     <form
-      class="periodo-form"
+      class="dash-periodo-form"
       [formGroup]="periodoForm"
       (ngSubmit)="aplicarPeriodo()"
     >
       <mat-form-field
         appearance="outline"
         subscriptSizing="dynamic"
-        class="periodo-field financial-date-range"
+        class="dash-periodo-field dash-date-range"
       >
         <mat-date-range-input [rangePicker]="picker">
           <input
@@ -57,7 +57,7 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
 
-      <button type="submit" class="btn-apply" [disabled]="periodoLoading()">
+      <button type="submit" class="dash-btn-apply" [disabled]="periodoLoading()">
         Aplicar
       </button>
 

@@ -469,3 +469,101 @@ mat-dialog-actions {
   color: var(--text-soft) !important;
   opacity: 0.35;
 }
+
+
+    /* Dashboards - cartão "Por período" (compartilhado entre dashboards) */
+.dash-periodo-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.dash-periodo-field {
+  width: 100%;
+}
+
+.dash-date-range {
+  font-size: 1rem;
+}
+
+.dash-date-range .mat-mdc-text-field-wrapper {
+  background-color: var(--bg-card);
+  border-radius: 6px;
+  padding: 0 12px;
+}
+
+.dash-date-range .mat-mdc-form-field-flex {
+  min-height: 55px;
+  height: 55px;
+  align-items: center;
+}
+
+.dash-date-range .mat-mdc-form-field-infix {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  min-height: auto;
+  width: auto;
+}
+
+.dash-date-range .mdc-notched-outline__leading,
+.dash-date-range .mdc-notched-outline__notch,
+.dash-date-range .mdc-notched-outline__trailing {
+  border-color: var(--border-default);
+}
+
+.dash-date-range:hover .mdc-notched-outline__leading,
+.dash-date-range:hover .mdc-notched-outline__notch,
+.dash-date-range:hover .mdc-notched-outline__trailing,
+.dash-date-range.mat-focused .mdc-notched-outline__leading,
+.dash-date-range.mat-focused .mdc-notched-outline__notch,
+.dash-date-range.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--text-secondary);
+  border-width: 1px;
+}
+
+.dash-date-range input.mat-start-date,
+.dash-date-range input.mat-end-date {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.dash-date-range .mat-date-range-input-separator {
+  color: var(--text-secondary);
+}
+
+.dash-date-range .mat-mdc-icon-button {
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+}
+
+.dash-btn-apply {
+  height: 55px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--color-primary);
+}
+
+.dash-btn-apply:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.dash-btn-apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+  .dash-periodo-form {
+    grid-template-columns: 1fr;
+  }
+}
