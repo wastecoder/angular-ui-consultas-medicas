@@ -138,10 +138,22 @@
   border-color: var(--text-secondary);
 }
 
+.bar-date-field {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .bar-date-wrapper {
   position: relative;
   display: inline-flex;
   align-items: center;
+}
+
+.bar-error {
+  color: var(--text-error);
+  font-size: 0.78rem;
+  padding-left: 2px;
 }
 
 .bar-input-data {
@@ -228,7 +240,8 @@
 
   .bar-input,
   .bar-select,
-  .bar-date-wrapper {
+  .bar-date-wrapper,
+  .bar-date-field {
     width: 100%;
   }
 

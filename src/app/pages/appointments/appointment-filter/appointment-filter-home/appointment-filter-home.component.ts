@@ -8,7 +8,14 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -45,6 +52,16 @@ import {
 import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { SnackbarService } from '@shared/services/snackbar.service';
 import { DateMaskDirective } from '@shared/directives/date-mask.directive';
+
+const isWeekend = (d: Date): boolean => d.getDay() === 0 || d.getDay() === 6;
+
+const notWeekendValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const v = control.value as Date | null;
+  if (!v) return null;
+  return isWeekend(v) ? { weekendDate: true } : null;
+};
 
 interface FiltrosAtivos {
   filtros: ConsultaFilter;
@@ -100,12 +117,16 @@ export class AppointmentFilterHomeComponent implements OnInit {
   filterBarOpen = signal(false);
 
   // Drafts do formulário inline.
-  // - draftData usa Date | null para integrar com o Material datepicker;
-  //   é convertido para 'YYYY-MM-DD' ao aplicar o filtro.
+  // - draftDataControl usa FormControl<Date | null> para integrar com o Material
+  //   datepicker e validar fim de semana; é convertido para 'YYYY-MM-DD' ao aplicar.
   // - Os autocompletes guardam o objeto selecionado em paralelo ao FormControl
   //   (que pode ter string livre quando o usuário digita sem selecionar opção).
-  draftData: Date | null = null;
+  draftDataControl = new FormControl<Date | null>(null, {
+    validators: [notWeekendValidator],
+  });
   draftStatus: StatusConsulta | '' = '';
+
+  readonly weekendFilter = (d: Date | null): boolean => !d || !isWeekend(d);
 
   draftMedicoControl = new FormControl<string | PessoaResumo>('', { nonNullable: true });
   draftMedicoSelecionado: PessoaResumo | null = null;
@@ -223,8 +244,13 @@ export class AppointmentFilterHomeComponent implements OnInit {
   }
 
   applyDraftFilters() {
+    if (this.draftDataControl.invalid) {
+      this.draftDataControl.markAsTouched();
+      return;
+    }
+    const draftData = this.draftDataControl.value;
     const filtros: ConsultaFilter = {
-      dataAtendimento: this.draftData ? this.toIsoDate(this.draftData) : undefined,
+      dataAtendimento: draftData ? this.toIsoDate(draftData) : undefined,
       medicoId: this.draftMedicoSelecionado?.id,
       pacienteId: this.draftPacienteSelecionado?.id,
       status: this.draftStatus || undefined,
@@ -275,7 +301,8 @@ export class AppointmentFilterHomeComponent implements OnInit {
 
   clearAll() {
     this.activeState.set({ filtros: {}, medico: null, paciente: null });
-    this.draftData = null;
+    this.draftDataControl.setValue(null);
+    this.draftDataControl.markAsUntouched();
     this.draftStatus = '';
     this.draftMedicoSelecionado = null;
     this.draftPacienteSelecionado = null;
@@ -295,9 +322,13 @@ export class AppointmentFilterHomeComponent implements OnInit {
 
   private hydrateDraftsFromActive() {
     const state = this.activeState();
-    this.draftData = state.filtros.dataAtendimento
-      ? this.parseIsoDate(state.filtros.dataAtendimento)
-      : null;
+    this.draftDataControl.setValue(
+      state.filtros.dataAtendimento
+        ? this.parseIsoDate(state.filtros.dataAtendimento)
+        : null,
+      { emitEvent: false }
+    );
+    this.draftDataControl.markAsUntouched();
     this.draftStatus = state.filtros.status ?? '';
 
     this.draftMedicoSelecionado = state.medico;

@@ -50,6 +50,17 @@ const notPastValidator: ValidatorFn = (
   return v.getTime() < hoje.getTime() ? { pastDate: true } : null;
 };
 
+const isWeekend = (d: Date): boolean => d.getDay() === 0 || d.getDay() === 6;
+
+// Bloqueia sábado/domingo (digitação manual contorna o matDatepickerFilter).
+const notWeekendValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const v = control.value as Date | null;
+  if (!v) return null;
+  return isWeekend(v) ? { weekendDate: true } : null;
+};
+
 // Aceita string mascarada brasileira ("1.234,56") e valida >= 0.
 const precoMinValidator: ValidatorFn = (
   control: AbstractControl
@@ -91,6 +102,7 @@ export class AppointmentFormComponent implements OnChanges {
   readonly motivoMax = MOTIVO_MAX_CHARS;
   readonly duracoes = DURACOES_DISPONIVEIS;
   readonly hoje = this.zeroHoras(new Date());
+  readonly weekendFilter = (d: Date | null): boolean => !d || !isWeekend(d);
 
   medicoInicial: PessoaResumo | null = null;
   pacienteInicial: PessoaResumo | null = null;
@@ -99,7 +111,7 @@ export class AppointmentFormComponent implements OnChanges {
   form = this.fb.group({
     dataAtendimento: new FormControl<Date | null>(null, {
       nonNullable: false,
-      validators: [Validators.required, notPastValidator],
+      validators: [Validators.required, notPastValidator, notWeekendValidator],
     }),
     horarioAtendimento: ['', [Validators.required]],
     duracaoEmMinutos: [DURACAO_PADRAO, [Validators.required]],
@@ -183,6 +195,10 @@ export class AppointmentFormComponent implements OnChanges {
       return `${fieldLabel} é obrigatório.`;
     } else if (errors['pastDate']) {
       return `${fieldLabel} não pode ser no passado.`;
+    } else if (errors['weekendDate']) {
+      return `${fieldLabel} deve ser dia útil (segunda a sexta).`;
+    } else if (errors['matDatepickerFilter']) {
+      return `${fieldLabel} deve ser dia útil (segunda a sexta).`;
     } else if (errors['precoInvalido']) {
       return `${fieldLabel} inválido.`;
     } else if (errors['min']) {

@@ -50,17 +50,23 @@
 
   @if (filterBarOpen()) {
     <section class="filter-bar">
-      <div class="bar-date-wrapper">
-        <input
-          type="text"
-          class="bar-input bar-input-data"
-          placeholder="dd/mm/aaaa"
-          inputmode="numeric"
-          appDateMask
-          [matDatepicker]="picker"
-          [(ngModel)]="draftData"
-        />
-        <mat-datepicker-toggle class="bar-date-toggle" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <div class="bar-date-field">
+        <div class="bar-date-wrapper">
+          <input
+            type="text"
+            class="bar-input bar-input-data"
+            placeholder="dd/mm/aaaa"
+            inputmode="numeric"
+            appDateMask
+            [matDatepicker]="picker"
+            [matDatepickerFilter]="weekendFilter"
+            [formControl]="draftDataControl"
+          />
+          <mat-datepicker-toggle class="bar-date-toggle" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        </div>
+        @if (draftDataControl.invalid && draftDataControl.touched) {
+          <span class="bar-error">Data deve ser dia útil</span>
+        }
       </div>
       <mat-datepicker #picker></mat-datepicker>
 
