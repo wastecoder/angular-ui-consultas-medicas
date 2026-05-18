@@ -12,6 +12,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { finalize, forkJoin } from 'rxjs';
@@ -31,7 +34,9 @@ import {
 } from 'chart.js';
 
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { FileDownloadService } from '@shared/services/file-download.service';
 import { RelatorioMedicoService } from '@services/apis/relatorio-medico/relatorio-medico.service';
 import {
   ConsultasRealizadasPorMedico,
@@ -87,6 +92,9 @@ interface MesAnoForm {
     MatPaginatorModule,
     MatProgressBarModule,
     MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
     MatFormFieldModule,
     MatSelectModule,
     BaseChartDirective,
@@ -97,6 +105,7 @@ interface MesAnoForm {
 export class MedicoDashboardComponent implements OnInit {
   private readonly service = inject(RelatorioMedicoService);
   private readonly snackbar = inject(SnackbarService);
+  private readonly fileDownload = inject(FileDownloadService);
 
   readonly pageSize = 5;
   readonly pageSizeOptions = [5, 10, 20];
@@ -416,6 +425,51 @@ export class MedicoDashboardComponent implements OnInit {
   }
   onRankingMesPage(e: PageEvent): void {
     this.loadRankingMes(e.pageIndex, e.pageSize);
+  }
+
+  // ---- Downloads ----
+  baixar(
+    path: string,
+    formato: FormatoExportacao,
+    nomeArquivo: string,
+    extraParams: Record<string, string | number> = {}
+  ): void {
+    this.service.baixar(path, formato, extraParams).subscribe({
+      next: (blob) =>
+        this.fileDownload.salvar(
+          blob,
+          `${nomeArquivo}.${formato.toLowerCase()}`
+        ),
+      error: (err) => this.notifyError(err, 'Erro ao baixar o arquivo.'),
+    });
+  }
+
+  baixarPorEspecialidade(formato: FormatoExportacao): void {
+    this.baixar('por-especialidade', formato, 'medicos-por-especialidade');
+  }
+
+  baixarConsultasRealizadas(formato: FormatoExportacao): void {
+    this.baixar('consultas-realizadas', formato, 'consultas-realizadas-por-medico');
+  }
+
+  baixarMaisConsultasNoMes(formato: FormatoExportacao): void {
+    const { mes, ano } = this.mesAnoForm.value;
+    if (!mes || !ano) {
+      this.snackbar.show('Selecione o mês e o ano para baixar.', 'warning');
+      return;
+    }
+    this.baixar('mais-consultas-no-mes', formato, 'mais-consultas-no-mes', {
+      mes,
+      ano,
+    });
+  }
+
+  baixarFaturamento(formato: FormatoExportacao): void {
+    this.baixar('faturamento', formato, 'faturamento-por-medico');
+  }
+
+  baixarTaxaCancelamento(formato: FormatoExportacao): void {
+    this.baixar('taxa-cancelamento', formato, 'taxa-cancelamento-por-medico');
   }
 
   // ---- Helpers ----

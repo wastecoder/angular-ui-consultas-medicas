@@ -24,7 +24,28 @@
 
   <!-- Distribuição de médicos por especialidade -->
   <section class="dash-section">
-    <h2 class="dash-title">Distribuição de médicos por especialidade</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Distribuição de médicos por especialidade</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuPorEspecialidade"
+        aria-label="Baixar médicos por especialidade"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuPorEspecialidade="matMenu">
+        <button mat-menu-item (click)="baixarPorEspecialidade('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarPorEspecialidade('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (especialidadesLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -81,7 +102,28 @@
 
   <!-- Top 10 médicos por consultas realizadas -->
   <section class="dash-section">
-    <h2 class="dash-title">Top 10 médicos por consultas realizadas</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Top 10 médicos por consultas realizadas</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuConsultasRealizadas"
+        aria-label="Baixar consultas realizadas por médico"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuConsultasRealizadas="matMenu">
+        <button mat-menu-item (click)="baixarConsultasRealizadas('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarConsultasRealizadas('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (consultasRealizadasLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -133,7 +175,28 @@
 
   <!-- Ranking do mês -->
   <section class="dash-section">
-    <h2 class="dash-title">Ranking de médicos com mais consultas no mês</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Ranking de médicos com mais consultas no mês</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuRankingMes"
+        aria-label="Baixar ranking de médicos no mês"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuRankingMes="matMenu">
+        <button mat-menu-item (click)="baixarMaisConsultasNoMes('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarMaisConsultasNoMes('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (rankingMesLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -210,7 +273,28 @@
 
   <!-- Top 10 médicos por faturamento -->
   <section class="dash-section">
-    <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuFaturamento"
+        aria-label="Baixar faturamento por médico"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuFaturamento="matMenu">
+        <button mat-menu-item (click)="baixarFaturamento('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarFaturamento('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (faturamentoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -253,7 +337,28 @@
 
   <!-- Taxa de cancelamento por médico -->
   <section class="dash-section">
-    <h2 class="dash-title">Taxa de cancelamento por médico</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Taxa de cancelamento por médico</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuTaxaCancelamento"
+        aria-label="Baixar taxa de cancelamento por médico"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuTaxaCancelamento="matMenu">
+        <button mat-menu-item (click)="baixarTaxaCancelamento('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarTaxaCancelamento('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (taxaCancelamentoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }

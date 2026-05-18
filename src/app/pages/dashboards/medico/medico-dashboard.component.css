@@ -95,6 +95,30 @@
   vertical-align: middle;
 }
 
+/* ---- Toolbar (título + download) ---- */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-toolbar .dash-title {
+  margin-right: auto;
+}
+
+.kpi-export {
+  color: var(--text-soft) !important;
+}
+
+.kpi-export:hover {
+  color: var(--text-primary) !important;
+}
+
+.toolbar-export {
+  margin-left: 4px;
+}
+
 /* ---- Filtro mes/ano do ranking ---- */
 /* Botão "Aplicar" reusa .dash-btn-apply de styles.css. */
 .mes-ano-form {
@@ -131,5 +155,12 @@
   }
   .kpi-value {
     font-size: 1.8rem;
+  }
+  .section-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .section-toolbar .dash-title {
+    margin-right: 0;
   }
 }
