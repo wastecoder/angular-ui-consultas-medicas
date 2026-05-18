@@ -19,7 +19,28 @@
       <div class="kpi-value loss">{{ formatBRL(perdaMesAtual()) }}</div>
     </mat-card>
     <mat-card class="kpi-card">
-      <div class="kpi-label">Perda total</div>
+      <div class="kpi-card-header">
+        <div class="kpi-label">Perda total</div>
+        <button
+          mat-icon-button
+          class="kpi-export"
+          [matMenuTriggerFor]="menuPerdasTotal"
+          aria-label="Baixar perdas com cancelamentos"
+          matTooltip="Baixar"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menuPerdasTotal="matMenu">
+          <button mat-menu-item (click)="baixar('perdas-com-cancelamentos', 'CSV', 'perdas-com-cancelamentos')">
+            <mat-icon>description</mat-icon>
+            <span>Baixar CSV</span>
+          </button>
+          <button mat-menu-item (click)="baixar('perdas-com-cancelamentos', 'PDF', 'perdas-com-cancelamentos')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <span>Baixar PDF</span>
+          </button>
+        </mat-menu>
+      </div>
       <div class="kpi-value loss">
         {{ perdasTotal() !== null ? formatBRL(perdasTotal()) : '—' }}
       </div>
@@ -28,7 +49,55 @@
 
   <!-- Card de período -->
   <section class="dash-section">
-    <h2 class="dash-title">Consultar por período</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Consultar por período</h2>
+      <div class="periodo-download-row">
+        <div class="periodo-download-slot">
+          <button
+            mat-icon-button
+            class="kpi-export"
+            [matMenuTriggerFor]="menuPeriodoFat"
+            [disabled]="!periodoForm.value.inicio || !periodoForm.value.fim"
+            aria-label="Baixar faturamento por período"
+            matTooltip="Baixar faturamento"
+          >
+            <mat-icon>download</mat-icon>
+          </button>
+          <mat-menu #menuPeriodoFat="matMenu">
+            <button mat-menu-item (click)="baixarFaturamentoPeriodo('CSV')">
+              <mat-icon>description</mat-icon>
+              <span>Baixar CSV</span>
+            </button>
+            <button mat-menu-item (click)="baixarFaturamentoPeriodo('PDF')">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>Baixar PDF</span>
+            </button>
+          </mat-menu>
+        </div>
+        <div class="periodo-download-slot">
+          <button
+            mat-icon-button
+            class="kpi-export"
+            [matMenuTriggerFor]="menuPeriodoPerda"
+            [disabled]="!periodoForm.value.inicio || !periodoForm.value.fim"
+            aria-label="Baixar perda por período"
+            matTooltip="Baixar perda"
+          >
+            <mat-icon>download</mat-icon>
+          </button>
+          <mat-menu #menuPeriodoPerda="matMenu">
+            <button mat-menu-item (click)="baixarPerdaPeriodo('CSV')">
+              <mat-icon>description</mat-icon>
+              <span>Baixar CSV</span>
+            </button>
+            <button mat-menu-item (click)="baixarPerdaPeriodo('PDF')">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>Baixar PDF</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
     @if (periodoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -103,7 +172,28 @@
 
   <!-- Faturamento por Especialidade -->
   <section class="dash-section">
-    <h2 class="dash-title">Faturamento por especialidade</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Faturamento por especialidade</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuEspec"
+        aria-label="Baixar faturamento por especialidade"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuEspec="matMenu">
+        <button mat-menu-item (click)="baixar('faturamento-por-especialidade', 'CSV', 'faturamento-por-especialidade')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixar('faturamento-por-especialidade', 'PDF', 'faturamento-por-especialidade')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (faturamentoEspecialidadeLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -159,7 +249,28 @@
 
   <!-- Top 10 médicos -->
   <section class="dash-section">
-    <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Top 10 médicos por faturamento</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuMedico"
+        aria-label="Baixar faturamento por médico"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuMedico="matMenu">
+        <button mat-menu-item (click)="baixar('faturamento-por-medico', 'CSV', 'faturamento-por-medico')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixar('faturamento-por-medico', 'PDF', 'faturamento-por-medico')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (faturamentoMedicoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -207,7 +318,28 @@
 
   <!-- Faturamento mensal (tabela) -->
   <section class="dash-section">
-    <h2 class="dash-title">Faturamento mensal</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Faturamento mensal</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuMensal"
+        aria-label="Baixar faturamento mensal"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuMensal="matMenu">
+        <button mat-menu-item (click)="baixar('faturamento-mensal', 'CSV', 'faturamento-mensal')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixar('faturamento-mensal', 'PDF', 'faturamento-mensal')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (faturamentoMensalLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -253,7 +385,28 @@
 
   <!-- Perda mensal (tabela) -->
   <section class="dash-section">
-    <h2 class="dash-title">Perda mensal com cancelamentos</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Perda mensal com cancelamentos</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuPerdaMensal"
+        aria-label="Baixar perda mensal"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuPerdaMensal="matMenu">
+        <button mat-menu-item (click)="baixar('perda-mensal-com-cancelamentos', 'CSV', 'perda-mensal-com-cancelamentos')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixar('perda-mensal-com-cancelamentos', 'PDF', 'perda-mensal-com-cancelamentos')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (perdaMensalLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }

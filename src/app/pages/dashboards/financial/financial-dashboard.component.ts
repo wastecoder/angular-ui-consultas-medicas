@@ -12,6 +12,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -32,7 +35,9 @@ import {
 } from 'chart.js';
 
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { FileDownloadService } from '@shared/services/file-download.service';
 import { ESPECIALIDADES } from '@pages/doctors/doctor.constants';
 import { RelatorioFinanceiroService } from '@services/apis/relatorio-financeiro/relatorio-financeiro.service';
 import {
@@ -91,6 +96,9 @@ interface PeriodoForm {
     MatPaginatorModule,
     MatProgressBarModule,
     MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -102,6 +110,7 @@ interface PeriodoForm {
 export class FinancialDashboardComponent implements OnInit {
   private readonly service = inject(RelatorioFinanceiroService);
   private readonly snackbar = inject(SnackbarService);
+  private readonly fileDownload = inject(FileDownloadService);
 
   readonly pageSize = 5;
   readonly pageSizeOptions = [5, 10, 20];
@@ -440,6 +449,47 @@ export class FinancialDashboardComponent implements OnInit {
   }
   onPerdaMensalPage(e: PageEvent): void {
     this.loadPerdaMensal(e.pageIndex, e.pageSize);
+  }
+
+  // ---- Downloads ----
+  baixar(
+    path: string,
+    formato: FormatoExportacao,
+    nomeArquivo: string,
+    extraParams: Record<string, string | number> = {}
+  ): void {
+    this.service.baixar(path, formato, extraParams).subscribe({
+      next: (blob) =>
+        this.fileDownload.salvar(
+          blob,
+          `${nomeArquivo}.${formato.toLowerCase()}`
+        ),
+      error: (err) => this.notifyError(err, 'Erro ao baixar o arquivo.'),
+    });
+  }
+
+  baixarFaturamentoPeriodo(formato: FormatoExportacao): void {
+    const { inicio, fim } = this.periodoForm.value;
+    if (!inicio || !fim) {
+      this.snackbar.show('Selecione a data inicial e a data final.', 'warning');
+      return;
+    }
+    this.baixar('faturamento-por-periodo', formato, 'faturamento-por-periodo', {
+      inicio: this.toIso(inicio),
+      fim: this.toIso(fim),
+    });
+  }
+
+  baixarPerdaPeriodo(formato: FormatoExportacao): void {
+    const { inicio, fim } = this.periodoForm.value;
+    if (!inicio || !fim) {
+      this.snackbar.show('Selecione a data inicial e a data final.', 'warning');
+      return;
+    }
+    this.baixar('perda-por-periodo', formato, 'perda-por-periodo', {
+      inicio: this.toIso(inicio),
+      fim: this.toIso(fim),
+    });
   }
 
   // ---- Helpers ----

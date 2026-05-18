@@ -209,7 +209,7 @@ export const routes: Routes = [
           {
             path: 'financeiro',
             component: FinancialDashboardComponent,
-            canActivate: [roleGuard(['ADMIN'])],
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
             data: { title: 'Dashboard Financeiro' },
           },
           {

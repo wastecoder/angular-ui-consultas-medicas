@@ -14,6 +14,13 @@
   box-shadow: none !important;
 }
 
+.kpi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .kpi-label {
   font-size: 0.85rem;
   color: var(--text-soft);
@@ -50,6 +57,30 @@
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-primary);
+}
+
+/* ---- Toolbar (título + botões de download) ---- */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-toolbar .dash-title {
+  margin-right: auto;
+}
+
+.kpi-export {
+  color: var(--text-soft) !important;
+}
+
+.kpi-export:hover {
+  color: var(--text-primary) !important;
+}
+
+.toolbar-export {
+  margin-left: 4px;
 }
 
 .section-body {
@@ -105,7 +136,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  min-width: 140px;
 }
+
+.periodo-download-row {
+  display: flex;
+  gap: 24px;
+}
+
+.periodo-download-slot {
+  min-width: 140px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 .periodo-result-label {
   font-size: 0.8rem;
@@ -142,5 +186,9 @@
   }
   .kpi-value {
     font-size: 1.8rem;
+  }
+  .section-toolbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

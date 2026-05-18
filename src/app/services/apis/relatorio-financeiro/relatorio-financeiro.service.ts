@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
+import { RelatorioExportService } from '@shared/services/relatorio-export.service';
 import { environment } from '@env/environment';
 import {
   FaturamentoMensal,
@@ -18,6 +20,7 @@ import {
 })
 export class RelatorioFinanceiroService {
   private readonly http = inject(HttpClient);
+  private readonly exportService = inject(RelatorioExportService);
   private readonly baseUrl = environment.apiUrl + 'relatorios/financeiro';
 
   faturamentoMensal(
@@ -90,5 +93,13 @@ export class RelatorioFinanceiroService {
       `${this.baseUrl}/perda-por-periodo`,
       { params }
     );
+  }
+
+  baixar(
+    path: string,
+    formato: FormatoExportacao,
+    extraParams: Record<string, string | number> = {}
+  ): Observable<Blob> {
+    return this.exportService.baixar(this.baseUrl, path, formato, extraParams);
   }
 }
