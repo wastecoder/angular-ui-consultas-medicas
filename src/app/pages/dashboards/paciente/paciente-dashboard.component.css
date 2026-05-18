@@ -101,6 +101,35 @@
   vertical-align: middle;
 }
 
+/* ---- Toolbar (título + download) ---- */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-toolbar .dash-title {
+  margin-right: auto;
+}
+
+.kpi-export {
+  color: var(--text-soft) !important;
+}
+
+.kpi-export:hover {
+  color: var(--text-primary) !important;
+}
+
+.toolbar-export {
+  margin-left: 4px;
+}
+
+.toolbar-export:disabled,
+.toolbar-export.mat-mdc-button-disabled {
+  opacity: 0.35;
+}
+
 /* ---- Card de período ---- */
 /* Layout, range picker e botão "Aplicar" estão em styles.css
    (.dash-periodo-form, .dash-date-range, .dash-btn-apply). */
@@ -124,5 +153,12 @@
   }
   .kpi-value {
     font-size: 1.8rem;
+  }
+  .section-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .section-toolbar .dash-title {
+    margin-right: 0;
   }
 }

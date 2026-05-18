@@ -13,6 +13,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -33,7 +35,9 @@ import {
 } from 'chart.js';
 
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { FileDownloadService } from '@shared/services/file-download.service';
 import {
   STATUS_CONSULTA_LABEL,
   StatusConsulta,
@@ -101,6 +105,8 @@ interface PeriodoForm {
     MatProgressBarModule,
     MatIconModule,
     MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -113,6 +119,7 @@ interface PeriodoForm {
 export class PatientDashboardComponent implements OnInit {
   private readonly service = inject(RelatorioPacienteService);
   private readonly snackbar = inject(SnackbarService);
+  private readonly fileDownload = inject(FileDownloadService);
 
   readonly pageSize = 5;
   readonly pageSizeOptions = [5, 10, 20];
@@ -449,6 +456,71 @@ export class PatientDashboardComponent implements OnInit {
     } else {
       this.historicoPage.set(null);
     }
+  }
+
+  // ---- Downloads ----
+  private baixar(
+    path: string,
+    formato: FormatoExportacao,
+    nomeArquivo: string,
+    extraParams: Record<string, string | number> = {}
+  ): void {
+    this.service.baixar(path, formato, extraParams).subscribe({
+      next: (blob) =>
+        this.fileDownload.salvar(
+          blob,
+          `${nomeArquivo}.${formato.toLowerCase()}`
+        ),
+      error: (err) => this.notifyError(err, 'Erro ao baixar o arquivo.'),
+    });
+  }
+
+  baixarDistribuicaoSexo(formato: FormatoExportacao): void {
+    this.baixar('distribuicao-sexo', formato, 'pacientes-distribuicao-sexo');
+  }
+
+  baixarDistribuicaoFaixaEtaria(formato: FormatoExportacao): void {
+    this.baixar(
+      'distribuicao-faixa-etaria',
+      formato,
+      'pacientes-distribuicao-faixa-etaria'
+    );
+  }
+
+  baixarMaisConsultas(formato: FormatoExportacao): void {
+    const { inicio, fim } = this.periodoForm.value;
+    if (!inicio || !fim) {
+      this.snackbar.show('Selecione a data inicial e a data final.', 'warning');
+      return;
+    }
+    if (inicio > fim) {
+      this.snackbar.show(
+        'A data inicial deve ser anterior ou igual à final.',
+        'warning'
+      );
+      return;
+    }
+    this.baixar('mais-consultas', formato, 'pacientes-mais-consultas', {
+      inicio: this.toIso(inicio),
+      fim: this.toIso(fim),
+    });
+  }
+
+  baixarCancelamentos(formato: FormatoExportacao): void {
+    this.baixar('cancelamentos', formato, 'pacientes-cancelamentos');
+  }
+
+  baixarHistorico(formato: FormatoExportacao): void {
+    const pessoa = this.pacienteSelecionado();
+    if (!pessoa) {
+      this.snackbar.show('Selecione um paciente para baixar.', 'warning');
+      return;
+    }
+    this.baixar(
+      `historico/${pessoa.id}`,
+      formato,
+      `paciente-${pessoa.id}-historico`
+    );
   }
 
   // ---- Helpers ----

@@ -22,7 +22,28 @@
 
   <!-- Distribuição por sexo -->
   <section class="dash-section">
-    <h2 class="dash-title">Distribuição de pacientes por sexo</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Distribuição de pacientes por sexo</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuDistribuicaoSexo"
+        aria-label="Baixar distribuição de pacientes por sexo"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuDistribuicaoSexo="matMenu">
+        <button mat-menu-item (click)="baixarDistribuicaoSexo('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarDistribuicaoSexo('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (distribuicaoSexoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -74,7 +95,28 @@
 
   <!-- Distribuição por faixa etária -->
   <section class="dash-section">
-    <h2 class="dash-title">Distribuição de pacientes por faixa etária</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Distribuição de pacientes por faixa etária</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuDistribuicaoFaixaEtaria"
+        aria-label="Baixar distribuição de pacientes por faixa etária"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuDistribuicaoFaixaEtaria="matMenu">
+        <button mat-menu-item (click)="baixarDistribuicaoFaixaEtaria('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarDistribuicaoFaixaEtaria('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (distribuicaoFaixaEtariaLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -126,7 +168,29 @@
 
   <!-- Pacientes com mais consultas (período) -->
   <section class="dash-section">
-    <h2 class="dash-title">Pacientes com mais consultas no período</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Pacientes com mais consultas no período</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuMaisConsultas"
+        [disabled]="!periodoForm.value.inicio || !periodoForm.value.fim"
+        aria-label="Baixar pacientes com mais consultas no período"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuMaisConsultas="matMenu">
+        <button mat-menu-item (click)="baixarMaisConsultas('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarMaisConsultas('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (maisConsultasLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -199,7 +263,28 @@
 
   <!-- Cancelamentos por paciente -->
   <section class="dash-section">
-    <h2 class="dash-title">Cancelamentos por paciente</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Cancelamentos por paciente</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuCancelamentos"
+        aria-label="Baixar cancelamentos por paciente"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuCancelamentos="matMenu">
+        <button mat-menu-item (click)="baixarCancelamentos('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarCancelamentos('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (cancelamentosLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -245,7 +330,29 @@
 
   <!-- Histórico do paciente -->
   <section class="dash-section">
-    <h2 class="dash-title">Histórico do paciente</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Histórico do paciente</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuHistorico"
+        [disabled]="!pacienteSelecionado()"
+        aria-label="Baixar histórico do paciente"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuHistorico="matMenu">
+        <button mat-menu-item (click)="baixarHistorico('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarHistorico('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (historicoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
