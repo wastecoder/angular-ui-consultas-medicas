@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
+import { RelatorioExportService } from '@shared/services/relatorio-export.service';
 import { environment } from '@env/environment';
 import { StatusConsulta } from '@pages/appointments/appointment.constants';
 import {
@@ -12,13 +14,12 @@ import {
   TempoMedioEspera,
 } from '@pages/dashboards/produtividade/produtividade.models';
 
-export type FormatoExportacao = 'CSV' | 'PDF';
-
 @Injectable({
   providedIn: 'root',
 })
 export class RelatorioProdutividadeService {
   private readonly http = inject(HttpClient);
+  private readonly exportService = inject(RelatorioExportService);
   private readonly baseUrl = environment.apiUrl + 'relatorios/produtividade';
 
   consultasPorMes(
@@ -58,20 +59,11 @@ export class RelatorioProdutividadeService {
     );
   }
 
-  // Helper único para download em CSV/PDF; o componente cuida do download
-  // do Blob retornado.
   baixar(
     path: string,
     formato: FormatoExportacao,
     extraParams: Record<string, string | number> = {}
   ): Observable<Blob> {
-    let params = new HttpParams().set('formato', formato);
-    for (const [chave, valor] of Object.entries(extraParams)) {
-      params = params.set(chave, valor);
-    }
-    return this.http.get(`${this.baseUrl}/${path}`, {
-      params,
-      responseType: 'blob',
-    });
+    return this.exportService.baixar(this.baseUrl, path, formato, extraParams);
   }
 }

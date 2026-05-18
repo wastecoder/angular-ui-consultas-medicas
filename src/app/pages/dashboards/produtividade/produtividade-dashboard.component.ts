@@ -30,16 +30,15 @@ import {
 } from 'chart.js';
 
 import { PageResponse } from '@shared/models/pagination.model';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { FileDownloadService } from '@shared/services/file-download.service';
 import {
   STATUS_CONSULTA,
   STATUS_CONSULTA_LABEL,
   StatusConsulta,
 } from '@pages/appointments/appointment.constants';
-import {
-  FormatoExportacao,
-  RelatorioProdutividadeService,
-} from '@services/apis/relatorio-produtividade/relatorio-produtividade.service';
+import { RelatorioProdutividadeService } from '@services/apis/relatorio-produtividade/relatorio-produtividade.service';
 import {
   ConsultasPorMesProdutividade,
   MediaConsultas,
@@ -94,6 +93,7 @@ const MES_CURTO: readonly string[] = [
 export class ProdutividadeDashboardComponent implements OnInit {
   private readonly service = inject(RelatorioProdutividadeService);
   private readonly snackbar = inject(SnackbarService);
+  private readonly fileDownload = inject(FileDownloadService);
 
   readonly pageSize = 5;
   readonly pageSizeOptions = [5, 10, 20];
@@ -217,7 +217,10 @@ export class ProdutividadeDashboardComponent implements OnInit {
   ): void {
     this.service.baixar(path, formato, extraParams).subscribe({
       next: (blob) =>
-        salvarArquivo(blob, `${nomeArquivo}.${formato.toLowerCase()}`),
+        this.fileDownload.salvar(
+          blob,
+          `${nomeArquivo}.${formato.toLowerCase()}`
+        ),
       error: (err) => this.notifyError(err, 'Erro ao baixar o arquivo.'),
     });
   }
@@ -259,15 +262,4 @@ export class ProdutividadeDashboardComponent implements OnInit {
       ?.message;
     this.snackbar.show(apiMsg ?? fallback, 'error');
   }
-}
-
-function salvarArquivo(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 }
