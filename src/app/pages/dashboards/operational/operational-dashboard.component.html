@@ -25,7 +25,28 @@
 
   <!-- Consultas de hoje -->
   <section class="dash-section">
-    <h2 class="dash-title">Consultas de hoje</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Consultas de hoje</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuHoje"
+        aria-label="Baixar consultas de hoje"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuHoje="matMenu">
+        <button mat-menu-item (click)="baixarHoje('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarHoje('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (hojeLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -80,7 +101,28 @@
 
   <!-- Próximos 7 dias -->
   <section class="dash-section">
-    <h2 class="dash-title">Consultas dos próximos 7 dias</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Consultas dos próximos 7 dias</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuProximos7"
+        aria-label="Baixar consultas dos próximos 7 dias"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuProximos7="matMenu">
+        <button mat-menu-item (click)="baixarProximos7('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarProximos7('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (proximos7Loading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -135,7 +177,28 @@
 
   <!-- Consultas pendentes -->
   <section class="dash-section">
-    <h2 class="dash-title">Consultas pendentes</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Consultas pendentes</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuPendentes"
+        aria-label="Baixar consultas pendentes"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuPendentes="matMenu">
+        <button mat-menu-item (click)="baixarPendentes('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarPendentes('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
     @if (pendentesLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
@@ -175,7 +238,49 @@
 
   <!-- Médicos sem agendamento -->
   <section class="dash-section">
-    <h2 class="dash-title">Médicos sem agendamento no mês</h2>
+    <div class="section-toolbar">
+      <h2 class="dash-title">Médicos sem agendamento no mês</h2>
+      <button
+        mat-icon-button
+        class="kpi-export toolbar-export"
+        [matMenuTriggerFor]="menuSemAgendamento"
+        aria-label="Baixar médicos sem agendamento"
+        matTooltip="Baixar"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+      <mat-menu #menuSemAgendamento="matMenu">
+        <button mat-menu-item (click)="baixarSemAgendamento('CSV')">
+          <mat-icon>description</mat-icon>
+          <span>Baixar CSV</span>
+        </button>
+        <button mat-menu-item (click)="baixarSemAgendamento('PDF')">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Baixar PDF</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <div class="mes-ano-form" [formGroup]="mesAnoForm">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Mês</mat-label>
+        <mat-select formControlName="mes">
+          @for (opt of mesesOptions; track opt.valor) {
+            <mat-option [value]="opt.valor">{{ opt.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Ano</mat-label>
+        <mat-select formControlName="ano">
+          @for (ano of anosOptions; track ano) {
+            <mat-option [value]="ano">{{ ano }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     @if (semAgendamentoLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }

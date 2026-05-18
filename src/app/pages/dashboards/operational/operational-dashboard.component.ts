@@ -11,6 +11,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
 import {
@@ -33,6 +39,8 @@ import {
   STATUS_CONSULTA_LABEL,
   StatusConsulta,
 } from '@pages/appointments/appointment.constants';
+import { FormatoExportacao } from '@shared/models/formato-exportacao';
+import { FileDownloadService } from '@shared/services/file-download.service';
 import { RelatorioOperacionalService } from '@services/apis/relatorio-operacional/relatorio-operacional.service';
 import {
   ConsultasPendentes,
@@ -52,6 +60,16 @@ Chart.register(
   Legend
 );
 
+const MESES_LONGOS = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+];
+
+interface MesAnoForm {
+  mes: FormControl<number | null>;
+  ano: FormControl<number | null>;
+}
+
 const ORDER_STATUS: StatusConsulta[] = ['AGENDADA', 'REALIZADA', 'CANCELADA'];
 const COLOR_STATUS: Record<StatusConsulta, string> = {
   AGENDADA: '#1976D2',
@@ -69,6 +87,12 @@ const COLOR_STATUS: Record<StatusConsulta, string> = {
     MatPaginatorModule,
     MatProgressBarModule,
     MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
     BaseChartDirective,
   ],
   templateUrl: './operational-dashboard.component.html',
@@ -77,6 +101,7 @@ const COLOR_STATUS: Record<StatusConsulta, string> = {
 export class OperationalDashboardComponent implements OnInit {
   private readonly service = inject(RelatorioOperacionalService);
   private readonly snackbar = inject(SnackbarService);
+  private readonly fileDownload = inject(FileDownloadService);
 
   readonly pageSize = 5;
   readonly pageSizeOptions = [5, 10, 20];
@@ -92,6 +117,22 @@ export class OperationalDashboardComponent implements OnInit {
 
   semAgendamentoPage = signal<PageResponse<MedicoSemAgendamento> | null>(null);
   semAgendamentoLoading = signal(false);
+
+  readonly hoje = new Date();
+  readonly mesAtual = this.hoje.getMonth() + 1;
+  readonly anoAtual = this.hoje.getFullYear();
+
+  readonly mesesOptions = Array.from({ length: 12 }, (_, i) => ({
+    valor: i + 1,
+    label: MESES_LONGOS[i],
+  }));
+
+  readonly anosOptions = Array.from({ length: 5 }, (_, i) => this.anoAtual - i);
+
+  readonly mesAnoForm = new FormGroup<MesAnoForm>({
+    mes: new FormControl<number | null>(this.mesAtual),
+    ano: new FormControl<number | null>(this.anoAtual),
+  });
 
   readonly hojeColumns = ['horario', 'medico', 'paciente', 'status'];
   readonly proximos7Columns = ['data', 'medico', 'paciente', 'status'];
@@ -161,6 +202,10 @@ export class OperationalDashboardComponent implements OnInit {
     this.loadProximos7(0, this.pageSize);
     this.loadPendentes(0, this.pageSize);
     this.loadSemAgendamento(0, this.pageSize);
+
+    this.mesAnoForm.valueChanges.subscribe(() => {
+      this.loadSemAgendamento(0, this.pageSize);
+    });
   }
 
   loadHoje(page: number, size: number): void {
@@ -200,9 +245,11 @@ export class OperationalDashboardComponent implements OnInit {
   }
 
   loadSemAgendamento(page: number, size: number): void {
+    const { mes, ano } = this.mesAnoForm.value;
+    if (!mes || !ano) return;
     this.semAgendamentoLoading.set(true);
     this.service
-      .medicosSemAgendamento(page, size)
+      .medicosSemAgendamento(page, size, mes, ano)
       .pipe(finalize(() => this.semAgendamentoLoading.set(false)))
       .subscribe({
         next: (data) => this.semAgendamentoPage.set(data),
@@ -225,6 +272,53 @@ export class OperationalDashboardComponent implements OnInit {
 
   onSemAgendamentoPage(event: PageEvent): void {
     this.loadSemAgendamento(event.pageIndex, event.pageSize);
+  }
+
+  // ---- Downloads ----
+  private baixar(
+    path: string,
+    formato: FormatoExportacao,
+    nomeArquivo: string,
+    extraParams: Record<string, string | number> = {}
+  ): void {
+    this.service.baixar(path, formato, extraParams).subscribe({
+      next: (blob) =>
+        this.fileDownload.salvar(
+          blob,
+          `${nomeArquivo}.${formato.toLowerCase()}`
+        ),
+      error: (err) => this.notifyError(err, 'Erro ao baixar o arquivo.'),
+    });
+  }
+
+  baixarHoje(formato: FormatoExportacao): void {
+    this.baixar('consultas-por-data', formato, 'consultas-de-hoje');
+  }
+
+  baixarProximos7(formato: FormatoExportacao): void {
+    this.baixar(
+      'consultas-proximos-7-dias',
+      formato,
+      'consultas-proximos-7-dias'
+    );
+  }
+
+  baixarPendentes(formato: FormatoExportacao): void {
+    this.baixar('consultas-pendentes', formato, 'consultas-pendentes');
+  }
+
+  baixarSemAgendamento(formato: FormatoExportacao): void {
+    const { mes, ano } = this.mesAnoForm.value;
+    if (!mes || !ano) {
+      this.snackbar.show('Selecione o mês e o ano.', 'warning');
+      return;
+    }
+    this.baixar(
+      'medicos-sem-agendamento',
+      formato,
+      'medicos-sem-agendamento',
+      { mes, ano }
+    );
   }
 
   statusLabel(status: StatusConsulta): string {

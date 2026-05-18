@@ -77,6 +77,38 @@
   text-align: center;
 }
 
+/* ---- Toolbar (título + download) ---- */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-toolbar .dash-title {
+  margin-right: auto;
+}
+
+.kpi-export {
+  color: var(--text-soft) !important;
+}
+
+.kpi-export:hover {
+  color: var(--text-primary) !important;
+}
+
+.toolbar-export {
+  margin-left: 4px;
+}
+
+/* ---- Filtro mes/ano (auto-reload ao mudar) ---- */
+.mes-ano-form {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(120px, 160px);
+  gap: 16px;
+  align-items: center;
+}
+
 /* ---- Responsivo ---- */
 @media (max-width: 1100px) {
   .kpi-row {
@@ -88,6 +120,9 @@
   .chart-wrap {
     height: 220px;
   }
+  .mes-ano-form {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
@@ -96,5 +131,12 @@
   }
   .kpi-value {
     font-size: 1.8rem;
+  }
+  .section-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .section-toolbar .dash-title {
+    margin-right: 0;
   }
 }
