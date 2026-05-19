@@ -1,0 +1,118 @@
+<main class="page">
+
+  <!-- Saudação -->
+  <header class="greeting">
+    <div>
+      <h1>Bem-vindo(a), {{ nomeUsuario }}</h1>
+      <p class="subtitle">Aqui está um resumo da clínica hoje.</p>
+    </div>
+    <span class="date">{{ dataHoje }}</span>
+  </header>
+
+  <!-- KPIs -->
+  <p class="section-label">Indicadores de hoje</p>
+  <section class="kpi-grid">
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-icon blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </span>
+        <span class="kpi-label">Consultas hoje</span>
+      </div>
+      <span class="kpi-value">{{ totalConsultasHoje() ?? '—' }}</span>
+    </article>
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-icon green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <span class="kpi-label">Médicos ativos</span>
+      </div>
+      <span class="kpi-value">{{ medicosAtivos() ?? '—' }}</span>
+    </article>
+
+    <article class="kpi-card">
+      <div class="kpi-top">
+        <span class="kpi-icon orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </span>
+        <span class="kpi-label">Pacientes ativos</span>
+      </div>
+      <span class="kpi-value">{{ pacientesAtivos() ?? '—' }}</span>
+    </article>
+
+  </section>
+
+  <!-- Atalhos -->
+  <p class="section-label">Atalhos rápidos</p>
+  <nav class="shortcuts">
+
+    <a class="shortcut" routerLink="/appointments/create">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nova consulta
+    </a>
+
+    <a class="shortcut" routerLink="/patients/create">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
+      Cadastrar paciente
+    </a>
+
+    <a class="shortcut" routerLink="/appointments">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Ver agenda completa
+    </a>
+
+  </nav>
+
+  <!-- Pacientes do dia -->
+  <p class="section-label">Pacientes do dia</p>
+  <article class="day-card">
+    <ul class="patient-list">
+
+      @for (consulta of consultasHoje(); track consulta.idConsulta) {
+        <li class="patient-item">
+          <span class="patient-time">{{ formatHora(consulta.horarioConsulta) }}</span>
+          <div class="patient-body">
+            <p>{{ consulta.nomePaciente }}</p>
+            <span class="sub">{{ consulta.nomeMedico }}</span>
+          </div>
+          <span class="status" [class]="statusClasse(consulta.statusConsulta)">
+            {{ statusLabel(consulta.statusConsulta) }}
+          </span>
+        </li>
+      } @empty {
+        <li class="patient-empty">Nenhuma consulta agendada para hoje.</li>
+      }
+
+    </ul>
+  </article>
+
+</main>

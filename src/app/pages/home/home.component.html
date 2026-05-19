@@ -1,13 +1,17 @@
-<div class="container text-center mt-5">
-  <h2>Bem-vindo ao Sistema de Consultas Médicas</h2>
+@if (isRecepcionista()) {
+  <app-recepcionista-dashboard />
+} @else {
+  <div class="container text-center mt-5">
+    <h2>Bem-vindo ao Sistema de Consultas Médicas</h2>
 
-  <div *appHasRole="['ADMIN','RECEPCIONISTA']" class="mt-4">
-    <button
-      mat-raised-button
-      color="primary"
-      routerLink="/doctors"
-    >
-      Gerenciar Médicos
-    </button>
+    <div *appHasRole="['ADMIN','RECEPCIONISTA']" class="mt-4">
+      <button
+        mat-raised-button
+        color="primary"
+        routerLink="/doctors"
+      >
+        Gerenciar Médicos
+      </button>
+    </div>
   </div>
-</div>
+}
