@@ -1,4 +1,6 @@
-@if (isRecepcionista()) {
+@if (isAdmin()) {
+  <app-admin-dashboard />
+} @else if (isRecepcionista()) {
   <app-recepcionista-dashboard />
 } @else {
   <div class="container text-center mt-5">

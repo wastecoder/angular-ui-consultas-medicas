@@ -1,0 +1,151 @@
+/* Tokens ausentes no :root global de src/styles.css */
+:host {
+  --bg-elevated: #1A1A1A;
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-error: #F44336;
+}
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+/* ---------- Saudação ---------- */
+.greeting {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.greeting h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.greeting .subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.greeting .date {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+/* ---------- Conteúdo: central + sidebar ---------- */
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.section-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}
+
+.section-label + .link-grid {
+  margin-bottom: 24px;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+/* ---------- Central de dashboards ---------- */
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.link-card:hover {
+  filter: brightness(1.25);
+}
+
+.link-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.link-icon.blue   { background-color: rgba(25, 118, 210, 0.18); color: var(--color-primary); }
+.link-icon.green  { background-color: rgba(76, 175, 80, 0.18);  color: var(--color-success); }
+.link-icon.orange { background-color: rgba(255, 152, 0, 0.18);  color: var(--color-warning); }
+
+.link-text {
+  min-width: 0;
+}
+
+/* ---------- Sidebar — cards compactos ---------- */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mini-kpi {
+  padding: 16px 18px;
+}
+
+.mini-kpi h3 {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.mini-kpi .value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: block;
+  color: white;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 960px) {
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 20px 14px; }
+  .greeting h1 { font-size: 1.4rem; }
+  .link-grid { grid-template-columns: 1fr; }
+}
