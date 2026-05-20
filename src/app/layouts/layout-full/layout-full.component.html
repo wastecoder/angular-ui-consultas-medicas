@@ -1,4 +1,6 @@
-<app-navbar></app-navbar>
+@if (isLoggedIn()) {
+  <app-navbar></app-navbar>
+}
 
 @if (loading.isLoading()) {
   <mat-progress-bar mode="indeterminate" class="global-loading"></mat-progress-bar>
@@ -8,4 +10,6 @@
   <router-outlet></router-outlet>
 </main>
 
-<app-footer></app-footer>
+@if (isLoggedIn()) {
+  <app-footer></app-footer>
+}

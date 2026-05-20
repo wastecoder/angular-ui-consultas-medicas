@@ -7,17 +7,55 @@
 } @else if (isPaciente()) {
   <app-paciente-dashboard />
 } @else {
-  <div class="container text-center mt-5">
-    <h2>Bem-vindo ao Sistema de Consultas Médicas</h2>
+  <section class="landing">
+    <div class="landing-content">
 
-    <div *appHasRole="['ADMIN','RECEPCIONISTA']" class="mt-4">
-      <button
-        mat-raised-button
-        color="primary"
-        routerLink="/doctors"
-      >
-        Gerenciar Médicos
-      </button>
+      <header class="landing-header">
+        <h1>Sistema de Consultas Médicas</h1>
+        <p class="landing-subtitle">
+          Agende, acompanhe e gerencie consultas em um só lugar — para
+          pacientes, médicos e equipe da clínica.
+        </p>
+      </header>
+
+      <div class="landing-features">
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">📅</span>
+          <h2>Agende suas consultas</h2>
+          <p>Marque atendimentos e acompanhe seus próximos compromissos.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">🩺</span>
+          <h2>Médicos e pacientes organizados</h2>
+          <p>Cadastros completos e sempre atualizados em um só sistema.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">📊</span>
+          <h2>Relatórios e dashboards</h2>
+          <p>Indicadores de produtividade, finanças e operação da clínica.</p>
+        </article>
+      </div>
+
+      <div class="landing-actions">
+        <a
+          mat-flat-button
+          color="primary"
+          class="landing-btn landing-btn-primary"
+          routerLink="/login"
+        >
+          Entrar
+        </a>
+        <a
+          mat-stroked-button
+          class="landing-btn landing-btn-secondary"
+          routerLink="/signup"
+        >
+          Criar conta
+        </a>
+      </div>
+
     </div>
-  </div>
+  </section>
 }

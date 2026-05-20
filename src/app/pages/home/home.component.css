@@ -1,0 +1,110 @@
+.landing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 1px);
+  padding: 3rem 1.5rem;
+  background-color: var(--bg-page);
+}
+
+.landing-content {
+  width: 100%;
+  max-width: 960px;
+  text-align: center;
+}
+
+.landing-header h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.landing-subtitle {
+  margin: 0.75rem auto 0;
+  max-width: 620px;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+
+.feature-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 15px;
+  padding: 1.75rem 1.25rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.feature-card h2 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.feature-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.landing-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* Botões em formato pílula (bem arredondado) */
+.landing-btn {
+  height: 52px;
+  padding: 0 2.5rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  border-radius: 999px;
+}
+
+/* "Entrar" — destaque: preenchido de azul */
+.landing-btn-primary {
+  --mdc-filled-button-container-color: var(--color-primary);
+  --mdc-filled-button-label-text-color: var(--text-primary);
+}
+
+.landing-btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+/* "Criar conta" — secundário: borda fina, fundo transparente */
+.landing-btn-secondary {
+  --mdc-outlined-button-outline-color: var(--border-default);
+  --mdc-outlined-button-label-text-color: var(--text-secondary);
+}
+
+.landing-btn-secondary:hover {
+  --mdc-outlined-button-outline-color: var(--text-secondary);
+  background-color: var(--bg-card);
+}
+
+@media (max-width: 768px) {
+  .landing-features {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-header h1 {
+    font-size: 1.75rem;
+  }
+}
