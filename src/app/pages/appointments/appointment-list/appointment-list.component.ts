@@ -28,10 +28,10 @@ export class AppointmentListComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
 
-  // Médico (sem perfil de gestão) acessa a lista apenas para leitura:
-  // o back já restringe os resultados às consultas dele.
+  // Médico/paciente (sem perfil de gestão) acessam a lista apenas para leitura:
+  // o back já restringe os resultados às consultas deles.
   readonly somenteLeitura =
-    this.auth.hasRole('MEDICO') &&
+    (this.auth.hasRole('MEDICO') || this.auth.hasRole('PACIENTE')) &&
     !this.auth.hasRole('ADMIN') &&
     !this.auth.hasRole('RECEPCIONISTA');
 

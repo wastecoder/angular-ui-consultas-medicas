@@ -7,6 +7,7 @@ import { AuthService } from '@services/apis/auth/auth.service';
 import { RecepcionistaDashboardComponent } from '@pages/recepcionista/recepcionista-dashboard.component';
 import { AdminDashboardComponent } from '@pages/admin/admin-dashboard.component';
 import { MedicoDashboardComponent } from '@pages/medico/medico-dashboard.component';
+import { PacienteDashboardComponent } from '@pages/paciente/paciente-dashboard.component';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ import { MedicoDashboardComponent } from '@pages/medico/medico-dashboard.compone
     RecepcionistaDashboardComponent,
     AdminDashboardComponent,
     MedicoDashboardComponent,
+    PacienteDashboardComponent,
   ],
   templateUrl: './home.component.html',
 })
@@ -27,6 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isAdmin = signal(this.auth.hasRole('ADMIN'));
   isRecepcionista = signal(this.auth.hasRole('RECEPCIONISTA'));
   isMedico = signal(this.auth.hasRole('MEDICO'));
+  isPaciente = signal(this.auth.hasRole('PACIENTE'));
 
   private subscription?: Subscription;
 
@@ -35,6 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.isAdmin.set(this.auth.hasRole('ADMIN'));
       this.isRecepcionista.set(this.auth.hasRole('RECEPCIONISTA'));
       this.isMedico.set(this.auth.hasRole('MEDICO'));
+      this.isPaciente.set(this.auth.hasRole('PACIENTE'));
     });
   }
 

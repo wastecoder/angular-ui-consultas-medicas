@@ -1,5 +1,12 @@
-<app-appointment-form
-  titulo="Cadastro de Consulta"
-  [loading]="loading()"
-  (salvar)="cadastrar($event)"
-></app-appointment-form>
+@if (!fluxoPaciente || pacienteFixo()) {
+  <app-appointment-form
+    titulo="Cadastro de Consulta"
+    [loading]="loading()"
+    [pacienteFixo]="pacienteFixo()"
+    (salvar)="cadastrar($event)"
+  ></app-appointment-form>
+} @else if (erroPerfil()) {
+  <p class="d-flex justify-content-center mt-5">
+    Não foi possível carregar seus dados. Recarregue a página e tente novamente.
+  </p>
+}

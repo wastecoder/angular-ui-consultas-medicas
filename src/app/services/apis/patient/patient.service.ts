@@ -77,6 +77,11 @@ export class PatientService {
     return this.http.get<PacienteProfile>(`${this.pacienteUrl}/${id}`);
   }
 
+  // Perfil do paciente autenticado — o back resolve o paciente pelo usuário logado.
+  meuPerfil(): Observable<PacienteProfile> {
+    return this.http.get<PacienteProfile>(`${this.pacienteUrl}/meu-perfil`);
+  }
+
   cadastrar(paciente: PacientePayload): Observable<PacienteTable> {
     return this.http.post<PacienteTable>(this.pacienteUrl, paciente);
   }

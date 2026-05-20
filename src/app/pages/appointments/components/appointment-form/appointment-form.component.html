@@ -128,16 +128,23 @@
             ></app-person-autocomplete>
           </div>
           <div class="col-6">
-            <app-person-autocomplete
-              tipo="paciente"
-              label="Paciente"
-              placeholder="Digite o nome do paciente"
-              hint="Selecione uma opção da lista"
-              [valorInicial]="pacienteInicial"
-              [obrigatorio]="true"
-              [tocado]="pessoasTocadas"
-              (selecionado)="onPacienteSelecionado($event)"
-            ></app-person-autocomplete>
+            @if (pacienteFixo) {
+              <mat-form-field appearance="outline" class="w-100 form-field">
+                <mat-label>Paciente</mat-label>
+                <input matInput type="text" [value]="pacienteFixo.nome" readonly />
+              </mat-form-field>
+            } @else {
+              <app-person-autocomplete
+                tipo="paciente"
+                label="Paciente"
+                placeholder="Digite o nome do paciente"
+                hint="Selecione uma opção da lista"
+                [valorInicial]="pacienteInicial"
+                [obrigatorio]="true"
+                [tocado]="pessoasTocadas"
+                (selecionado)="onPacienteSelecionado($event)"
+              ></app-person-autocomplete>
+            }
           </div>
         </div>
       </fieldset>

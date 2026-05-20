@@ -4,6 +4,8 @@
   <app-recepcionista-dashboard />
 } @else if (isMedico()) {
   <app-medico-dashboard />
+} @else if (isPaciente()) {
+  <app-paciente-dashboard />
 } @else {
   <div class="container text-center mt-5">
     <h2>Bem-vindo ao Sistema de Consultas Médicas</h2>

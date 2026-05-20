@@ -97,6 +97,9 @@ export class AppointmentFormComponent implements OnChanges {
   @Input() titulo = '';
   @Input() valorInicial: ConsultaProfile | null = null;
   @Input() loading = false;
+  // Quando preenchido (fluxo de agendamento pelo paciente), o paciente fica
+  // travado neste valor e o autocomplete de paciente não é exibido.
+  @Input() pacienteFixo: PessoaResumo | null = null;
   @Output() salvar = new EventEmitter<ConsultaCadastroPayload>();
 
   readonly motivoMax = MOTIVO_MAX_CHARS;
@@ -141,6 +144,10 @@ export class AppointmentFormComponent implements OnChanges {
         medicoId: v.medico?.id ?? null,
         pacienteId: v.paciente?.id ?? null,
       });
+    }
+
+    if (changes['pacienteFixo'] && this.pacienteFixo) {
+      this.form.controls.pacienteId.setValue(this.pacienteFixo.id);
     }
   }
 

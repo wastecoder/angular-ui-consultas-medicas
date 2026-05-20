@@ -1,0 +1,135 @@
+<main class="page">
+
+  @if (erroPerfil()) {
+
+    <!-- Falha ao carregar o perfil do paciente autenticado -->
+    <div class="aviso-erro">
+      <h2>Não foi possível carregar seus dados</h2>
+      <p>Houve uma falha ao buscar o seu perfil. Tente novamente.</p>
+      <button class="btn btn-primary" type="button" (click)="recarregar()">Tentar novamente</button>
+    </div>
+
+  } @else {
+
+    <header class="greeting">
+      <h1>Olá, {{ primeiroNome() || 'paciente' }}</h1>
+    </header>
+
+    <!-- Próxima consulta -->
+    <p class="section-label">Próxima consulta</p>
+    @if (proximaConsulta(); as proxima) {
+      <article class="next-card">
+        <div class="date-block" aria-hidden="true">
+          <span class="month">{{ mesAbreviado(proxima) }}</span>
+          <span class="day">{{ diaDoMes(proxima) }}</span>
+          <span class="weekday">{{ diaDaSemana(proxima) }}</span>
+        </div>
+        <div class="details">
+          <h2>{{ proxima.medico.nome }}</h2>
+
+          <div class="meta">
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              {{ dataHoraExtenso(proxima) }}
+            </span>
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              {{ proxima.duracaoEmMinutos }} min &middot; {{ formatPreco(proxima.preco) }}
+            </span>
+            @if (proxima.motivo) {
+              <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                {{ proxima.motivo }}
+              </span>
+            }
+          </div>
+        </div>
+      </article>
+    } @else {
+      <article class="next-card next-card--empty">
+        <p class="vazio">Você não tem consultas agendadas.</p>
+      </article>
+    }
+
+    <!-- Ações rápidas -->
+    <p class="section-label">Ações rápidas</p>
+    <section class="actions-grid">
+
+      <a class="action-card" routerLink="/appointments/create">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </span>
+        <h3>Agendar nova consulta</h3>
+        <p>Escolha o médico, a data e o horário da consulta.</p>
+      </a>
+
+      <a class="action-card" routerLink="/appointments">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"/>
+            <polyline points="7 14 12 9 16 13 21 8"/>
+          </svg>
+        </span>
+        <h3>Ver histórico</h3>
+        <p>Consulte os seus atendimentos registrados.</p>
+      </a>
+
+      <a class="action-card" [routerLink]="meusDadosLink()">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <h3>Meus dados</h3>
+        <p>Veja os seus dados cadastrais.</p>
+      </a>
+
+    </section>
+
+    <!-- Últimas consultas -->
+    <p class="section-label">Últimas consultas</p>
+    <article class="history-card">
+      @if (carregando()) {
+        <p class="vazio">Carregando consultas…</p>
+      } @else {
+        <ul class="history-list">
+          @for (consulta of historico(); track consulta.id) {
+            <li class="history-item">
+              <span class="date">{{ dataCurta(consulta) }}</span>
+              <div>
+                <p>{{ consulta.medico.nome }}</p>
+                @if (consulta.motivo) {
+                  <span class="sub">{{ consulta.motivo }}</span>
+                }
+              </div>
+              <span class="badge" [class]="badgeClasse(consulta.status)">
+                {{ badgeLabel(consulta.status) }}
+              </span>
+            </li>
+          } @empty {
+            <li class="history-item history-item--empty">
+              <span class="vazio">Nenhuma consulta anterior.</span>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+
+  }
+
+</main>
