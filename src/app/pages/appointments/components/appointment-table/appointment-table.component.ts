@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -35,7 +41,7 @@ export type ConsultaModel = ConsultaTable;
   templateUrl: './appointment-table.component.html',
   styleUrl: './appointment-table.component.css',
 })
-export class AppointmentTableComponent {
+export class AppointmentTableComponent implements OnInit {
   @Input() consultas: ConsultaModel[] = [];
 
   @Input() totalElements = 0;
@@ -50,16 +56,27 @@ export class AppointmentTableComponent {
   @Output() onRequestUpdate = new EventEmitter<ConsultaModel>();
   @Output() onRequestViewProfile = new EventEmitter<ConsultaModel>();
 
-  displayedColumns: string[] = [
-    'dataAtendimento',
-    'horarioAtendimento',
-    'medico',
-    'paciente',
-    'status',
-    'preco',
-    'duracaoEmMinutos',
-    'acoes',
-  ];
+  // Modo leitura: usado pelo perfil MÉDICO, que não edita consultas.
+  // Esconde a coluna de ações.
+  @Input() somenteLeitura = false;
+
+  displayedColumns: string[] = [];
+
+  ngOnInit(): void {
+    const colunas = [
+      'dataAtendimento',
+      'horarioAtendimento',
+      'medico',
+      'paciente',
+      'status',
+      'preco',
+      'duracaoEmMinutos',
+    ];
+    if (!this.somenteLeitura) {
+      colunas.push('acoes');
+    }
+    this.displayedColumns = colunas;
+  }
 
   update(consulta: ConsultaModel) {
     this.onRequestUpdate.emit(consulta);

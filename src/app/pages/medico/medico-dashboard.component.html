@@ -1,0 +1,149 @@
+<main class="page">
+
+  @if (erroPerfil()) {
+
+    <!-- Falha ao carregar o perfil do médico autenticado -->
+    <div class="aviso-sessao">
+      <h2>Não foi possível carregar seus dados</h2>
+      <p>Houve uma falha ao buscar o seu perfil de médico. Tente novamente.</p>
+      <button class="btn btn-primary" type="button" (click)="recarregar()">Tentar novamente</button>
+    </div>
+
+  } @else {
+
+    <!-- Cabeçalho do médico -->
+    <header class="doctor-header">
+      <div class="avatar" aria-hidden="true">{{ iniciais() }}</div>
+      <div>
+        <h1>{{ medico()?.nome ?? 'Carregando…' }}</h1>
+        @if (medico(); as m) {
+          <p>{{ m.especialidade }} &middot; CRM {{ m.crmSigla }} {{ m.crmDigitos }}</p>
+        }
+      </div>
+      <span class="date">{{ dataHoje }}</span>
+    </header>
+
+    <section class="main-grid">
+
+      <!-- Coluna principal -->
+      <div>
+        <!-- Próxima consulta -->
+        <p class="section-label">Próxima consulta</p>
+        @if (proximaConsulta(); as proxima) {
+          <article class="next-card">
+            <div class="label-row">
+              <span class="tag">{{ tempoParaProxima(proxima) }}</span>
+              <span class="countdown">{{ intervaloHorario(proxima) }}</span>
+            </div>
+            <h2>{{ proxima.paciente.nome }}</h2>
+            @if (proxima.motivo) {
+              <p class="reason">{{ proxima.motivo }}</p>
+            }
+            <div class="meta">
+              <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                {{ proxima.duracaoEmMinutos }} minutos
+              </span>
+              <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                Valor da consulta: {{ formatPreco(proxima.preco) }}
+              </span>
+            </div>
+            <button
+              class="btn btn-primary"
+              type="button"
+              [disabled]="realizando()"
+              (click)="iniciarAtendimento()"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              {{ realizando() ? 'Concluindo…' : 'Iniciar atendimento' }}
+            </button>
+          </article>
+        } @else {
+          <article class="next-card next-card--empty">
+            <p class="reason">Nenhuma consulta pendente para o restante do dia.</p>
+          </article>
+        }
+
+        <!-- Timeline -->
+        <p class="section-label">Agenda de hoje &middot; {{ consultas().length }} consulta(s)</p>
+        <article class="timeline-card">
+          @if (carregando()) {
+            <p class="tl-empty">Carregando agenda…</p>
+          } @else {
+            <ul class="timeline">
+              @for (consulta of consultas(); track consulta.id) {
+                <li class="tl-item">
+                  <span class="tl-time">{{ formatHora(consulta.horarioAtendimento) }}</span>
+                  <div class="tl-body">
+                    <p>{{ consulta.paciente.nome }}</p>
+                    @if (consulta.motivo) {
+                      <span class="sub">{{ consulta.motivo }}</span>
+                    }
+                  </div>
+                  <span class="tl-status" [class]="timelineClasse(consulta)">
+                    {{ timelineLabel(consulta) }}
+                  </span>
+                </li>
+              } @empty {
+                <li class="tl-empty">Nenhuma consulta agendada para hoje.</li>
+              }
+            </ul>
+          }
+        </article>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <article class="summary-card">
+          <p class="section-label">Resumo do dia</p>
+          <div class="row"><span>Concluídas</span><strong>{{ resumo().realizadas }}</strong></div>
+          <div class="row"><span>Pendentes</span><strong>{{ resumo().pendentes }}</strong></div>
+          <div class="row"><span>Canceladas</span><strong>{{ resumo().canceladas }}</strong></div>
+          <div class="row"><span>Taxa de comparecimento</span><strong>{{ resumo().taxaComparecimento }}</strong></div>
+        </article>
+
+        <article class="summary-card">
+          <p class="section-label">Atalhos pessoais</p>
+          <ul class="shortcut-list">
+            @if (medico(); as m) {
+              <li>
+                <a [routerLink]="['/doctors', m.id, 'profile']">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  Meu perfil
+                </a>
+              </li>
+            }
+            <li>
+              <a routerLink="/appointments">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Minhas consultas
+              </a>
+            </li>
+          </ul>
+        </article>
+
+      </aside>
+
+    </section>
+
+  }
+
+</main>

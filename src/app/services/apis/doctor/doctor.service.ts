@@ -76,6 +76,11 @@ export class DoctorService {
     return this.http.get<DoctorProfile>(`${this.medicoUrl}/${id}`);
   }
 
+  // Perfil do médico autenticado — o back resolve o médico pelo usuário logado.
+  meuPerfil(): Observable<DoctorProfile> {
+    return this.http.get<DoctorProfile>(`${this.medicoUrl}/meu-perfil`);
+  }
+
   cadastrar(medico: DoctorPayload): Observable<DoctorTable> {
     return this.http.post<DoctorTable>(this.medicoUrl, medico);
   }

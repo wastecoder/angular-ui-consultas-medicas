@@ -73,7 +73,7 @@ export const routes: Routes = [
           {
             path: ':id/profile',
             component: DoctorProfileComponent,
-            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA', 'MEDICO'])],
             data: { title: 'Perfil do Médico' },
           },
           {
@@ -129,7 +129,7 @@ export const routes: Routes = [
           {
             path: '',
             component: AppointmentListComponent,
-            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA'])],
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA', 'MEDICO'])],
             data: { title: 'Lista de Consultas' },
           },
           {

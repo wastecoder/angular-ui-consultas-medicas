@@ -92,6 +92,15 @@ export class AppointmentService {
     return this.http.delete<void>(`${this.consultaUrl}/${id}`);
   }
 
+  // Marca a consulta como REALIZADA via endpoint dedicado, liberado para o
+  // perfil MÉDICO (diferente do PUT, restrito a ADMIN/RECEPCIONISTA).
+  realizar(id: number): Observable<ConsultaTable> {
+    return this.http.patch<ConsultaTable>(
+      `${this.consultaUrl}/${id}/realizar`,
+      {}
+    );
+  }
+
   // Atalho para mudança de status via PUT, reaproveitando os dados atuais
   // da consulta como base do payload exigido pelo back.
   alterarStatus(

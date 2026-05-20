@@ -14,6 +14,7 @@ import {
 import { AppointmentService } from '@services/apis/appointment/appointment.service';
 import { PageResponse, SortDirection } from '@shared/models/pagination.model';
 import { SnackbarService } from '@shared/services/snackbar.service';
+import { AuthService } from '@services/apis/auth/auth.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -25,6 +26,14 @@ export class AppointmentListComponent implements OnInit {
   private readonly appointmentService = inject(AppointmentService);
   private readonly snackbar = inject(SnackbarService);
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
+
+  // Médico (sem perfil de gestão) acessa a lista apenas para leitura:
+  // o back já restringe os resultados às consultas dele.
+  readonly somenteLeitura =
+    this.auth.hasRole('MEDICO') &&
+    !this.auth.hasRole('ADMIN') &&
+    !this.auth.hasRole('RECEPCIONISTA');
 
   pageResponse: PageResponse<ConsultaModel> = {
     content: [],

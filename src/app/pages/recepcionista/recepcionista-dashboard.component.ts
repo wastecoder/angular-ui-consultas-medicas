@@ -84,7 +84,7 @@ export class RecepcionistaDashboardComponent implements OnInit {
 
   private resolverNomeUsuario(): string {
     const data = this.auth.getUserData();
-    return data?.nome ?? data?.name ?? data?.sub ?? 'Recepcionista';
+    return data?.nome ?? data?.name ?? data?.username ?? 'Recepcionista';
   }
 
   private formatarDataHoje(): string {

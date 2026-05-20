@@ -75,7 +75,7 @@ export class AdminDashboardComponent implements OnInit {
 
   private resolverNomeUsuario(): string {
     const data = this.auth.getUserData();
-    return data?.nome ?? data?.name ?? data?.sub ?? 'Administrador';
+    return data?.nome ?? data?.name ?? data?.username ?? 'Administrador';
   }
 
   private formatarDataHoje(): string {
