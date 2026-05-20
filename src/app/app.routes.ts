@@ -136,7 +136,7 @@ export const routes: Routes = [
           {
             path: 'create',
             component: AppointmentCreateComponent,
-            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA', 'PACIENTE'])],
+            canActivate: [roleGuard(['ADMIN', 'RECEPCIONISTA', 'MEDICO', 'PACIENTE'])],
             data: { title: 'Nova Consulta' },
           },
           {

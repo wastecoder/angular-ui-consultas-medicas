@@ -1,8 +1,9 @@
-@if (!fluxoPaciente || pacienteFixo()) {
+@if ((!fluxoPaciente || pacienteFixo()) && (!fluxoMedico || medicoFixo())) {
   <app-appointment-form
     titulo="Cadastro de Consulta"
     [loading]="loading()"
     [pacienteFixo]="pacienteFixo()"
+    [medicoFixo]="medicoFixo()"
     (salvar)="cadastrar($event)"
   ></app-appointment-form>
 } @else if (erroPerfil()) {

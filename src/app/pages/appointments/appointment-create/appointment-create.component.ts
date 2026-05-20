@@ -4,6 +4,7 @@ import { finalize } from 'rxjs';
 import { AppointmentFormComponent } from '../components/appointment-form/appointment-form.component';
 import { AppointmentService } from '@services/apis/appointment/appointment.service';
 import { PatientService } from '@services/apis/patient/patient.service';
+import { DoctorService } from '@services/apis/doctor/doctor.service';
 import { AuthService } from '@services/apis/auth/auth.service';
 import { ConsultaCadastroPayload, PessoaResumo } from '../appointment.models';
 import { SnackbarService } from '@shared/services/snackbar.service';
@@ -19,36 +20,49 @@ export class AppointmentCreateComponent implements OnInit {
 
   // Fluxo de agendamento pelo paciente: o paciente é travado nele mesmo.
   readonly fluxoPaciente: boolean;
+  // Fluxo de agendamento pelo médico: o médico é travado nele mesmo.
+  readonly fluxoMedico: boolean;
   pacienteFixo = signal<PessoaResumo | null>(null);
+  medicoFixo = signal<PessoaResumo | null>(null);
   erroPerfil = signal(false);
 
   constructor(
     private appointmentService: AppointmentService,
     private patientService: PatientService,
+    private doctorService: DoctorService,
     private auth: AuthService,
     private router: Router,
     private snackbar: SnackbarService
   ) {
-    this.fluxoPaciente =
-      this.auth.hasRole('PACIENTE') &&
-      !this.auth.hasRole('ADMIN') &&
-      !this.auth.hasRole('RECEPCIONISTA');
+    const isAdminOuRecepcionista =
+      this.auth.hasRole('ADMIN') || this.auth.hasRole('RECEPCIONISTA');
+    this.fluxoPaciente = this.auth.hasRole('PACIENTE') && !isAdminOuRecepcionista;
+    this.fluxoMedico = this.auth.hasRole('MEDICO') && !isAdminOuRecepcionista;
   }
 
   ngOnInit(): void {
-    if (!this.fluxoPaciente) return;
+    if (this.fluxoPaciente) {
+      this.patientService.meuPerfil().subscribe({
+        next: (p) => this.pacienteFixo.set({ id: p.id, nome: p.nome }),
+        error: (err) => this.tratarErroPerfil(err),
+      });
+    }
 
-    this.patientService.meuPerfil().subscribe({
-      next: (p) => this.pacienteFixo.set({ id: p.id, nome: p.nome }),
-      error: (err) => {
-        console.error('Erro ao carregar perfil do paciente', err);
-        this.erroPerfil.set(true);
-        this.snackbar.show(
-          'Não foi possível carregar seus dados para o agendamento.',
-          'error'
-        );
-      },
-    });
+    if (this.fluxoMedico) {
+      this.doctorService.meuPerfil().subscribe({
+        next: (m) => this.medicoFixo.set({ id: m.id, nome: m.nome }),
+        error: (err) => this.tratarErroPerfil(err),
+      });
+    }
+  }
+
+  private tratarErroPerfil(err: unknown): void {
+    console.error('Erro ao carregar perfil para o agendamento', err);
+    this.erroPerfil.set(true);
+    this.snackbar.show(
+      'Não foi possível carregar seus dados para o agendamento.',
+      'error'
+    );
   }
 
   cadastrar(consulta: ConsultaCadastroPayload) {

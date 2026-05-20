@@ -116,16 +116,23 @@
 
         <div class="row">
           <div class="col-6">
-            <app-person-autocomplete
-              tipo="medico"
-              label="Médico"
-              placeholder="Digite o nome do médico"
-              hint="Selecione uma opção da lista"
-              [valorInicial]="medicoInicial"
-              [obrigatorio]="true"
-              [tocado]="pessoasTocadas"
-              (selecionado)="onMedicoSelecionado($event)"
-            ></app-person-autocomplete>
+            @if (medicoFixo) {
+              <mat-form-field appearance="outline" class="w-100 form-field">
+                <mat-label>Médico</mat-label>
+                <input matInput type="text" [value]="medicoFixo.nome" readonly />
+              </mat-form-field>
+            } @else {
+              <app-person-autocomplete
+                tipo="medico"
+                label="Médico"
+                placeholder="Digite o nome do médico"
+                hint="Selecione uma opção da lista"
+                [valorInicial]="medicoInicial"
+                [obrigatorio]="true"
+                [tocado]="pessoasTocadas"
+                (selecionado)="onMedicoSelecionado($event)"
+              ></app-person-autocomplete>
+            }
           </div>
           <div class="col-6">
             @if (pacienteFixo) {
