@@ -65,7 +65,7 @@
       </li>
 
       <li
-        *appHasRole="['ADMIN','RECEPCIONISTA']"
+        *appHasRole="['ADMIN','RECEPCIONISTA','MEDICO','PACIENTE']"
         class="dropdown"
         [class.open]="openDropdown() === 'consulta'"
       >
@@ -77,9 +77,19 @@
           Consulta
         </a>
         <div class="dropdown-menu">
-          <a routerLink="/appointments/create">Cadastrar</a>
+          <a
+            *appHasRole="['ADMIN','RECEPCIONISTA','MEDICO','PACIENTE']"
+            routerLink="/appointments/create"
+          >
+            Cadastrar
+          </a>
           <a routerLink="/appointments">Listar de hoje</a>
-          <a routerLink="/appointments/filter">Aplicar filtros</a>
+          <a
+            *appHasRole="['ADMIN','RECEPCIONISTA']"
+            routerLink="/appointments/filter"
+          >
+            Aplicar filtros
+          </a>
         </div>
       </li>
 
